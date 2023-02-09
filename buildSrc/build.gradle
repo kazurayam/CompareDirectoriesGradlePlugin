@@ -1,9 +1,6 @@
 plugins {
-    id 'groovy'
+    id "groovy"
 }
-
-group 'my.pkg'
-version '0.1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -16,10 +13,4 @@ dependencies {
 
 test {
     useJUnitPlatform()
-}
-
-apply plugin: my.pkg.DirectoriesComparatorPlugin
-compareDirectories {
-    sourceDir = "${projectDir}/src/test/fixtures/A"
-    targetDir = "${projectDir}/src/test/fixtures/B"
 }
