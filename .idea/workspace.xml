@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="a2784c0c-f77d-4fbd-a2c3-c23b35b22e03" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/buildSrc/src/main/groovy/my/pkg/DirectoriesComparator.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/buildSrc/src/main/groovy/my/pkg/DirectoriesComparator.groovy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/buildSrc/src/main/groovy/my/pkg/DirectoriesComparatorPlugin.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/buildSrc/src/main/groovy/my/pkg/DirectoriesComparatorPlugin.groovy" afterDir="false" />
     </list>
@@ -46,7 +47,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1675904037639</updated>
-      <workItem from="1675904039469" duration="2062000" />
+      <workItem from="1675904039469" duration="5743000" />
     </task>
     <servers />
   </component>

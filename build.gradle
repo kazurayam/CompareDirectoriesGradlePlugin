@@ -21,5 +21,5 @@ test {
 apply plugin: my.pkg.DirectoriesComparatorPlugin
 compareDirectories {
     sourceDir = "${projectDir}/src/test/fixtures/A"
-    targetDir = "${projectDir}/src/test/fixtures/B"
+    targetDir = "src/test/fixtures/B"
 }
