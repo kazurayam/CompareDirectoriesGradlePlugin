@@ -2,7 +2,7 @@ plugins {
     id 'groovy'
 }
 
-group 'my.pkg'
+group 'com.kazurayam'
 version '0.1.0-SNAPSHOT'
 
 repositories {
@@ -18,8 +18,9 @@ test {
     useJUnitPlatform()
 }
 
-apply plugin: my.pkg.DirectoriesComparatorPlugin
+import com.kazurayam.dircomp.DirectoriesComparatorPlugin
+apply plugin: DirectoriesComparatorPlugin
 compareDirectories {
     sourceDir = "${projectDir}/src/test/fixtures/A"
-    targetDir = "${projectDir}/src/test/fixtures/B"
+    targetDir = "src/test/fixtures/B"
 }
