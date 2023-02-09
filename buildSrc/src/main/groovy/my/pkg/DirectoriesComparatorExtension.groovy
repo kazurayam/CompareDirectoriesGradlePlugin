@@ -1,6 +1,12 @@
 package my.pkg
 
 class DirectoriesComparatorExtension {
-    String sourceDir
-    String targetDir
+    public String sourceDir
+    public String targetDir
+    public String getSourceDir() {
+        return sourceDir
+    }
+    public String getTargetDir() {
+        return targetDir
+    }
 }
