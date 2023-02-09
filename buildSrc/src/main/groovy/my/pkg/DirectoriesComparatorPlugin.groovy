@@ -3,9 +3,10 @@ package my.pkg;
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-public class DirectoriesComparatorPlugin implements Plugin<Project> {
+class DirectoriesComparatorPlugin implements Plugin<Project> {
+
     @Override
-    public void apply(Project project) {
+    void apply(Project project) {
         // add the 'compareDirectories' extension object
         DirectoriesComparatorExtension extension =
                 project.getExtensions()
@@ -13,7 +14,9 @@ public class DirectoriesComparatorPlugin implements Plugin<Project> {
                                 DirectoriesComparatorExtension.class)
         // create the 'compareDirectories' task
         project.getTasks().register("compareDirectories",
-                DirectoriesComparator.class, task -> {
+                DirectoriesComparatorTask.class,
+                task -> {
+            task.getProjectLayout().set(project.getLayout())
             task.getSourceDir().set(extension.getSourceDir())
             task.getTargetDir().set(extension.getTargetDir())
             task.getSourceFileTree().set(

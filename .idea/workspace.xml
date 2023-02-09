@@ -5,8 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a2784c0c-f77d-4fbd-a2c3-c23b35b22e03" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/buildSrc/src/main/groovy/my/pkg/DirectoriesComparatorTask.groovy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/buildSrc/src/test/groovy/my/pkg/DirectoriesComparatorTest.groovy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/fixtures/A/sub/i.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/fixtures/B/j.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/buildSrc/src/main/groovy/my/pkg/DirectoriesComparator.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/buildSrc/src/main/groovy/my/pkg/DirectoriesComparator.groovy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/buildSrc/src/main/groovy/my/pkg/DirectoriesComparatorPlugin.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/buildSrc/src/main/groovy/my/pkg/DirectoriesComparatorPlugin.groovy" afterDir="false" />
     </list>
@@ -19,6 +22,13 @@
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -39,6 +49,60 @@
     "nodejs_package_manager_path": "npm"
   }
 }]]></component>
+  <component name="RunManager" selected="Gradle.DirectoriesComparatorTest.test_getSourceRemainder">
+    <configuration name="DirectoriesComparatorTest.test_getProjectDir" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":buildSrc:test" />
+            <option value="--tests" />
+            <option value="&quot;my.pkg.DirectoriesComparatorTest.test_getProjectDir&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="DirectoriesComparatorTest.test_getSourceRemainder" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":buildSrc:test" />
+            <option value="--tests" />
+            <option value="&quot;my.pkg.DirectoriesComparatorTest.test_getSourceRemainder&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.DirectoriesComparatorTest.test_getSourceRemainder" />
+        <item itemvalue="Gradle.DirectoriesComparatorTest.test_getProjectDir" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -47,7 +111,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1675904037639</updated>
-      <workItem from="1675904039469" duration="5743000" />
+      <workItem from="1675904039469" duration="23389000" />
     </task>
     <servers />
   </component>

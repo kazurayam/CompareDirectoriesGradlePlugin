@@ -1,48 +1,83 @@
 package my.pkg
 
-import org.gradle.api.DefaultTask
-import org.gradle.api.file.FileTree
-import org.gradle.api.file.ProjectLayout
-import org.gradle.api.provider.Property
-import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.TaskAction
-import org.gradle.api.file.FileCollection
-import java.nio.file.Paths
+import java.nio.file.Files
+import java.nio.file.Path
 
-abstract public class DirectoriesComparator extends DefaultTask {
+class DirectoriesComparator {
 
-    @Input
-    abstract public Property<String> getSourceDir()
+    private final Path projectDir
+    private final Path sourceDir
+    private final Path targetDir
+    private final Set<Path> sourceRelativePaths
+    private final Set<Path> targetRelativePaths
 
-    @Input
-    abstract public Property<String> getTargetDir()
+    private Set<Path> sourceRemainder
+    private Set<Path> targetRemainder
+    private Set<Path> intersection
 
-    @Input
-    abstract public Property<FileTree> getSourceFileTree()
 
-    @Input
-    abstract public Property<FileTree> getTargetFileTree()
+    DirectoriesComparator(Path projectDir,
+                          Path sourceDir, Set<Path> sourceRelativePaths,
+                          Path targetDir, Set<Path> targetRelativePaths) {
+        Objects.requireNonNull(projectDir)
+        Objects.requireNonNull(sourceDir)
+        Objects.requireNonNull(sourceRelativePaths)
+        Objects.requireNonNull(targetDir)
+        Objects.requireNonNull(targetRelativePaths)
+        assert Files.exists(projectDir)
+        assert Files.exists(sourceDir)
+        assert Files.exists(targetDir)
+        //
+        this.projectDir = projectDir.toAbsolutePath().normalize()
+        this.sourceDir = sourceDir.toAbsolutePath().normalize()
+        this.targetDir = targetDir.toAbsolutePath().normalize()
+        this.sourceRelativePaths = sourceRelativePaths
+        this.targetRelativePaths = targetRelativePaths
 
-    public DirectoriesComparator() {
-        getSourceDir().convention(".")
-        getTargetDir().convention(".")
+        //
+        sourceRemainder = new HashSet<Path>(this.sourceRelativePaths)
+        sourceRemainder.removeAll(this.targetRelativePaths)
+        //
+        targetRemainder = new HashSet<Path>(this.targetRelativePaths)
+        targetRemainder.removeAll(this.sourceRelativePaths)
+        //
+        intersection = new HashSet<Path>(this.sourceRelativePaths)
+        intersection.retainAll(this.targetRelativePaths)
     }
 
-    @TaskAction
-    public void action() {
-        println("sourceDir : ${getSourceDir().get()}")
-        println("targetDir : ${getTargetDir().get()}")
-        //
-        println("sourceFileTree: ${getSourceFileTree().get().toString()}")
-        FileTree sourceTree = getSourceFileTree().get()
-        sourceTree.each { File file ->
-            println("    " + file)
-        }
-        //
-        println("targetFileTree: ${getTargetFileTree().get().toString()}")
-        FileTree targetTree = getTargetFileTree().get()
-        targetTree.each {File file ->
-            println("    " + file)
-        }
+
+    Path getProjectDir() {
+        return this.projectDir
+    }
+
+    Path getSourceDir() {
+        return this.sourceDir
+    }
+
+    Path getSourceDirRelativeToProjectDir() {
+        return this.projectDir.relativize(getSourceDir())
+    }
+
+    Path getTargetDir() {
+        return this.targetDir
+    }
+
+    Path getTargetDirRelativeToProjectDir() {
+        return this.projectDir.relativize(getTargetDir())
+    }
+
+    List<Path> getSourceRemainder() {
+        List<Path> list = new ArrayList<Path>(sourceRemainder)
+        return list.sort()   // sort the list alphabetically
+    }
+
+    List<Path> getIntersection() {
+        List<Path> list = new ArrayList<Path>(intersection)
+        return list.sort()
+    }
+
+    List<Path> getTargetRemainder() {
+        List<Path> list = new ArrayList<Path>(targetRemainder)
+        return list.sort()
     }
 }
