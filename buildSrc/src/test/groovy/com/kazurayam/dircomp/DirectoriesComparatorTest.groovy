@@ -1,4 +1,4 @@
-package my.pkg
+package com.kazurayam.dircomp
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.BeforeAll
@@ -19,13 +19,14 @@ class DirectoriesComparatorTest {
     private static Path targetDir
     private DirectoriesComparator instance
 
-    private static final String SOURCEDIR_RELATIVE_PATH = "../src/test/fixtures/A"
-    private static final String TARGETDIR_RELATIVE_PATH = "../src/test/fixtures/B"
+    private static final String SOURCE_DIR_RELATIVE_PATH = "../src/test/fixtures/A"
+    private static final String TARGET_DIR_RELATIVE_PATH = "../src/test/fixtures/B"
+
     @BeforeAll
     static void beforeAll() {
         projectDir = Paths.get(".")
-        sourceDir = projectDir.resolve(SOURCEDIR_RELATIVE_PATH)
-        targetDir = projectDir.resolve(TARGETDIR_RELATIVE_PATH)
+        sourceDir = projectDir.resolve(SOURCE_DIR_RELATIVE_PATH)
+        targetDir = projectDir.resolve(TARGET_DIR_RELATIVE_PATH)
     }
 
     @BeforeEach
@@ -54,7 +55,7 @@ class DirectoriesComparatorTest {
 
     @Test
     void test_getSourceDirRelativeToProjectDir() {
-        assertEquals(SOURCEDIR_RELATIVE_PATH,
+        assertEquals(SOURCE_DIR_RELATIVE_PATH,
                 instance.getSourceDirRelativeToProjectDir().toString())
     }
 
@@ -66,7 +67,7 @@ class DirectoriesComparatorTest {
 
     @Test
     void test_getTargetDirRelativeToProjectDir() {
-        assertEquals(TARGETDIR_RELATIVE_PATH,
+        assertEquals(TARGET_DIR_RELATIVE_PATH,
                 instance.getTargetDirRelativeToProjectDir().toString())
     }
 

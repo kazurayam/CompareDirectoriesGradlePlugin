@@ -1,4 +1,4 @@
-package my.pkg
+package com.kazurayam.dircomp
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.ConfigurableFileTree
@@ -68,12 +68,12 @@ abstract class DirectoriesComparatorTask extends DefaultTask {
         comparator.getSourceRemainder().each { Path p ->
             println "    ${comparator.getSourceDirRelativeToProjectDir().resolve(p)}"
         }
-
+        println()
         println("intersection:")
         comparator.getIntersection().each { Path p ->
             println "    <baseDir>/${p.toString()}"
         }
-
+        println()
         println("remainder in target:")
         comparator.getTargetRemainder().each { Path p ->
             println "    ${comparator.getTargetDirRelativeToProjectDir().resolve(p)}"

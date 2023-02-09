@@ -1,4 +1,4 @@
-package my.pkg
+package com.kazurayam.dircomp
 
 class DirectoriesComparatorExtension {
     public String sourceDir

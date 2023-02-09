@@ -1,4 +1,4 @@
-package my.pkg
+package com.kazurayam.dircomp
 
 import java.nio.file.Files
 import java.nio.file.Path
