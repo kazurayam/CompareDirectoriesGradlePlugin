@@ -19,8 +19,8 @@ class DirectoriesComparatorTest {
     private static Path targetDir
     private DirectoriesComparator instance
 
-    private static final String SOURCE_DIR_RELATIVE_PATH = "../src/test/fixtures/A"
-    private static final String TARGET_DIR_RELATIVE_PATH = "../src/test/fixtures/B"
+    private static final String SOURCE_DIR_RELATIVE_PATH = "src/test/fixtures/A"
+    private static final String TARGET_DIR_RELATIVE_PATH = "src/test/fixtures/B"
 
     @BeforeAll
     static void beforeAll() {

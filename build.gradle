@@ -1,26 +1,96 @@
+// this is a mimic of https://github.com/kazurayam/inspectus4katalon-gradle-plugin/blob/master/build.gradle
+
 plugins {
     id 'groovy'
+    id "com.gradle.plugin-publish" version "1.1.0"
 }
 
 group 'com.kazurayam'
 version '0.1.0-SNAPSHOT'
 
+ext {
+    isReleaseVersion = !version.endsWith("SNAPSHOT")
+}
+
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
-dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+java {
+    withSourcesJar()
+    withJavadocJar()
 }
 
-test {
+tasks.withType(Test) {
     useJUnitPlatform()
 }
 
-import com.kazurayam.dircomp.DirectoriesComparatorPlugin
+def functionalTest = sourceSets.create("functionalTest")
+def functionalTestTask = tasks.register("functionalTest", Test) {
+    description = "Runs the functional tests."
+    group = "verification"
+    testClassesDirs = functionalTest.output.classesDirs
+    classpath = functionalTest.runtimeClasspath
+    mustRunAfter(tasks.named('test'))
+}
+tasks.named('check') {
+    dependsOn(test, functionalTestTask)
+}
+
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+    testImplementation libs.junit.api
+    testRuntimeOnly libs.junit.engine
+    functionalTestImplementation platform(libs.spock.bom)
+    functionalTestImplementation libs.spock.core
+}
+
+gradlePlugin {
+    // configure the `java-gradle-plugin` so that it looks at the `sourceSets.functinalTest`
+    // to find the tests for the custom plugin
+    testSourceSets(sourceSets.functionalTest)
+    // This makes `org.gradle.testkit.runner.GradleRunner` class available to the
+    // functionalTest classes
+
+    plugins {
+        directoriesComparator {
+            id = "com.kazurayam.directoriesComparator"
+            displayName = "Directories Comparator"
+            description = "Compares 2 directories to find files as intersection and remainder"
+            implementationClass = "com.kazurayam.dircomp.DirectoriesComparatorPlugin"
+        }
+    }
+}
+
+pluginBundle {
+    // information displayed in the Gradle Plugin Portal
+    website = 'https://kazurayam.github.io/DirectoriesComparatorGradlePlugin/'
+    vcsUrl = 'https://github.com/kazurayam/DirectoriesComparatorGradlePlugin/'
+    tags = ["file-tree"]
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "gpr"
+            url = uri("https://maven.pkg.github.com/kazurayam/DirectoriesComparatorGradlePlugin")
+            credentials {
+                username = project.findProperty("gpr.user")
+                password = project.findProperty("gpr.key")
+            }
+        }
+    }
+}
+
+
+/*
+import DirectoriesComparatorPlugin
 apply plugin: DirectoriesComparatorPlugin
 compareDirectories {
     sourceDir = "${projectDir}/src/test/fixtures/A"
     targetDir = "src/test/fixtures/B"
 }
+
+ */

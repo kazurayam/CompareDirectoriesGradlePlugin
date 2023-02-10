@@ -1,0 +1,26 @@
+buildscript {
+    // declare the output of the plugin development project
+    // as a dependency of this consumer project.
+    // the classpath is updated by the code in the rehearsal/settings.gradle file
+    dependencies {
+        classpath 'com.kazurayam:directoriesComparator'
+    }
+}
+
+apply plugin: 'com.kazurayam.directoriesComparator'
+compareDirectories {
+    sourceDir = "../src/test/fixtures/A"
+    targetDir = "../src/test/fixtures/B"
+}
+// how to run the task
+// $ ./gradlew compareDirectories
+
+repositories {
+    maven {
+        url = uri("https://maven.pkg.github.com/kazurayam/DirectoryComparatorGradlePlugin")
+        credentials {
+            username = project.findProperty("gpr.user")
+            password = project.findProperty("gpr.key")
+        }
+    }
+}
