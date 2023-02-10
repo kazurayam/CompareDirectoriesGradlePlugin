@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'com.kazurayam'
-version '0.1.0-SNAPSHOT'
+version '0.1.0'
 
 ext {
     isReleaseVersion = !version.endsWith("SNAPSHOT")
@@ -85,6 +85,10 @@ publishing {
 }
 
 
+// How to publish the plugin to the Gradle Plugin Portal?
+// $ ./gradlew publishPlugins
+
+
 /*
 import DirectoriesComparatorPlugin
 apply plugin: DirectoriesComparatorPlugin
@@ -92,5 +96,4 @@ compareDirectories {
     sourceDir = "${projectDir}/src/test/fixtures/A"
     targetDir = "src/test/fixtures/B"
 }
-
  */
