@@ -15,6 +15,11 @@ compareDirectories {
 // how to run the task
 // $ ./gradlew compareDirectories
 
+task dc(type: com.kazurayam.dircomp.DirectoriesComparatorTask) {
+    sourceDir = "../src/test/fixtures/A"
+    targetDir = "../src/test/fixtures/B"
+}
+
 repositories {
     maven {
         url = uri("https://maven.pkg.github.com/kazurayam/DirectoryComparatorGradlePlugin")
