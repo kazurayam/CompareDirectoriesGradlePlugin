@@ -5,9 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a2784c0c-f77d-4fbd-a2c3-c23b35b22e03" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rehearsal/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/rehearsal/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/groovy/com/kazurayam/dircomp/DirectoriesComparatorPlugin.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/groovy/com/kazurayam/dircomp/DirectoriesComparatorPlugin.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/groovy/com/kazurayam/dircomp/DirectoriesComparatorTask.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/groovy/com/kazurayam/dircomp/DirectoriesComparatorTask.groovy" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,16 +62,16 @@
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "aspect.path.notification.shown": "true",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;aspect.path.notification.shown&quot;: &quot;true&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveMembersDialog.RECENTS_KEY">
       <recent name="my.pkg.DirectoriesComparatorTask" />
@@ -168,7 +171,10 @@
       <workItem from="1675948491149" duration="107000" />
       <workItem from="1675949132582" duration="916000" />
       <workItem from="1675990784493" duration="207000" />
-      <workItem from="1675990998361" duration="3456000" />
+      <workItem from="1675990998361" duration="3620000" />
+      <workItem from="1676030500488" duration="2861000" />
+      <workItem from="1676034146934" duration="495000" />
+      <workItem from="1676122896265" duration="1307000" />
     </task>
     <servers />
   </component>

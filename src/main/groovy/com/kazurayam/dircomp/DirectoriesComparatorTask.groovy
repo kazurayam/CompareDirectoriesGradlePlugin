@@ -1,6 +1,7 @@
 package com.kazurayam.dircomp
 
 import org.gradle.api.DefaultTask
+import org.gradle.api.Project
 import org.gradle.api.file.ConfigurableFileTree
 import org.gradle.api.file.FileTree
 import org.gradle.api.file.ProjectLayout
@@ -20,8 +21,8 @@ abstract class DirectoriesComparatorTask extends DefaultTask {
         return relativePaths
     }
 
-    @Input
-    abstract Property<ProjectLayout> getProjectLayout()
+    //@Input
+    //abstract Property<ProjectLayout> getProjectLayout()
 
     @Input
     abstract Property<String> getSourceDir()
@@ -29,12 +30,13 @@ abstract class DirectoriesComparatorTask extends DefaultTask {
     @Input
     abstract Property<String> getTargetDir()
 
-    @Input
-    abstract Property<ConfigurableFileTree> getSourceFileTree()
+    //@Input
+    //abstract Property<ConfigurableFileTree> getSourceFileTree()
 
-    @Input
-    abstract Property<ConfigurableFileTree> getTargetFileTree()
+    //@Input
+    //abstract Property<ConfigurableFileTree> getTargetFileTree()
 
+    private ProjectLayout
     DirectoriesComparatorTask() {
         getSourceDir().convention(".")
         getTargetDir().convention(".")
@@ -42,19 +44,15 @@ abstract class DirectoriesComparatorTask extends DefaultTask {
 
     @TaskAction
     void action() {
-        //println("sourceDir : ${getSourceDir().get()}")
-        //println("sourceFileTree.getDir(): ${getSourceFileTree().get().getDir()}")
-        //println("targetDir : ${getTargetDir().get()}")
-        //println("targetFileTree.getDir(): ${getTargetFileTree().get().getDir()}")
+        Project project = getProject()
+        Path projectDir = Paths.get(project.getLayout().getProjectDirectory().toString())
 
-        Path projectDir = Paths.get(getProjectLayout().get().getProjectDirectory().toString())
-
-        FileTree sourceTree = getSourceFileTree().get()
+        FileTree sourceTree = project.fileTree(getSourceDir().get())
         Path sourceDir = sourceTree.getDir().toPath()
         Set<Path> sourceRelativePaths =
                 collectRelativePaths(sourceDir, sourceTree)
 
-        FileTree targetTree = getTargetFileTree().get()
+        FileTree targetTree = project.fileTree(getTargetDir().get())
         Path targetDir = targetTree.getDir().toPath()
         Set<Path> targetRelativePaths =
                 collectRelativePaths(targetDir, targetTree)

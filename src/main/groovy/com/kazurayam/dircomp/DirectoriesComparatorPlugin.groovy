@@ -16,13 +16,8 @@ class DirectoriesComparatorPlugin implements Plugin<Project> {
         project.getTasks().register("compareDirectories",
                 DirectoriesComparatorTask.class,
                 task -> {
-            task.getProjectLayout().set(project.getLayout())
             task.getSourceDir().set(extension.getSourceDir())
             task.getTargetDir().set(extension.getTargetDir())
-            task.getSourceFileTree().set(
-                    project.fileTree(extension.getSourceDir()))
-            task.getTargetFileTree().set(
-                    project.fileTree(extension.getTargetDir()))
         })
     }
 }
