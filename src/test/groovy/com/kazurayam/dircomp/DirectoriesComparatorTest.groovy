@@ -1,16 +1,14 @@
 package com.kazurayam.dircomp
 
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
-import static org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
 
-import java.nio.file.FileVisitResult
-import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.nio.file.SimpleFileVisitor
-import java.nio.file.attribute.BasicFileAttributes
+
+import static org.junit.jupiter.api.Assertions.assertEquals
+import static org.junit.jupiter.api.Assertions.assertTrue
 
 class DirectoriesComparatorTest {
 
@@ -31,20 +29,8 @@ class DirectoriesComparatorTest {
 
     @BeforeEach
     void beforeEach() {
-        RelativeFilePathCollector sourceCollector = new RelativeFilePathCollector(sourceDir)
-        Files.walkFileTree(sourceDir, sourceCollector)
-        RelativeFilePathCollector targetCollector = new RelativeFilePathCollector(targetDir)
-        Files.walkFileTree(targetDir, targetCollector)
         instance =
-                new DirectoriesComparator(projectDir,
-                        sourceDir, sourceCollector.get(),
-                        targetDir, targetCollector.get())
-    }
-
-    @Test
-    void test_getProjectDir() {
-        assertEquals(projectDir.toAbsolutePath().normalize(),
-                instance.getProjectDir().toAbsolutePath().normalize())
+                new DirectoriesComparator(sourceDir, targetDir)
     }
 
     @Test
@@ -54,64 +40,45 @@ class DirectoriesComparatorTest {
     }
 
     @Test
-    void test_getSourceDirRelativeToProjectDir() {
-        assertEquals(SOURCE_DIR_RELATIVE_PATH,
-                instance.getSourceDirRelativeToProjectDir().toString())
-    }
-
-    @Test
     void test_getTargetDir() {
         assertEquals(targetDir.toAbsolutePath().normalize(),
                 instance.getTargetDir().toAbsolutePath().normalize())
     }
 
     @Test
-    void test_getTargetDirRelativeToProjectDir() {
-        assertEquals(TARGET_DIR_RELATIVE_PATH,
-                instance.getTargetDirRelativeToProjectDir().toString())
+    void test_getFilesOnlyInA() {
+        DirectoriesDifferences differences = instance.getDifferences()
+        Set<Path> files = differences.getFilesOnlyInA()
+        assertEquals(1, files.size())
+        assertTrue(files.contains(Paths.get("sub/i.txt")))
     }
 
     @Test
-    void test_getSourceRemainder() {
-        List<Path> sourceRemainder = instance.getSourceRemainder()
-        assertEquals(2, sourceRemainder.size())
-        assertTrue(sourceRemainder.contains(Paths.get("sub/f.txt")))
-        assertTrue(sourceRemainder.contains(Paths.get("sub/i.txt")))
-    }
-
-    @Test
-    void test_getTargetRemainder() {
-        List<Path> targetRemainder = instance.getTargetRemainder()
-        assertEquals(2, targetRemainder.size())
-        assertTrue(targetRemainder.contains(Paths.get("j.txt")))
-        assertTrue(targetRemainder.contains(Paths.get("sub/h.txt")))
+    void test_getFilesOnlyInB() {
+        DirectoriesDifferences differences = instance.getDifferences()
+        Set<Path> files = differences.getFilesOnlyInB()
+        assertEquals(2, files.size())
+        assertTrue(files.contains(Paths.get("j.txt")))
+        assertTrue(files.contains(Paths.get("sub/h.txt")))
     }
 
     @Test
     void test_getIntersection() {
-        List<Path> intersection = instance.getIntersection()
-        assertEquals(3, intersection.size())
-        assertTrue(intersection.contains(Paths.get("d.txt")))
-        assertTrue(intersection.contains(Paths.get("e.txt")))
-        assertTrue(intersection.contains(Paths.get("sub/g.txt")))
+        DirectoriesDifferences differences = instance.getDifferences()
+        Set<Path> files = differences.getIntersection()
+        assertEquals(4, files.size())
+        assertTrue(files.contains(Paths.get("d.txt")))
+        assertTrue(files.contains(Paths.get("e.txt")))
+        assertTrue(files.contains(Paths.get("sub/f.txt")))
+        assertTrue(files.contains(Paths.get("sub/g.txt")))
     }
 
-}
-
-class RelativeFilePathCollector extends SimpleFileVisitor<Path> {
-    private Path baseDir
-    private Set<Path> filePaths = new HashSet<Path>()
-    RelativeFilePathCollector(Path baseDir) {
-        this.baseDir = baseDir
-    }
-    @Override
-    public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) {
-        Path relativePath = baseDir.relativize(file)
-        filePaths.add(relativePath)
-        return FileVisitResult.CONTINUE
-    }
-    public Set<Path> get() {
-        return filePaths
+    @Test
+    void test_getModifiedFiles() {
+        DirectoriesDifferences differences = instance.getDifferences()
+        Set<Path> files = differences.getModifiedFiles()
+        assertEquals(1, files.size())
+        assertTrue(files.contains(Paths.get("sub/g.txt")))
     }
 
 }

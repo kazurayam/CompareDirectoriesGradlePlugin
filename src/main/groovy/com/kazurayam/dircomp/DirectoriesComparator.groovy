@@ -3,81 +3,78 @@ package com.kazurayam.dircomp
 import java.nio.file.Files
 import java.nio.file.Path
 
+import java.security.MessageDigest
+
 class DirectoriesComparator {
+
+    private final MessageDigest digester = MessageDigest.getInstance('SHA')
 
     private final Path projectDir
     private final Path sourceDir
     private final Path targetDir
+
     private final Set<Path> sourceRelativePaths
     private final Set<Path> targetRelativePaths
 
-    private Set<Path> sourceRemainder
-    private Set<Path> targetRemainder
-    private Set<Path> intersection
+    private final DirectoriesDifferences differences
 
-
-    DirectoriesComparator(Path projectDir,
-                          Path sourceDir, Set<Path> sourceRelativePaths,
-                          Path targetDir, Set<Path> targetRelativePaths) {
-        Objects.requireNonNull(projectDir)
+    DirectoriesComparator(Path sourceDir,
+                          Path targetDir) {
         Objects.requireNonNull(sourceDir)
-        Objects.requireNonNull(sourceRelativePaths)
         Objects.requireNonNull(targetDir)
-        Objects.requireNonNull(targetRelativePaths)
-        assert Files.exists(projectDir)
         assert Files.exists(sourceDir)
         assert Files.exists(targetDir)
         //
-        this.projectDir = projectDir.toAbsolutePath().normalize()
         this.sourceDir = sourceDir.toAbsolutePath().normalize()
         this.targetDir = targetDir.toAbsolutePath().normalize()
-        this.sourceRelativePaths = sourceRelativePaths
-        this.targetRelativePaths = targetRelativePaths
+        //
+        this.sourceRelativePaths = FileTreeBuilder.scan(sourceDir)
+        this.targetRelativePaths = FileTreeBuilder.scan(targetDir)
 
         //
-        sourceRemainder = new HashSet<Path>(this.sourceRelativePaths)
+        Set<Path> sourceRemainder = new HashSet<Path>(this.sourceRelativePaths)
         sourceRemainder.removeAll(this.targetRelativePaths)
+
         //
-        targetRemainder = new HashSet<Path>(this.targetRelativePaths)
+        Set<Path> targetRemainder = new HashSet<Path>(this.targetRelativePaths)
         targetRemainder.removeAll(this.sourceRelativePaths)
-        //
-        intersection = new HashSet<Path>(this.sourceRelativePaths)
+
+        // intersection of dirA and dirB
+        Set<Path> intersection = new HashSet<Path>(this.sourceRelativePaths)
         intersection.retainAll(this.targetRelativePaths)
-    }
 
-
-    Path getProjectDir() {
-        return this.projectDir
+        // find modified files
+        Set<Path> modifiedFiles = new HashSet<Path>()
+        for (Path subPath : intersection) {
+            Path fileA = sourceDir.resolve(subPath)
+            Path fileB = targetDir.resolve(subPath)
+            if (different(fileA, fileB)) {
+                modifiedFiles.add(subPath)
+            }
+        }
+        differences =
+                new DirectoriesDifferences(sourceRemainder,
+                        targetRemainder, intersection, modifiedFiles)
     }
 
     Path getSourceDir() {
         return this.sourceDir
     }
 
-    Path getSourceDirRelativeToProjectDir() {
-        return this.projectDir.relativize(getSourceDir())
-    }
-
     Path getTargetDir() {
         return this.targetDir
     }
 
-    Path getTargetDirRelativeToProjectDir() {
-        return this.projectDir.relativize(getTargetDir())
+    DirectoriesDifferences getDifferences() {
+        return differences
     }
 
-    List<Path> getSourceRemainder() {
-        List<Path> list = new ArrayList<Path>(sourceRemainder)
-        return list.sort()   // sort the list alphabetically
+    private boolean different(Path fileA, Path fileB) {
+        hashFile(fileA) != hashFile(fileB)
     }
 
-    List<Path> getIntersection() {
-        List<Path> list = new ArrayList<Path>(intersection)
-        return list.sort()
+    private byte[] hashFile(Path filePath) {
+        digester.digest(filePath.toFile().bytes)
     }
 
-    List<Path> getTargetRemainder() {
-        List<Path> list = new ArrayList<Path>(targetRemainder)
-        return list.sort()
-    }
 }
