@@ -78,7 +78,7 @@ public class DirectoriesDifferences {
                 "," +
                 getFilesOnlyInBAsString() +
                 "," +
-                getFilesOnlyInBAsString() +
+                getIntersectionAsString() +
                 "," +
                 getModifiedFilesAsString() +
                 "}}";
@@ -93,10 +93,10 @@ public class DirectoriesDifferences {
         sb.append(String.format("{\"%s\":[", name));
         String delim = "";
         for (Path p : list) {
+            sb.append(delim);
             sb.append("\"");
             sb.append(p.toString());
             sb.append("\"");
-            sb.append(delim);
             delim = ",";
         }
         sb.append("]}");

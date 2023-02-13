@@ -34,15 +34,15 @@ class DirectoriesComparatorTest {
     }
 
     @Test
-    void test_getSourceDir() {
+    void test_getDirA() {
         assertEquals(sourceDir.toAbsolutePath().normalize(),
-                instance.getSourceDir().toAbsolutePath().normalize())
+                instance.getDirA().toAbsolutePath().normalize())
     }
 
     @Test
-    void test_getTargetDir() {
+    void test_getDirB() {
         assertEquals(targetDir.toAbsolutePath().normalize(),
-                instance.getTargetDir().toAbsolutePath().normalize())
+                instance.getDirB().toAbsolutePath().normalize())
     }
 
     @Test

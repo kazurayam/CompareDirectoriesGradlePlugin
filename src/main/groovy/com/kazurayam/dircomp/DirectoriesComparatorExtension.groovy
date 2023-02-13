@@ -1,14 +1,15 @@
 package com.kazurayam.dircomp
 
 class DirectoriesComparatorExtension {
-    public String sourceDir
-    public String targetDir
 
-    String getSourceDir() {
-        return sourceDir
+    public String dirA
+    public String dirB
+
+    String getDirA() {
+        return dirA
     }
 
-    String getTargetDir() {
-        return targetDir
+    String getDirB() {
+        return dirB
     }
 }

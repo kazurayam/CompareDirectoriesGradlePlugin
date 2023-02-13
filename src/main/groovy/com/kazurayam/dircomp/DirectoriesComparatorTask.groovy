@@ -1,39 +1,33 @@
 package com.kazurayam.dircomp
+
 import groovy.json.JsonOutput
 import org.gradle.api.DefaultTask
-import org.gradle.api.Project
-import org.gradle.api.file.ConfigurableFileTree
 import org.gradle.api.file.FileTree
-import org.gradle.api.file.ProjectLayout
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
-import java.nio.file.Paths
+
 import java.nio.file.Path
 
 abstract class DirectoriesComparatorTask extends DefaultTask {
 
     @Input
-    abstract Property<String> getSourceDir()
+    abstract Property<String> getDirA()
 
     @Input
-    abstract Property<String> getTargetDir()
+    abstract Property<String> getDirB()
 
-    private ProjectLayout
     DirectoriesComparatorTask() {
-        getSourceDir().convention(".")
-        getTargetDir().convention(".")
+        getDirA().convention(".")
+        getDirB().convention(".")
     }
 
     @TaskAction
     void action() {
-        Project project = getProject()
-        Path projectDir = Paths.get(project.getLayout().getProjectDirectory().toString())
-
-        FileTree sourceTree = project.fileTree(getSourceDir().get())
+        FileTree sourceTree = project.fileTree(getDirA().get())
         Path sourceDir = sourceTree.getDir().toPath()
 
-        FileTree targetTree = project.fileTree(getTargetDir().get())
+        FileTree targetTree = project.fileTree(getDirB().get())
         Path targetDir = targetTree.getDir().toPath()
 
         DirectoriesComparator comparator =
@@ -41,16 +35,6 @@ abstract class DirectoriesComparatorTask extends DefaultTask {
 
         DirectoriesDifferences differences = comparator.getDifferences()
 
-        println("remainder in source:")
-        println JsonOutput.prettyPrint(differences.getFilesOnlyInAAsString())
-
-        println("remainder in target:")
-        println JsonOutput.prettyPrint(differences.getFilesOnlyInBAsString())
-
-        println("intersection:")
-        println JsonOutput.prettyPrint(differences.getIntersectionAsString())
-
-        println("modified files:")
-        println JsonOutput.prettyPrint(differences.getModifiedFilesAsString())
+        println JsonOutput.prettyPrint(differences.toJson())
     }
 }
