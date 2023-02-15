@@ -41,6 +41,8 @@ tasks.named('check') {
 dependencies {
     implementation gradleApi()
     implementation localGroovy()
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.2'
+
     testImplementation libs.junit.api
     testRuntimeOnly libs.junit.engine
     functionalTestImplementation platform(libs.spock.bom)

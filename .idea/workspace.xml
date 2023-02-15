@@ -5,13 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a2784c0c-f77d-4fbd-a2c3-c23b35b22e03" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/groovy/com/kazurayam/dircomp/DirectoriesDifferencesSerializer.groovy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/groovy/com/kazurayam/dircomp/DirectoriesDifferencesSerializerTest.groovy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/groovy/com/kazurayam/dircomp/DirectoriesComparator.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/groovy/com/kazurayam/dircomp/DirectoriesComparator.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/groovy/com/kazurayam/dircomp/DirectoriesComparatorExtension.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/groovy/com/kazurayam/dircomp/DirectoriesComparatorExtension.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/groovy/com/kazurayam/dircomp/DirectoriesComparatorPlugin.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/groovy/com/kazurayam/dircomp/DirectoriesComparatorPlugin.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/groovy/com/kazurayam/dircomp/DirectoriesComparatorTask.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/groovy/com/kazurayam/dircomp/DirectoriesComparatorTask.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/groovy/com/kazurayam/dircomp/DirectoriesDifferences.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/groovy/com/kazurayam/dircomp/DirectoriesDifferences.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/groovy/com/kazurayam/dircomp/DirectoriesComparatorTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/groovy/com/kazurayam/dircomp/DirectoriesComparatorTest.groovy" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,18 +61,18 @@
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "aspect.path.notification.shown": "true",
-    "last_opened_file_path": "/Users/kazuakiurayama/github/DirectoriesComparatorGradlePlugin/src/test/fixtures/B/sub",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "run.code.analysis.last.selected.profile": "pProject Default"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;aspect.path.notification.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/kazuakiurayama/github/DirectoriesComparatorGradlePlugin/src/test/fixtures/B/sub&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/test/fixtures/B/sub" />
@@ -229,7 +227,10 @@
       <workItem from="1676030500488" duration="2861000" />
       <workItem from="1676034146934" duration="495000" />
       <workItem from="1676122896265" duration="1991000" />
-      <workItem from="1676284296645" duration="9891000" />
+      <workItem from="1676284296645" duration="10415000" />
+      <workItem from="1676331962297" duration="405000" />
+      <workItem from="1676364965433" duration="1599000" />
+      <workItem from="1676425351015" duration="376000" />
     </task>
     <servers />
   </component>
