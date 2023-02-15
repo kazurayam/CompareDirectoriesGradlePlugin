@@ -35,7 +35,7 @@ class DirectoriesDifferencesSerializerTest {
     }
 
     @Test
-    public void testWriteWithDefaultPrettyPrinter() {
+    void testWriteWithDefaultPrettyPrinter() {
         ObjectMapper mapper = new ObjectMapper();
         String jsonResult =
                 mapper.writerWithDefaultPrettyPrinter().writeValueAsString(differences);
