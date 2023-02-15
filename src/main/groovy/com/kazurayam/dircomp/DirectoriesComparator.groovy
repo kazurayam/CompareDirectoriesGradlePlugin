@@ -8,9 +8,9 @@ class DirectoriesComparator {
 
     private final MessageDigest digester = MessageDigest.getInstance('SHA')
 
-    private final Path directoryA
-    private final Path directoryB
-    private final DirectoriesDifferences differences
+    private Path directoryA
+    private Path directoryB
+    private DirectoriesDifferences differences
 
     DirectoriesComparator(Path dirA,
                           Path dirB) {
@@ -22,24 +22,24 @@ class DirectoriesComparator {
         directoryA = dirA.toAbsolutePath().normalize()
         directoryB = dirB.toAbsolutePath().normalize()
         //
-        Set<Path> subPathsA = FileTreeBuilder.scan(directoryA)
-        Set<Path> subPathsB = FileTreeBuilder.scan(directoryB)
+        Set<String> subPathsA = FileTreeBuilder.scan(directoryA)
+        Set<String> subPathsB = FileTreeBuilder.scan(directoryB)
 
         //
-        Set<Path> filesOnlyInA = new HashSet<Path>(subPathsA)
+        Set<String> filesOnlyInA = new HashSet<String>(subPathsA)
         filesOnlyInA.removeAll(subPathsB)
 
         //
-        Set<Path> filesOnlyInB = new HashSet<Path>(subPathsB)
+        Set<String> filesOnlyInB = new HashSet<String>(subPathsB)
         filesOnlyInB.removeAll(subPathsA)
 
         // intersection of dirA and dirB
-        Set<Path> intersection = new HashSet<Path>(subPathsA)
+        Set<String> intersection = new HashSet<String>(subPathsA)
         intersection.retainAll(subPathsB)
 
         // find modified files
-        Set<Path> modifiedFiles = new HashSet<Path>()
-        for (Path subPath : intersection) {
+        Set<String> modifiedFiles = new HashSet<String>()
+        for (String subPath : intersection) {
             Path fileA = dirA.resolve(subPath)
             Path fileB = dirB.resolve(subPath)
             if (different(fileA, fileB)) {
@@ -47,8 +47,11 @@ class DirectoriesComparator {
             }
         }
         differences =
-                new DirectoriesDifferences(filesOnlyInA, filesOnlyInB,
-                        intersection, modifiedFiles)
+                new DirectoriesDifferences(dirA, dirB,
+                        filesOnlyInA,
+                        filesOnlyInB,
+                        intersection,
+                        modifiedFiles)
     }
 
     Path getDirA() {

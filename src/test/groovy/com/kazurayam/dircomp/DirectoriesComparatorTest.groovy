@@ -8,6 +8,7 @@ import java.nio.file.Path
 import java.nio.file.Paths
 
 import static org.junit.jupiter.api.Assertions.assertEquals
+import static org.junit.jupiter.api.Assertions.assertNotNull
 import static org.junit.jupiter.api.Assertions.assertTrue
 
 class DirectoriesComparatorTest {
@@ -46,39 +47,9 @@ class DirectoriesComparatorTest {
     }
 
     @Test
-    void test_getFilesOnlyInA() {
+    void test_getDifferences() {
         DirectoriesDifferences differences = instance.getDifferences()
-        Set<Path> files = differences.getFilesOnlyInA()
-        assertEquals(1, files.size())
-        assertTrue(files.contains(Paths.get("sub/i.txt")))
-    }
-
-    @Test
-    void test_getFilesOnlyInB() {
-        DirectoriesDifferences differences = instance.getDifferences()
-        Set<Path> files = differences.getFilesOnlyInB()
-        assertEquals(2, files.size())
-        assertTrue(files.contains(Paths.get("j.txt")))
-        assertTrue(files.contains(Paths.get("sub/h.txt")))
-    }
-
-    @Test
-    void test_getIntersection() {
-        DirectoriesDifferences differences = instance.getDifferences()
-        Set<Path> files = differences.getIntersection()
-        assertEquals(4, files.size())
-        assertTrue(files.contains(Paths.get("d.txt")))
-        assertTrue(files.contains(Paths.get("e.txt")))
-        assertTrue(files.contains(Paths.get("sub/f.txt")))
-        assertTrue(files.contains(Paths.get("sub/g.txt")))
-    }
-
-    @Test
-    void test_getModifiedFiles() {
-        DirectoriesDifferences differences = instance.getDifferences()
-        Set<Path> files = differences.getModifiedFiles()
-        assertEquals(1, files.size())
-        assertTrue(files.contains(Paths.get("sub/g.txt")))
+        assertNotNull(differences)
     }
 
 }

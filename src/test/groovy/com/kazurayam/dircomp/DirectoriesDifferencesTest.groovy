@@ -1,14 +1,16 @@
 package com.kazurayam.dircomp
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
+import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
-class DirectoriesDifferencesSerializerTest {
+import static org.junit.jupiter.api.Assertions.*
+
+class DirectoriesDifferencesTest {
 
     private static Path projectDir
     private static Path sourceDir
@@ -35,10 +37,20 @@ class DirectoriesDifferencesSerializerTest {
     }
 
     @Test
-    void testWriteWithDefaultPrettyPrinter() {
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonResult =
-                mapper.writerWithDefaultPrettyPrinter().writeValueAsString(differences);
+    void testSerialize() {
+        String jsonResult = differences.serialize()
+        assertNotNull(jsonResult)
         println jsonResult
+    }
+
+    @Test
+    void testDeserialize() {
+        Path tmpFile = Files.createTempFile("DirectoriesDifferencesTest", "tmp.json")
+        tmpFile.text = differences.serialize()
+        assertTrue(Files.size(tmpFile) > 0)
+        //
+        DirectoriesDifferences instance = DirectoriesDifferences.deserialize(tmpFile)
+        assertNotNull(instance)
+        println instance.serialize()
     }
 }

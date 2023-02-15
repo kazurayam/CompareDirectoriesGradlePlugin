@@ -12,7 +12,7 @@ import java.nio.file.attribute.BasicFileAttributes
 class FileTreeBuilder extends SimpleFileVisitor<Path> {
     private static final Logger logger = LoggerFactory.getLogger(FileTreeBuilder.class)
     private final Path baseDir
-    private final Set<Path> subPaths
+    private final Set<String> subPaths
 
     FileTreeBuilder(Path baseDir) {
         Objects.requireNonNull(baseDir)
@@ -24,15 +24,15 @@ class FileTreeBuilder extends SimpleFileVisitor<Path> {
     @Override
     FileVisitResult visitFile(Path file, BasicFileAttributes attributes) {
         Path relative = baseDir.relativize(file.toAbsolutePath().normalize())
-        subPaths.add(relative.normalize())
+        subPaths.add(relative.normalize().toString())
         return FileVisitResult.CONTINUE
     }
 
-    Set<Path> getSubPaths() {
+    Set<String> getSubPaths() {
         return subPaths
     }
 
-    static Set<Path> scan(Path baseDir) {
+    static Set<String> scan(Path baseDir) {
         FileTreeBuilder builder = new FileTreeBuilder(baseDir)
         Files.walkFileTree(baseDir, builder)
         return builder.getSubPaths()

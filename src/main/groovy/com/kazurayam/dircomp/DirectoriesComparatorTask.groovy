@@ -6,7 +6,6 @@ import org.gradle.api.file.FileTree
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
-import org.gradle.plugins.ide.eclipse.model.Output
 
 import java.nio.file.Path
 
@@ -36,6 +35,6 @@ abstract class DirectoriesComparatorTask extends DefaultTask {
 
         DirectoriesDifferences differences = comparator.getDifferences()
 
-        println JsonOutput.prettyPrint(differences.toJson())
+        println JsonOutput.prettyPrint(differences.serialize())
     }
 }

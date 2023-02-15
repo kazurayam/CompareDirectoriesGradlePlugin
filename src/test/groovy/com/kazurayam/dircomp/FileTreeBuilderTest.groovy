@@ -12,8 +12,8 @@ class FileTreeBuilderTest {
     @Test
     void testSmoke() {
         Path dirA = fixtures.resolve("A")
-        Set<Path> subPaths = FileTreeBuilder.scan(dirA)
-        for (Path p : subPaths) {
+        Set<String> subPaths = FileTreeBuilder.scan(dirA)
+        for (String p : subPaths) {
             println p
         }
         assertEquals(5, subPaths.size())

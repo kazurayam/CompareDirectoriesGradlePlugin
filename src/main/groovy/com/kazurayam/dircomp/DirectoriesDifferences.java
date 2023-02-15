@@ -1,106 +1,145 @@
 package com.kazurayam.dircomp;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class DirectoriesDifferences {
+
+    private Path dirA;
+
+    private Path dirB;
 
     /**
      * The files found only in the first directory (A)
      */
-    private final Set<Path> filesOnlyInA;
+    private Set<String> filesOnlyInA;
 
     /**
      * The files found only in the second directory (B)
      */
-    private final Set<Path> filesOnlyInB;
+    private Set<String> filesOnlyInB;
 
-    private final Set<Path> intersection;
+    private Set<String> intersection;
 
     /**
      * The files existing in both directories but have different content
      */
-    private final Set<Path> modifiedFiles;
+    private Set<String> modifiedFiles;
 
-    public DirectoriesDifferences(Set<Path> filesOnlyInA,
-                                  Set<Path> filesOnlyInB,
-                                  Set<Path> intersection,
-                                  Set<Path> modifiedFiles) {
+    public DirectoriesDifferences() {
+        this.dirA = null;
+        this.dirB = null;
+        this.filesOnlyInA = new HashSet<>();
+        this.filesOnlyInB = new HashSet<>();
+        this.intersection = new HashSet<>();
+        this.modifiedFiles = new HashSet<>();
+    }
+
+    public DirectoriesDifferences(Path dirA, Path dirB,
+                                  Set<String> filesOnlyInA,
+                                  Set<String> filesOnlyInB,
+                                  Set<String> intersection,
+                                  Set<String> modifiedFiles) {
+        this.dirA = dirA.normalize();
+        this.dirB = dirB.normalize();
         this.filesOnlyInA = filesOnlyInA;
         this.filesOnlyInB = filesOnlyInB;
         this.intersection = intersection;
         this.modifiedFiles = modifiedFiles;
     }
 
-    public Set<Path> getFilesOnlyInA() {
-        return filesOnlyInA;
+    public void setDirA(Path dirA) {
+        this.dirA = dirA;
     }
 
-    public String getFilesOnlyInAAsString() {
-        return convertSetToJson(filesOnlyInA, "filesOnlyInA");
+    public Path getDirA() {
+        return dirA;
     }
 
-    public Set<Path> getFilesOnlyInB() {
-        return filesOnlyInB;
+    public void setDirB(Path dirB) {
+        this.dirB = dirB;
     }
 
-    public String getFilesOnlyInBAsString() {
-        return convertSetToJson(filesOnlyInB, "filesOnlyInB");
+    public Path getDirB() {
+        return dirB;
     }
 
-    public Set<Path> getIntersection() {
-        return intersection;
+    public void setFilesOnlyInA(Collection<String> filesOnlyInA) {
+        this.filesOnlyInA = new HashSet<>(filesOnlyInA);
     }
 
-    public String getIntersectionAsString() {
-        return convertSetToJson(intersection, "intersection");
+    public List<String> getFilesOnlyInA() {
+        return filesOnlyInA.stream()
+                .sorted()
+                .collect(Collectors.toList());
     }
 
-    public Set<Path> getModifiedFiles() {
-        return modifiedFiles;
+    public void setFilesOnlyInB(Collection<String> filesOnlyInB) {
+        this.filesOnlyInB = new HashSet<>(filesOnlyInB);
     }
 
-    public String getModifiedFilesAsString() {
-        return convertSetToJson(modifiedFiles, "modifiedFiles");
+    public List<String> getFilesOnlyInB() {
+        return filesOnlyInB.stream()
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    public void setIntersection(Collection<String> intersection) {
+        this.intersection = new HashSet<>(intersection);
+    }
+
+    public List<String> getIntersection() {
+        return intersection.stream()
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    public void setModifiedFiles(Collection<String> modifiedFiles) {
+        this.modifiedFiles = new HashSet<>(modifiedFiles);
+    }
+
+    public List<String> getModifiedFiles() {
+        return modifiedFiles.stream()
+                .sorted()
+                .collect(Collectors.toList());
     }
 
     @Override
     public String toString() {
-        return toJson();
+        return serialize();
     }
 
-    public String toJson() {
-        String sb = "{\"directoriesDifferences\": {" +
-                getFilesOnlyInAAsString() +
-                "," +
-                getFilesOnlyInBAsString() +
-                "," +
-                getIntersectionAsString() +
-                "," +
-                getModifiedFilesAsString() +
-                "}}";
-        return sb;
-    }
-
-    private String convertSetToJson(Set<Path> set, String name) {
-        List<Path> list = new ArrayList<>();
-        list.addAll(set);
-        Collections.sort(list);
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format("{\"%s\":[", name));
-        String delim = "";
-        for (Path p : list) {
-            sb.append(delim);
-            sb.append("\"");
-            sb.append(p.toString());
-            sb.append("\"");
-            delim = ",";
+    public String serialize() {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonResult =
+                    mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
+            return jsonResult;
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
-        sb.append("]}");
-        return sb.toString();
     }
 
+    public static DirectoriesDifferences deserialize(File json) {
+        return deserialize(json.toPath());
+    }
+    public static DirectoriesDifferences deserialize(Path jsonFile) {
+        try {
+            String json = String.join("\n", Files.readAllLines(jsonFile));
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(json, DirectoriesDifferences.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
