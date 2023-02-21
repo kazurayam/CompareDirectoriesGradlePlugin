@@ -18,6 +18,7 @@ class DirectoriesComparatorPlugin implements Plugin<Project> {
                 task -> {
             task.getDirA().set(extension.getDirA())
             task.getDirB().set(extension.getDirB())
+            task.getOutputFile().set(extension.getOutputFile())
         })
     }
 }

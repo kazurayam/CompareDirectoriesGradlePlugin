@@ -5,14 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a2784c0c-f77d-4fbd-a2c3-c23b35b22e03" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/functionalTest/groovy/com/kazurayam/dircomp/DirectoriesComparatorFunctionalTest.groovy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/groovy/com/kazurayam/dircomp/DirectoriesComparator.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/groovy/com/kazurayam/dircomp/DirectoriesComparator.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/groovy/com/kazurayam/dircomp/DirectoriesComparatorExtension.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/groovy/com/kazurayam/dircomp/DirectoriesComparatorExtension.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/groovy/com/kazurayam/dircomp/DirectoriesComparatorPlugin.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/groovy/com/kazurayam/dircomp/DirectoriesComparatorPlugin.groovy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/groovy/com/kazurayam/dircomp/DirectoriesComparatorTask.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/groovy/com/kazurayam/dircomp/DirectoriesComparatorTask.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/groovy/com/kazurayam/dircomp/DirectoriesDifferences.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/groovy/com/kazurayam/dircomp/DirectoriesDifferences.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/groovy/com/kazurayam/dircomp/FileTreeBuilder.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/groovy/com/kazurayam/dircomp/FileTreeBuilder.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/groovy/com/kazurayam/dircomp/DirectoriesComparatorTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/groovy/com/kazurayam/dircomp/DirectoriesComparatorTest.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/groovy/com/kazurayam/dircomp/DirectoriesDifferencesTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/groovy/com/kazurayam/dircomp/DirectoriesDifferencesTest.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/groovy/com/kazurayam/dircomp/FileTreeBuilderTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/groovy/com/kazurayam/dircomp/FileTreeBuilderTest.groovy" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,30 +85,7 @@
       <recent name="$PROJECT_DIR$/src/main/groovy/com/kazurayam" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.DirectoriesDifferencesTest.testDeserialize">
-    <configuration name="DirectoriesComparatorTest.test_getFilesOnlyInA" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;com.kazurayam.dircomp.DirectoriesComparatorTest.test_getFilesOnlyInA&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Gradle.DirectoriesDifferencesTest">
     <configuration name="DirectoriesComparatorTest.test_getFilesOnlyInB" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -181,6 +155,29 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
+    <configuration name="DirectoriesDifferencesTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;com.kazurayam.dircomp.DirectoriesDifferencesTest&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
     <configuration name="DirectoriesDifferencesTest.testDeserialize" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -206,11 +203,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.DirectoriesDifferencesTest" />
         <item itemvalue="Gradle.DirectoriesDifferencesTest.testDeserialize" />
         <item itemvalue="Gradle.DirectoriesComparatorTest.test_getModifiedFiles" />
         <item itemvalue="Gradle.DirectoriesComparatorTest.test_getIntersection" />
         <item itemvalue="Gradle.DirectoriesComparatorTest.test_getFilesOnlyInB" />
-        <item itemvalue="Gradle.DirectoriesComparatorTest.test_getFilesOnlyInA" />
       </list>
     </recent_temporary>
   </component>
