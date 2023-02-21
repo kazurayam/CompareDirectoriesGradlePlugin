@@ -1,19 +1,16 @@
-buildscript {
-    // declare the output of the plugin development project
-    // as a dependency of this consumer project.
-    // the classpath is updated by the code in the rehearsal/settings.gradle file
-    dependencies {
-        classpath 'com.kazurayam:directoriesComparator'
-    }
+plugins {
+    id "com.kazurayam.directoriesComparator"
 }
 
-apply plugin: 'com.kazurayam.directoriesComparator'
 compareDirectories {
     dirA = "../src/test/fixtures/A"
     dirB = "../src/test/fixtures/B"
+    outputFile = "build/differences.json"
 }
+
 // how to run the task
-// $ ./gradlew compareDirectories
+// $ cd rehearsal
+// $ gradle compareDirectories
 
 task dc(type: com.kazurayam.dircomp.DirectoriesComparatorTask) {
     dirA = "../src/test/fixtures/A"
