@@ -9,11 +9,16 @@ buildscript {
 
 apply plugin: 'com.kazurayam.directoriesComparator'
 compareDirectories {
-    sourceDir = "../src/test/fixtures/A"
-    targetDir = "../src/test/fixtures/B"
+    dirA = "../src/test/fixtures/A"
+    dirB = "../src/test/fixtures/B"
 }
 // how to run the task
 // $ ./gradlew compareDirectories
+
+task dc(type: com.kazurayam.dircomp.DirectoriesComparatorTask) {
+    dirA = "../src/test/fixtures/A"
+    dirB = "../src/test/fixtures/B"
+}
 
 repositories {
     maven {

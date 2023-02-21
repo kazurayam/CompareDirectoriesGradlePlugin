@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'com.kazurayam'
-version '0.1.0'
+version '0.1.1-SNAPSHOT'
 
 ext {
     isReleaseVersion = !version.endsWith("SNAPSHOT")
@@ -41,6 +41,8 @@ tasks.named('check') {
 dependencies {
     implementation gradleApi()
     implementation localGroovy()
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.2'
+
     testImplementation libs.junit.api
     testRuntimeOnly libs.junit.engine
     functionalTestImplementation platform(libs.spock.bom)

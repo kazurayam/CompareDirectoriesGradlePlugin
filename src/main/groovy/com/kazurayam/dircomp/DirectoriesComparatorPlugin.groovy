@@ -1,4 +1,4 @@
-package com.kazurayam.dircomp;
+package com.kazurayam.dircomp
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -16,13 +16,9 @@ class DirectoriesComparatorPlugin implements Plugin<Project> {
         project.getTasks().register("compareDirectories",
                 DirectoriesComparatorTask.class,
                 task -> {
-            task.getProjectLayout().set(project.getLayout())
-            task.getSourceDir().set(extension.getSourceDir())
-            task.getTargetDir().set(extension.getTargetDir())
-            task.getSourceFileTree().set(
-                    project.fileTree(extension.getSourceDir()))
-            task.getTargetFileTree().set(
-                    project.fileTree(extension.getTargetDir()))
+            task.getDirA().set(extension.getDirA())
+            task.getDirB().set(extension.getDirB())
+            task.getOutputFile().set(extension.getOutputFile())
         })
     }
 }

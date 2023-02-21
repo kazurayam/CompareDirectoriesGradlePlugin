@@ -4,19 +4,19 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
+import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
-import static org.junit.jupiter.api.Assertions.assertEquals
-import static org.junit.jupiter.api.Assertions.assertNotNull
-import static org.junit.jupiter.api.Assertions.assertTrue
+import static org.junit.jupiter.api.Assertions.*
 
-class DirectoriesComparatorTest {
+class DirectoriesDifferencesTest {
 
     private static Path projectDir
     private static Path sourceDir
     private static Path targetDir
     private DirectoriesComparator instance
+    private DirectoriesDifferences differences
 
     private static final String SOURCE_DIR_RELATIVE_PATH = "src/test/fixtures/A"
     private static final String TARGET_DIR_RELATIVE_PATH = "src/test/fixtures/B"
@@ -32,24 +32,25 @@ class DirectoriesComparatorTest {
     void beforeEach() {
         instance =
                 new DirectoriesComparator(sourceDir, targetDir)
+        differences =
+                instance.getDifferences()
     }
 
     @Test
-    void test_getDirA() {
-        assertEquals(sourceDir.toAbsolutePath().normalize(),
-                instance.getDirA().toAbsolutePath().normalize())
+    void testSerialize() {
+        String jsonResult = differences.serialize()
+        assertNotNull(jsonResult)
+        println jsonResult
     }
 
     @Test
-    void test_getDirB() {
-        assertEquals(targetDir.toAbsolutePath().normalize(),
-                instance.getDirB().toAbsolutePath().normalize())
+    void testDeserialize() {
+        Path tmpFile = Files.createTempFile("DirectoriesDifferencesTest", "tmp.json")
+        tmpFile.text = differences.serialize()
+        assertTrue(Files.size(tmpFile) > 0)
+        //
+        DirectoriesDifferences instance = DirectoriesDifferences.deserialize(tmpFile)
+        assertNotNull(instance)
+        println instance.serialize()
     }
-
-    @Test
-    void test_getDifferences() {
-        DirectoriesDifferences differences = instance.getDifferences()
-        assertNotNull(differences)
-    }
-
 }

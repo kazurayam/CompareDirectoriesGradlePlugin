@@ -2,82 +2,76 @@ package com.kazurayam.dircomp
 
 import java.nio.file.Files
 import java.nio.file.Path
+import java.security.MessageDigest
 
 class DirectoriesComparator {
 
-    private final Path projectDir
-    private final Path sourceDir
-    private final Path targetDir
-    private final Set<Path> sourceRelativePaths
-    private final Set<Path> targetRelativePaths
+    private final MessageDigest digester = MessageDigest.getInstance('SHA')
 
-    private Set<Path> sourceRemainder
-    private Set<Path> targetRemainder
-    private Set<Path> intersection
+    private Path directoryA
+    private Path directoryB
+    private DirectoriesDifferences differences
 
-
-    DirectoriesComparator(Path projectDir,
-                          Path sourceDir, Set<Path> sourceRelativePaths,
-                          Path targetDir, Set<Path> targetRelativePaths) {
-        Objects.requireNonNull(projectDir)
-        Objects.requireNonNull(sourceDir)
-        Objects.requireNonNull(sourceRelativePaths)
-        Objects.requireNonNull(targetDir)
-        Objects.requireNonNull(targetRelativePaths)
-        assert Files.exists(projectDir)
-        assert Files.exists(sourceDir)
-        assert Files.exists(targetDir)
+    DirectoriesComparator(Path dirA,
+                          Path dirB) {
+        Objects.requireNonNull(dirA)
+        Objects.requireNonNull(dirB)
+        assert Files.exists(dirA)
+        assert Files.exists(dirB)
         //
-        this.projectDir = projectDir.toAbsolutePath().normalize()
-        this.sourceDir = sourceDir.toAbsolutePath().normalize()
-        this.targetDir = targetDir.toAbsolutePath().normalize()
-        this.sourceRelativePaths = sourceRelativePaths
-        this.targetRelativePaths = targetRelativePaths
+        directoryA = dirA.toAbsolutePath().normalize()
+        directoryB = dirB.toAbsolutePath().normalize()
+        //
+        Set<String> subPathsA = FileTreeBuilder.scan(directoryA)
+        Set<String> subPathsB = FileTreeBuilder.scan(directoryB)
 
         //
-        sourceRemainder = new HashSet<Path>(this.sourceRelativePaths)
-        sourceRemainder.removeAll(this.targetRelativePaths)
+        Set<String> filesOnlyInA = new HashSet<String>(subPathsA)
+        filesOnlyInA.removeAll(subPathsB)
+
         //
-        targetRemainder = new HashSet<Path>(this.targetRelativePaths)
-        targetRemainder.removeAll(this.sourceRelativePaths)
-        //
-        intersection = new HashSet<Path>(this.sourceRelativePaths)
-        intersection.retainAll(this.targetRelativePaths)
+        Set<String> filesOnlyInB = new HashSet<String>(subPathsB)
+        filesOnlyInB.removeAll(subPathsA)
+
+        // intersection of dirA and dirB
+        Set<String> intersection = new HashSet<String>(subPathsA)
+        intersection.retainAll(subPathsB)
+
+        // find modified files
+        Set<String> modifiedFiles = new HashSet<String>()
+        for (String subPath : intersection) {
+            Path fileA = dirA.resolve(subPath)
+            Path fileB = dirB.resolve(subPath)
+            if (different(fileA, fileB)) {
+                modifiedFiles.add(subPath)
+            }
+        }
+        differences =
+                new DirectoriesDifferences(dirA, dirB,
+                        filesOnlyInA,
+                        filesOnlyInB,
+                        intersection,
+                        modifiedFiles)
     }
 
-
-    Path getProjectDir() {
-        return this.projectDir
+    Path getDirA() {
+        return this.directoryA
     }
 
-    Path getSourceDir() {
-        return this.sourceDir
+    Path getDirB() {
+        return this.directoryB
     }
 
-    Path getSourceDirRelativeToProjectDir() {
-        return this.projectDir.relativize(getSourceDir())
+    DirectoriesDifferences getDifferences() {
+        return differences
     }
 
-    Path getTargetDir() {
-        return this.targetDir
+    private boolean different(Path fileA, Path fileB) {
+        hashFile(fileA) != hashFile(fileB)
     }
 
-    Path getTargetDirRelativeToProjectDir() {
-        return this.projectDir.relativize(getTargetDir())
+    private byte[] hashFile(Path filePath) {
+        digester.digest(filePath.toFile().bytes)
     }
 
-    List<Path> getSourceRemainder() {
-        List<Path> list = new ArrayList<Path>(sourceRemainder)
-        return list.sort()   // sort the list alphabetically
-    }
-
-    List<Path> getIntersection() {
-        List<Path> list = new ArrayList<Path>(intersection)
-        return list.sort()
-    }
-
-    List<Path> getTargetRemainder() {
-        List<Path> list = new ArrayList<Path>(targetRemainder)
-        return list.sort()
-    }
 }
