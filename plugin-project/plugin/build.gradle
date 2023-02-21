@@ -88,3 +88,14 @@ publishing {
 
 // How to publish the plugin to the Gradle Plugin Portal?
 // $ ./gradlew publishPlugins
+
+
+
+
+
+task wrapper(type: Wrapper){
+    gradleVersion = '7.6'
+}
+task prepareKotlinBuildScriptModel {
+
+}
