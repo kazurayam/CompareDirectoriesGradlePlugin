@@ -20,4 +20,6 @@ gradle-app.setting
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
 
-.idea/
+.DS_Store
+lib/
+.idea

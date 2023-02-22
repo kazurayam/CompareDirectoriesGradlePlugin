@@ -1,0 +1,21 @@
+plugins {
+    id "com.kazurayam.directoriesComparator"
+}
+
+ext.fixturesDir = "../plugin-project/plugin/src/test/fixtures"
+
+compareDirectories {
+    dirA = "${fixturesDir}/A"
+    dirB = "${fixturesDir}/B"
+    outputFile = "build/differences.json"
+}
+
+// how to run the task
+// $ cd rehearsal
+// $ gradle compareDirectories
+
+task dc(type: com.kazurayam.dircomp.DirectoriesComparatorTask) {
+    dirA = "${fixturesDir}/A"
+    dirB = "${fixturesDir}/B"
+    outputFile = "build/differences.json"
+}
