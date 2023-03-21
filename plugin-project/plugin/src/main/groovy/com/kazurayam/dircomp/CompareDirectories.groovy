@@ -4,7 +4,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.security.MessageDigest
 
-class DirectoriesComparator {
+class CompareDirectories {
 
     private final MessageDigest digester = MessageDigest.getInstance('SHA')
 
@@ -12,8 +12,8 @@ class DirectoriesComparator {
     private Path directoryB
     private DirectoriesDifferences differences
 
-    DirectoriesComparator(Path dirA,
-                          Path dirB) {
+    CompareDirectories(Path dirA,
+                       Path dirB) {
         Objects.requireNonNull(dirA)
         Objects.requireNonNull(dirB)
         assert Files.exists(dirA)

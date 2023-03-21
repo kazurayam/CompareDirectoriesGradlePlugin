@@ -18,7 +18,7 @@
         <compositeConfiguration>
           <compositeBuild compositeDefinitionSource="SCRIPT">
             <builds>
-              <build path="$PROJECT_DIR$/plugin-project" name="plugin-project">
+              <build path="$PROJECT_DIR$/plugin-project" name="CompareDirectories">
                 <projects>
                   <project path="$PROJECT_DIR$/plugin-project" />
                   <project path="$PROJECT_DIR$/plugin-project/plugin" />

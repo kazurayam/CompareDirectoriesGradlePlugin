@@ -7,7 +7,7 @@ import org.gradle.testkit.runner.GradleRunner
 import java.nio.file.Path
 import java.nio.file.Paths
 
-class DirectoriesComparatorFunctionalTest extends Specification {
+class CompareDirectoriesPluginFunctionalTest extends Specification {
     @TempDir
     private File tempDir
 
@@ -30,7 +30,7 @@ class DirectoriesComparatorFunctionalTest extends Specification {
         settingsFile << ""
         buildFile << """
 plugins {
-    id('com.kazurayam.directoriesComparator')
+    id('com.kazurayam.compareDirectories')
 }
 compareDirectories {
     dirA = "${fixturesDir.toString()}/A"

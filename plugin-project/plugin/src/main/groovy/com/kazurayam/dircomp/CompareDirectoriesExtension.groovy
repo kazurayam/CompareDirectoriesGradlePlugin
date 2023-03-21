@@ -2,7 +2,7 @@ package com.kazurayam.dircomp
 
 import org.gradle.api.file.RegularFile
 
-class DirectoriesComparatorExtension {
+class CompareDirectoriesExtension {
 
     public String dirA
     public String dirB

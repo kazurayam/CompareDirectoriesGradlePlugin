@@ -1,4 +1,4 @@
-# Directories Comparator Gradle Plugin
+# Compare Directories Gradle Plugin
 
 This project provides a Gradle Plugin, with which you can compare 2 directories to find the differences.
 

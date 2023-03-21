@@ -1,10 +1,8 @@
 package com.kazurayam.dircomp
 
 import groovy.json.JsonOutput
-import groovyjarjarantlr4.v4.codegen.model.OutputFile
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.FileTree
-import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.OutputFile
@@ -13,7 +11,7 @@ import org.gradle.api.tasks.TaskAction
 import java.nio.file.Path
 import java.nio.file.Paths
 
-abstract class DirectoriesComparatorTask extends DefaultTask {
+abstract class CompareDirectoriesTask extends DefaultTask {
 
     @InputDirectory
     abstract Property<String> getDirA()
@@ -24,7 +22,7 @@ abstract class DirectoriesComparatorTask extends DefaultTask {
     @OutputFile
     abstract Property<String> getOutputFile()
 
-    DirectoriesComparatorTask() {
+    CompareDirectoriesTask() {
         getDirA().convention(".")
         getDirB().convention(".")
         getOutputFile().convention("./differences.json")
@@ -40,8 +38,8 @@ abstract class DirectoriesComparatorTask extends DefaultTask {
 
         Path output = Paths.get(getOutputFile().get().toString())
 
-        DirectoriesComparator comparator =
-                new DirectoriesComparator(sourceDir, targetDir)
+        CompareDirectories comparator =
+                new CompareDirectories(sourceDir, targetDir)
 
         DirectoriesDifferences differences = comparator.getDifferences()
 

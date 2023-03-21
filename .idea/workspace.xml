@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="43bb6b21-6190-4c92-9a00-1acf5385e7cd" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin-project/plugin/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/plugin-project/plugin/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin-project/plugin/src/functionalTest/groovy/com/kazurayam/dircomp/DirectoriesComparatorFunctionalTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugin-project/plugin/src/functionalTest/groovy/com/kazurayam/dircomp/CompareDirectoriesPluginFunctionalTest.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin-project/plugin/src/main/groovy/com/kazurayam/dircomp/DirectoriesComparator.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugin-project/plugin/src/main/groovy/com/kazurayam/dircomp/CompareDirectories.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin-project/plugin/src/main/groovy/com/kazurayam/dircomp/DirectoriesComparatorExtension.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugin-project/plugin/src/main/groovy/com/kazurayam/dircomp/CompareDirectoriesExtension.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin-project/plugin/src/main/groovy/com/kazurayam/dircomp/DirectoriesComparatorPlugin.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugin-project/plugin/src/main/groovy/com/kazurayam/dircomp/CompareDirectoriesPlugin.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin-project/plugin/src/main/groovy/com/kazurayam/dircomp/DirectoriesComparatorTask.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugin-project/plugin/src/main/groovy/com/kazurayam/dircomp/CompareDirectoriesTask.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin-project/plugin/src/test/groovy/com/kazurayam/dircomp/DirectoriesComparatorTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugin-project/plugin/src/test/groovy/com/kazurayam/dircomp/CompareDirectoriesTest.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin-project/plugin/src/test/groovy/com/kazurayam/dircomp/DirectoriesDifferencesTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugin-project/plugin/src/test/groovy/com/kazurayam/dircomp/DirectoriesDifferencesTest.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin-project/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/plugin-project/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rehearsal-project/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/rehearsal-project/build.gradle" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$/plugin-project">
+      <ProjectState />
+    </projectState>
+    <projectState path="$PROJECT_DIR$/rehearsal-project">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$/plugin-project">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="CompareDirectories" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="CompareDirectories" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2MIi4Zm5R1FOdC2lFmX5ldERrRm" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;aspect.path.notification.shown&quot;: &quot;true&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
+  }
+}</component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="43bb6b21-6190-4c92-9a00-1acf5385e7cd" name="Changes" comment="" />
+      <created>1677461306571</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1677461306571</updated>
+      <workItem from="1677461308519" duration="304000" />
+      <workItem from="1679046954137" duration="1401000" />
+      <workItem from="1679187303198" duration="25000" />
+      <workItem from="1679194668584" duration="502000" />
+      <workItem from="1679196664269" duration="1603000" />
+      <workItem from="1679229365418" duration="1036000" />
+      <workItem from="1679271320924" duration="3223000" />
+      <workItem from="1679362436085" duration="309000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
