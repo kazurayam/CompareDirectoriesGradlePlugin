@@ -5,20 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="43bb6b21-6190-4c92-9a00-1acf5385e7cd" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugin-project/plugin/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/plugin-project/plugin/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugin-project/plugin/src/functionalTest/groovy/com/kazurayam/dircomp/DirectoriesComparatorFunctionalTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugin-project/plugin/src/functionalTest/groovy/com/kazurayam/dircomp/CompareDirectoriesPluginFunctionalTest.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugin-project/plugin/src/main/groovy/com/kazurayam/dircomp/DirectoriesComparator.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugin-project/plugin/src/main/groovy/com/kazurayam/dircomp/CompareDirectories.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugin-project/plugin/src/main/groovy/com/kazurayam/dircomp/DirectoriesComparatorExtension.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugin-project/plugin/src/main/groovy/com/kazurayam/dircomp/CompareDirectoriesExtension.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugin-project/plugin/src/main/groovy/com/kazurayam/dircomp/DirectoriesComparatorPlugin.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugin-project/plugin/src/main/groovy/com/kazurayam/dircomp/CompareDirectoriesPlugin.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugin-project/plugin/src/main/groovy/com/kazurayam/dircomp/DirectoriesComparatorTask.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugin-project/plugin/src/main/groovy/com/kazurayam/dircomp/CompareDirectoriesTask.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugin-project/plugin/src/test/groovy/com/kazurayam/dircomp/DirectoriesComparatorTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugin-project/plugin/src/test/groovy/com/kazurayam/dircomp/CompareDirectoriesTest.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugin-project/plugin/src/test/groovy/com/kazurayam/dircomp/DirectoriesDifferencesTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugin-project/plugin/src/test/groovy/com/kazurayam/dircomp/DirectoriesDifferencesTest.groovy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugin-project/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/plugin-project/settings.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rehearsal-project/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/rehearsal-project/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,7 +83,7 @@
       <workItem from="1679196664269" duration="1603000" />
       <workItem from="1679229365418" duration="1036000" />
       <workItem from="1679271320924" duration="3223000" />
-      <workItem from="1679362436085" duration="309000" />
+      <workItem from="1679362436085" duration="1429000" />
     </task>
     <servers />
   </component>
