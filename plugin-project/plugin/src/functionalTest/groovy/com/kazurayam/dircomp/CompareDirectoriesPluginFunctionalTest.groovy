@@ -22,6 +22,7 @@ class CompareDirectoriesPluginFunctionalTest extends Specification {
     private Path projectDir = Paths.get(".").toAbsolutePath().normalize()
     private Path fixturesDir = projectDir.resolve("src/test/fixtures")
     private Path outputFile = projectDir.resolve( "build/differences.json")
+    private Path diffDir = projectDir.resolve("build/diff")
 
     def "can run task"() {
         given:
@@ -35,7 +36,8 @@ plugins {
 compareDirectories {
     dirA = "${fixturesDir.toString()}/A"
     dirB = "${fixturesDir.toString()}/B"
-    outputFile = "${outputFile.toString()}"    
+    outputFile = "${outputFile.toString()}"
+    diffDir = "${diffDir.toString()}"
 }
 """
 

@@ -10,6 +10,7 @@ compareDirectories {
     dirA = "${fixturesDir}/A"
     dirB = "${fixturesDir}/B"
     outputFile = "build/differences.json"
+    diffDir = "build/diff"
 }
 
 // how to run the task
@@ -20,4 +21,5 @@ task dc(type: CompareDirectoriesTask) {
     dirA = "${fixturesDir}/A"
     dirB = "${fixturesDir}/B"
     outputFile = "build/differences.json"
+    diffDir = "build/diff"
 }

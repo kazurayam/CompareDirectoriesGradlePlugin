@@ -6,6 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="43bb6b21-6190-4c92-9a00-1acf5385e7cd" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin-project/plugin/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/plugin-project/plugin/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin-project/plugin/src/functionalTest/groovy/com/kazurayam/dircomp/CompareDirectoriesPluginFunctionalTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugin-project/plugin/src/functionalTest/groovy/com/kazurayam/dircomp/CompareDirectoriesPluginFunctionalTest.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin-project/plugin/src/main/groovy/com/kazurayam/dircomp/CompareDirectoriesExtension.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugin-project/plugin/src/main/groovy/com/kazurayam/dircomp/CompareDirectoriesExtension.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin-project/plugin/src/main/groovy/com/kazurayam/dircomp/CompareDirectoriesTask.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugin-project/plugin/src/main/groovy/com/kazurayam/dircomp/CompareDirectoriesTask.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rehearsal-project/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/rehearsal-project/build.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,7 +88,10 @@
       <workItem from="1679196664269" duration="1603000" />
       <workItem from="1679229365418" duration="1036000" />
       <workItem from="1679271320924" duration="3223000" />
-      <workItem from="1679362436085" duration="1429000" />
+      <workItem from="1679362436085" duration="1794000" />
+      <workItem from="1679444509400" duration="216000" />
+      <workItem from="1679472385621" duration="597000" />
+      <workItem from="1679484273861" duration="3205000" />
     </task>
     <servers />
   </component>

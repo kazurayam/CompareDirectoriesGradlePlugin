@@ -8,7 +8,7 @@ plugins {
 ext {
     _group = 'com.kazurayam'
     _artifactId = 'CompareDirectories'
-    _version = '0.1.5'
+    _version = '0.1.6-SNAPSHOT'
     isReleaseVersion = !version.endsWith("SNAPSHOT")
 }
 
@@ -46,6 +46,7 @@ dependencies {
     implementation gradleApi()
     implementation localGroovy()
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.2'
+    implementation group: 'io.github.java-diff-utils', name: 'java-diff-utils', version: '4.12'
 
     testImplementation libs.junit.api
     testRuntimeOnly libs.junit.engine
