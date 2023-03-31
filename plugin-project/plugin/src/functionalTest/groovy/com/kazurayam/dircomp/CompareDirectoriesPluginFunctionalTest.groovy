@@ -8,6 +8,7 @@ import java.nio.file.Path
 import java.nio.file.Paths
 
 class CompareDirectoriesPluginFunctionalTest extends Specification {
+
     @TempDir
     private File tempDir
 
@@ -21,8 +22,8 @@ class CompareDirectoriesPluginFunctionalTest extends Specification {
 
     private Path projectDir = Paths.get(".").toAbsolutePath().normalize()
     private Path fixturesDir = projectDir.resolve("src/test/fixtures")
-    private Path outputFile = projectDir.resolve( "build/differences.json")
-    private Path diffDir = projectDir.resolve("build/diff")
+    private Path outputFile = projectDir.resolve( "build/tmp/differences.json").toAbsolutePath()
+    private Path diffDir = projectDir.resolve("build/tmp/diff").toAbsolutePath()
 
     def "can run task"() {
         given:

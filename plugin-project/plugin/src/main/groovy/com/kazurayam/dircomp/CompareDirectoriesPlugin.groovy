@@ -16,9 +16,10 @@ class CompareDirectoriesPlugin implements Plugin<Project> {
         project.getTasks().register("compareDirectories",
                 CompareDirectoriesTask.class,
                 task -> {
-            task.getDirA().set(extension.getDirA())
-            task.getDirB().set(extension.getDirB())
-            task.getOutputFile().set(extension.getOutputFile())
+                    task.getDirA().set(extension.getDirA())
+                    task.getDirB().set(extension.getDirB())
+                    task.getOutputFile().set(extension.getOutputFile())
+                    task.getDiffDir().set(extension.getDiffDir())
         })
     }
 }

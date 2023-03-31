@@ -1,29 +1,18 @@
 plugins {
-    id 'java-gradle-plugin'
+    //id 'java-gradle-plugin'
     id 'groovy'
     id "com.gradle.plugin-publish" version "1.1.0"
 }
 
+group = "com.kazurayam"
+version = "0.1.4-SNAPSHOT"
 
 ext {
-    _group = 'com.kazurayam'
-    _artifactId = 'CompareDirectories'
-    _version = '0.1.6-SNAPSHOT'
     isReleaseVersion = !version.endsWith("SNAPSHOT")
 }
 
-group = "${_group}"
-archivesBaseName = "${_artifactId}"
-version = "${_version}"
-
 repositories {
     mavenCentral()
-    mavenLocal()
-}
-
-java {
-    withSourcesJar()
-    withJavadocJar()
 }
 
 tasks.withType(Test) {
@@ -43,11 +32,8 @@ tasks.named('check') {
 }
 
 dependencies {
-    implementation gradleApi()
-    implementation localGroovy()
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.2'
     implementation group: 'io.github.java-diff-utils', name: 'java-diff-utils', version: '4.12'
-
     testImplementation libs.junit.api
     testRuntimeOnly libs.junit.engine
     functionalTestImplementation platform(libs.spock.bom)
@@ -61,6 +47,8 @@ gradlePlugin {
     // This makes `org.gradle.testkit.runner.GradleRunner` class available to the
     // functionalTest classes
 
+    website = 'https://kazurayam.github.io/CompareDirectoriesGradlePlugin/'
+    vcsUrl = 'https://github.com/kazurayam/CompareDirectoriesGradlePlugin/'
     plugins {
         compareDirectories {
             id = "com.kazurayam.compareDirectories"
@@ -71,35 +59,11 @@ gradlePlugin {
     }
 }
 
-pluginBundle {
-    // information displayed in the Gradle Plugin Portal
-    website = 'https://kazurayam.github.io/CompareDirectoriesGradlePlugin/'
-    vcsUrl = 'https://github.com/kazurayam/CompareDirectoriesGradlePlugin/'
-    tags = ["file-tree"]
-}
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            group "${_group}"
-            artifactId "${_artifactId}"
-            version "${_version}"
-            from components.java
-        }
-    }
-    repositories {
-        maven {
-            name = "gpr"
-            url = uri("https://maven.pkg.github.com/kazurayam/CompareDirectoriesGradlePlugin")
-            credentials {
-                username = project.findProperty("gpr.user")
-                password = project.findProperty("gpr.key")
-            }
-        }
-    }
-
-}
-
 
 // How to publish the plugin to the Gradle Plugin Portal?
 // $ ./gradlew publishPlugins
+
+// https://docs.gradle.org/current/userguide/publishing_gradle_module_metadata.html#sub:disabling-gmm-publication
+tasks.withType(GenerateModuleMetadata) {
+    enabled = false
+}
