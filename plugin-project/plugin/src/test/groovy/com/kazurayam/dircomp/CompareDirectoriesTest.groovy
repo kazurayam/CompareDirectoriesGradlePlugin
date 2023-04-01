@@ -30,7 +30,7 @@ class CompareDirectoriesTest {
     @BeforeEach
     void beforeEach() {
         instance =
-                new CompareDirectories(sourceDir, targetDir)
+                new CompareDirectories(projectDir, sourceDir, targetDir)
     }
 
     @Test

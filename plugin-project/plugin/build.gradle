@@ -34,10 +34,10 @@ tasks.named('check') {
 dependencies {
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.2'
     implementation group: 'io.github.java-diff-utils', name: 'java-diff-utils', version: '4.12'
-    testImplementation libs.junit.api
-    testRuntimeOnly libs.junit.engine
-    functionalTestImplementation platform(libs.spock.bom)
-    functionalTestImplementation libs.spock.core
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.9.0'
+    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.9.0'
+    functionalTestImplementation platform(group: 'org.spockframework', name: 'spock-bom', version: '2.3-groovy-3.0')
+    functionalTestImplementation group: 'org.spockframework', name: 'spock-core', version: '2.3-groovy-3.0'
 }
 
 gradlePlugin {

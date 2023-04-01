@@ -16,12 +16,13 @@ class DirectoriesDifferencesTest {
     private static Path dirA
     private static Path dirB
     private static Path diffDir
+    private static Path workDir
     private CompareDirectories instance
     private DirectoriesDifferences differences
 
     private static final String DIR_A_RELATIVE_PATH = "src/test/fixtures/A"
     private static final String DIR_B_RELATIVE_PATH = "src/test/fixtures/B"
-    private static final String DIFFDIR_RELATIVE_PATH = "build/tmp/diff"
+    private static final String DIFFDIR_RELATIVE_PATH = "build/tmp/test/diff"
 
     @BeforeAll
     static void beforeAll() {
@@ -30,12 +31,14 @@ class DirectoriesDifferencesTest {
         dirB = projectDir.resolve(DIR_B_RELATIVE_PATH)
         diffDir = projectDir.resolve(DIFFDIR_RELATIVE_PATH)
         Files.createDirectories(diffDir)
+        workDir = projectDir.resolve("build/tmp/test")
+        Files.createDirectories(workDir)
     }
 
     @BeforeEach
     void beforeEach() {
         instance =
-                new CompareDirectories(dirA, dirB)
+                new CompareDirectories(projectDir, dirA, dirB)
         differences =
                 instance.getDifferences()
     }
@@ -49,7 +52,7 @@ class DirectoriesDifferencesTest {
 
     @Test
     void testDeserialize() {
-        Path tmpFile = Files.createTempFile("DirectoriesDifferencesTest", "tmp.json")
+        Path tmpFile = workDir.resolve("tmp.json")
         tmpFile.text = differences.serialize()
         assertTrue(Files.size(tmpFile) > 0)
         //

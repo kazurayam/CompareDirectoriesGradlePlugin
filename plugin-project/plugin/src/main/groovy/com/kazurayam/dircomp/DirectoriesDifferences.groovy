@@ -3,14 +3,18 @@ package com.kazurayam.dircomp
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.difflib.DiffUtils
+import com.github.difflib.UnifiedDiffUtils
 import com.github.difflib.patch.AbstractDelta
 import com.github.difflib.patch.Patch
 
 import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.Paths
 import java.util.stream.Collectors
 
 class DirectoriesDifferences {
+
+    private Path baseDir
 
     private Path dirA
 
@@ -33,7 +37,11 @@ class DirectoriesDifferences {
      */
     private Set<String> modifiedFiles
 
+    /*
+     * com.fasterxml.jackson.databind requires the default constructor without args
+     */
     DirectoriesDifferences() {
+        this.baseDir = null;
         this.dirA = null;
         this.dirB = null;
         this.filesOnlyInA = new HashSet<>();
@@ -42,33 +50,28 @@ class DirectoriesDifferences {
         this.modifiedFiles = new HashSet<>();
     }
 
-    DirectoriesDifferences(Path dirA, Path dirB,
-                                  Set<String> filesOnlyInA,
-                                  Set<String> filesOnlyInB,
-                                  Set<String> intersection,
-                                  Set<String> modifiedFiles) {
-        this.dirA = dirA.normalize();
-        this.dirB = dirB.normalize();
-        this.filesOnlyInA = filesOnlyInA;
-        this.filesOnlyInB = filesOnlyInB;
-        this.intersection = intersection;
-        this.modifiedFiles = modifiedFiles;
-    }
-
-    void setDirA(Path dirA) {
-        this.dirA = dirA;
+    DirectoriesDifferences(Path baseDir,
+                           Path dirA,
+                           Path dirB,
+                           Set<String> filesOnlyInA,
+                           Set<String> filesOnlyInB,
+                           Set<String> intersection,
+                           Set<String> modifiedFiles) {
+        this.baseDir = baseDir.normalize().toAbsolutePath()
+        this.dirA = dirA.normalize()
+        this.dirB = dirB.normalize()
+        this.filesOnlyInA = filesOnlyInA
+        this.filesOnlyInB = filesOnlyInB
+        this.intersection = intersection
+        this.modifiedFiles = modifiedFiles
     }
 
     Path getDirA() {
-        return dirA;
-    }
-
-    void setDirB(Path dirB) {
-        this.dirB = dirB;
+        return dirA
     }
 
     Path getDirB() {
-        return dirB;
+        return dirB
     }
 
     void setFilesOnlyInA(Collection<String> filesOnlyInA) {
@@ -81,7 +84,7 @@ class DirectoriesDifferences {
                 .collect(Collectors.toList());
     }
 
-    void setFilesOnlyInB(Collection<String> filesOnlyInB) {
+    public void setFilesOnlyInB(Collection<String> filesOnlyInB) {
         this.filesOnlyInB = new HashSet<>(filesOnlyInB);
     }
 
@@ -101,7 +104,7 @@ class DirectoriesDifferences {
                 .collect(Collectors.toList());
     }
 
-    void setModifiedFiles(Collection<String> modifiedFiles) {
+    public void setModifiedFiles(Collection<String> modifiedFiles) {
         this.modifiedFiles = new HashSet<>(modifiedFiles);
     }
 
@@ -151,24 +154,45 @@ class DirectoriesDifferences {
         this.getModifiedFiles().forEach {modifiedFile ->
             //println "modifiedFile: " + modifiedFile.toString()
             try {
-                List<String> textA = Files.readAllLines(this.getDirA().resolve(modifiedFile))
-                List<String> textB = Files.readAllLines(this.getDirB().resolve(modifiedFile))
+                Path fileA = this.getDirA().resolve(modifiedFile).toAbsolutePath()
+                Path fileB = this.getDirB().resolve(modifiedFile).toAbsolutePath()
+                List<String> textA = Files.readAllLines(fileA)
+                List<String> textB = Files.readAllLines(fileB)
                 // generating diff information
                 Patch<String> diff = DiffUtils.diff(textA, textB)
-                // simple output the computed patch into file
-                StringBuilder sb = new StringBuilder()
-                for (AbstractDelta<String> delta : diff.getDeltas()) {
-                    sb.append(delta.toString())
-                    sb.append(System.lineSeparator())
+
+                // generating unified diff format
+                String relativePathA = dirA.toString() + "/" + modifiedFile
+                String relativePathB = dirB.toString() + "/" + modifiedFile
+                List<String> unifiedDiff =
+                        UnifiedDiffUtils.generateUnifiedDiff(
+                                relativePathA, relativePathB, textA, diff, 0)
+                // debug
+                println "unifiedDiff.size()=" + unifiedDiff.size()
+                unifiedDiff.each {
+                    println it
                 }
-                String sourceDirName = this.getDirA().getFileName().toString()
-                String targetDirName = this.getDirB().getFileName().toString()
+                //
+                String dirAName = this.getDirA().getFileName().toString()
+                String dirBName = this.getDirB().getFileName().toString()
                 Path diffOutputFile =
-                        diffDir.resolve(sourceDirName + "_" + targetDirName)
-                                .resolve(URLEncoder.encode(modifiedFile.toString(), "UTF-8"))
+                        diffDir.resolve(dirAName + "_" + dirBName)
+                                .resolve(relativePathA + ".unified_diff.txt")
                 Files.createDirectories(diffOutputFile.getParent())
-                diffOutputFile.text = sb.toString()
-                //println "diffOutputFile=" + diffOutputFile.toString()
+                BufferedWriter br =
+                        new BufferedWriter(
+                                new OutputStreamWriter(
+                                        new FileOutputStream(diffOutputFile.toFile()),
+                                        "UTF-8"))
+                // print the unified diff into file
+                for (String line : unifiedDiff) {
+                    br.println(line)
+                }
+                br.flush()
+                br.close()
+
+                println "diffOutputFile=" + diffOutputFile.toString()
+
                 result += 1
             } catch (Exception e) {
                 e.printStackTrace()

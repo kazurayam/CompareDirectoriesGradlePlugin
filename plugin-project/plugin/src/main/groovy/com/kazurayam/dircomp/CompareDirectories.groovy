@@ -8,14 +8,18 @@ class CompareDirectories {
 
     private final MessageDigest digester = MessageDigest.getInstance('SHA')
 
+    private Path baseDir
     private Path directoryA
     private Path directoryB
     private DirectoriesDifferences differences
 
-    CompareDirectories(Path dirA,
+    CompareDirectories(Path baseDir,
+                       Path dirA,
                        Path dirB) {
+        Objects.requireNonNull(baseDir)
         Objects.requireNonNull(dirA)
         Objects.requireNonNull(dirB)
+        assert Files.exists(baseDir)
         assert Files.exists(dirA)
         assert Files.exists(dirB)
         //
@@ -47,7 +51,7 @@ class CompareDirectories {
             }
         }
         differences =
-                new DirectoriesDifferences(dirA, dirB,
+                new DirectoriesDifferences(baseDir, dirA, dirB,
                         filesOnlyInA,
                         filesOnlyInB,
                         intersection,
