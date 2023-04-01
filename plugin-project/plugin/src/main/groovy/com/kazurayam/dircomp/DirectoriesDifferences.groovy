@@ -151,19 +151,19 @@ class DirectoriesDifferences {
         Objects.requireNonNull(diffDir)
         assert Files.exists(diffDir)
         int result = 0
-        this.getModifiedFiles().forEach {modifiedFile ->
-            //println "modifiedFile: " + modifiedFile.toString()
+        this.getModifiedFiles().forEach {relativePath ->
+            //println "relativePath: " + relativePath
             try {
-                Path fileA = this.getDirA().resolve(modifiedFile).toAbsolutePath()
-                Path fileB = this.getDirB().resolve(modifiedFile).toAbsolutePath()
+                Path fileA = this.getDirA().resolve(relativePath).toAbsolutePath()
+                Path fileB = this.getDirB().resolve(relativePath).toAbsolutePath()
                 List<String> textA = Files.readAllLines(fileA)
                 List<String> textB = Files.readAllLines(fileB)
                 // generating diff information
                 Patch<String> diff = DiffUtils.diff(textA, textB)
 
                 // generating unified diff format
-                String relativePathA = dirA.toString() + "/" + modifiedFile
-                String relativePathB = dirB.toString() + "/" + modifiedFile
+                String relativePathA = dirA.toString() + "/" + relativePath
+                String relativePathB = dirB.toString() + "/" + relativePath
                 List<String> unifiedDiff =
                         UnifiedDiffUtils.generateUnifiedDiff(
                                 relativePathA, relativePathB, textA, diff, 0)
@@ -177,7 +177,7 @@ class DirectoriesDifferences {
                 String dirBName = this.getDirB().getFileName().toString()
                 Path diffOutputFile =
                         diffDir.resolve(dirAName + "_" + dirBName)
-                                .resolve(relativePathA + ".unified_diff.txt")
+                                .resolve(relativePath)
                 Files.createDirectories(diffOutputFile.getParent())
                 BufferedWriter br =
                         new BufferedWriter(
