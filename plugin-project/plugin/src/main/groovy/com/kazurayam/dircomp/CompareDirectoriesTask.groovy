@@ -59,45 +59,11 @@ abstract class CompareDirectoriesTask extends DefaultTask {
             //
             Path diffDir = Paths.get(getDiffDir().get().toString())
             Files.createDirectories(diffDir)
-            makeDiff(sourceDir, targetDir, differences, diffDir)
+            differences.makeDiffFiles(diffDir)
+
         } catch (Exception e) {
             e.printStackTrace()
             throw e
-        }
-    }
-
-    void makeDiff(Path sourceDir, Path targetDir, DirectoriesDifferences differences, Path diffDir)
-            throws IOException {
-        Objects.requireNonNull(sourceDir)
-        Objects.requireNonNull(targetDir)
-        Objects.requireNonNull(differences)
-        Objects.requireNonNull(diffDir)
-        differences.getModifiedFiles().forEach {modifiedFile ->
-            //println "modifiedFile: " + modifiedFile.toString()
-            try {
-                List<String> textA = Files.readAllLines(sourceDir.resolve(modifiedFile))
-                List<String> textB = Files.readAllLines(targetDir.resolve(modifiedFile))
-                // generating diff information
-                Patch<String> diff = DiffUtils.diff(textA, textB)
-                // simple output the computed patch into file
-                StringBuilder sb = new StringBuilder()
-                for (AbstractDelta<String> delta : diff.getDeltas()) {
-                    sb.append(delta.toString())
-                    sb.append(System.lineSeparator())
-                }
-                String sourceDirName = sourceDir.getFileName().toString()
-                String targetDirName = targetDir.getFileName().toString()
-                Path diffOutputFile =
-                        diffDir.resolve(sourceDirName + "_" + targetDirName)
-                                .resolve(URLEncoder.encode(modifiedFile.toString(), "UTF-8"))
-                Files.createDirectories(diffOutputFile.getParent())
-                diffOutputFile.text = sb.toString()
-                //println "diffOutputFile=" + diffOutputFile.toString()
-
-            } catch (Exception e) {
-                e.printStackTrace()
-                throw e
-            }
         }
     }
 }

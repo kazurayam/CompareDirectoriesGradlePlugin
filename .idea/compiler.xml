@@ -9,5 +9,11 @@
         <module name="plugin" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="CompareDirectories.plugin" target="17" />
+      <module name="CompareDirectories.plugin.functionalTest" target="17" />
+      <module name="CompareDirectories.plugin.main" target="17" />
+      <module name="CompareDirectories.plugin.test" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>

@@ -5,7 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5fb70e64-19c2-41a7-8be5-da3a4be0fb52" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/plugin-project/plugin/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/plugin-project/plugin/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin-project/plugin/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/plugin-project/plugin/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin-project/plugin/src/main/groovy/com/kazurayam/dircomp/CompareDirectoriesTask.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugin-project/plugin/src/main/groovy/com/kazurayam/dircomp/CompareDirectoriesTask.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin-project/plugin/src/main/groovy/com/kazurayam/dircomp/DirectoriesDifferences.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin-project/plugin/src/test/groovy/com/kazurayam/dircomp/DirectoriesDifferencesTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugin-project/plugin/src/test/groovy/com/kazurayam/dircomp/DirectoriesDifferencesTest.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin-project/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/plugin-project/settings.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,6 +75,36 @@
       <recent name="$PROJECT_DIR$/plugin-project" />
     </key>
   </component>
+  <component name="RunManager">
+    <configuration name="DirectoriesDifferencesTest.testMakeDiffFiles" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/plugin-project" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":plugin:test" />
+            <option value="--tests" />
+            <option value="&quot;com.kazurayam.dircomp.DirectoriesDifferencesTest.testMakeDiffFiles&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.DirectoriesDifferencesTest.testMakeDiffFiles" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -79,7 +115,9 @@
       <updated>1680167380942</updated>
       <workItem from="1680167383487" duration="4355000" />
       <workItem from="1680181579780" duration="195000" />
-      <workItem from="1680221151754" duration="2962000" />
+      <workItem from="1680221151754" duration="3812000" />
+      <workItem from="1680227067509" duration="760000" />
+      <workItem from="1680307416607" duration="2406000" />
     </task>
     <servers />
   </component>
