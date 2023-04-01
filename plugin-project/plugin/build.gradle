@@ -1,11 +1,11 @@
 plugins {
-    id 'java-gradle-plugin'
+    //id 'java-gradle-plugin'
     id 'groovy'
     id "com.gradle.plugin-publish" version "1.1.0"
 }
 
-group 'com.kazurayam'
-version '0.1.3-SNAPSHOT'
+group = "com.kazurayam"
+version = "0.1.5"
 
 ext {
     isReleaseVersion = !version.endsWith("SNAPSHOT")
@@ -13,12 +13,6 @@ ext {
 
 repositories {
     mavenCentral()
-    mavenLocal()
-}
-
-java {
-    withSourcesJar()
-    withJavadocJar()
 }
 
 tasks.withType(Test) {
@@ -38,49 +32,29 @@ tasks.named('check') {
 }
 
 dependencies {
-    implementation gradleApi()
-    implementation localGroovy()
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.2'
-
-    testImplementation libs.junit.api
-    testRuntimeOnly libs.junit.engine
-    functionalTestImplementation platform(libs.spock.bom)
-    functionalTestImplementation libs.spock.core
+    implementation group: 'io.github.java-diff-utils', name: 'java-diff-utils', version: '4.12'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.9.0'
+    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.9.0'
+    functionalTestImplementation platform(group: 'org.spockframework', name: 'spock-bom', version: '2.3-groovy-3.0')
+    functionalTestImplementation group: 'org.spockframework', name: 'spock-core', version: '2.3-groovy-3.0'
 }
 
 gradlePlugin {
-    // configure the `java-gradle-plugin` so that it looks at the `sourceSets.functinalTest`
+    // configure the `java-gradle-plugin` so that it looks at the `sourceSets.functionalTest`
     // to find the tests for the custom plugin
     testSourceSets(sourceSets.functionalTest)
     // This makes `org.gradle.testkit.runner.GradleRunner` class available to the
     // functionalTest classes
 
+    website = 'https://kazurayam.github.io/CompareDirectoriesGradlePlugin/'
+    vcsUrl = 'https://github.com/kazurayam/CompareDirectoriesGradlePlugin/'
     plugins {
-        directoriesComparator {
-            id = "com.kazurayam.directoriesComparator"
-            displayName = "Directories Comparator"
+        compareDirectories {
+            id = "com.kazurayam.compareDirectories"
+            displayName = "Compare 2 Directories"
             description = "Compares 2 directories to find files as intersection and remainder"
-            implementationClass = "com.kazurayam.dircomp.DirectoriesComparatorPlugin"
-        }
-    }
-}
-
-pluginBundle {
-    // information displayed in the Gradle Plugin Portal
-    website = 'https://kazurayam.github.io/DirectoriesComparatorGradlePlugin/'
-    vcsUrl = 'https://github.com/kazurayam/DirectoriesComparatorGradlePlugin/'
-    tags = ["file-tree"]
-}
-
-publishing {
-    repositories {
-        maven {
-            name = "gpr"
-            url = uri("https://maven.pkg.github.com/kazurayam/DirectoriesComparatorGradlePlugin")
-            credentials {
-                username = project.findProperty("gpr.user")
-                password = project.findProperty("gpr.key")
-            }
+            implementationClass = "com.kazurayam.dircomp.CompareDirectoriesPlugin"
         }
     }
 }
@@ -89,11 +63,7 @@ publishing {
 // How to publish the plugin to the Gradle Plugin Portal?
 // $ ./gradlew publishPlugins
 
-
-
-
-
-task wrapper(type: Wrapper){
-    gradleVersion = '7.6'
+// https://docs.gradle.org/current/userguide/publishing_gradle_module_metadata.html#sub:disabling-gmm-publication
+tasks.withType(GenerateModuleMetadata) {
+    enabled = false
 }
-task prepareKotlinBuildScriptModel {}

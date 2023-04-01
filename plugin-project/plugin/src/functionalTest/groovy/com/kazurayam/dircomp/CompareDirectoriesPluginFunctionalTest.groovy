@@ -7,7 +7,8 @@ import org.gradle.testkit.runner.GradleRunner
 import java.nio.file.Path
 import java.nio.file.Paths
 
-class DirectoriesComparatorFunctionalTest extends Specification {
+class CompareDirectoriesPluginFunctionalTest extends Specification {
+
     @TempDir
     private File tempDir
 
@@ -21,7 +22,8 @@ class DirectoriesComparatorFunctionalTest extends Specification {
 
     private Path projectDir = Paths.get(".").toAbsolutePath().normalize()
     private Path fixturesDir = projectDir.resolve("src/test/fixtures")
-    private Path outputFile = projectDir.resolve( "build/differences.json")
+    private Path outputFile = projectDir.resolve( "build/tmp/differences.json").toAbsolutePath()
+    private Path diffDir = projectDir.resolve("build/tmp/diff").toAbsolutePath()
 
     def "can run task"() {
         given:
@@ -30,12 +32,13 @@ class DirectoriesComparatorFunctionalTest extends Specification {
         settingsFile << ""
         buildFile << """
 plugins {
-    id('com.kazurayam.directoriesComparator')
+    id('com.kazurayam.compareDirectories')
 }
 compareDirectories {
     dirA = "${fixturesDir.toString()}/A"
     dirB = "${fixturesDir.toString()}/B"
-    outputFile = "${outputFile.toString()}"    
+    outputFile = "${outputFile.toString()}"
+    diffDir = "${diffDir.toString()}"
 }
 """
 

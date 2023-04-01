@@ -1,12 +1,11 @@
 package com.kazurayam.dircomp
 
-import org.gradle.api.file.RegularFile
-
-class DirectoriesComparatorExtension {
+class CompareDirectoriesExtension {
 
     public String dirA
     public String dirB
     public String outputFile
+    public String diffDir
 
     String getDirA() {
         return dirA
@@ -18,5 +17,9 @@ class DirectoriesComparatorExtension {
 
     String getOutputFile() {
         return outputFile
+    }
+
+    String getDiffDir() {
+        return diffDir
     }
 }
