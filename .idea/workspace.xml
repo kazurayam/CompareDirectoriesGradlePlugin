@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="112ed216-e57c-4843-8829-c6b7aea6461f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/plugin-project/plugin/src/test/groovy/com/kazurayam/dircomp/GradleFileRelatedPropertiesTest.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/plugin/plugin-project.plugin.functionalTest.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/plugin/plugin-project.plugin.functionalTest.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/plugin/plugin-project.plugin.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/plugin/plugin-project.plugin.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/plugin/plugin-project.plugin.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/plugin/plugin-project.plugin.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/plugin/plugin-project.plugin.test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/plugin/plugin-project.plugin.test.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/rehearsal-project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/rehearsal-project.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin-project/plugin/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/plugin-project/plugin/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin-project/plugin/src/functionalTest/groovy/com/kazurayam/dircomp/CompareDirectoriesPluginFunctionalTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugin-project/plugin/src/functionalTest/groovy/com/kazurayam/dircomp/CompareDirectoriesPluginFunctionalTest.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin-project/plugin/src/main/groovy/com/kazurayam/dircomp/CompareDirectoriesExtension.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugin-project/plugin/src/main/groovy/com/kazurayam/dircomp/CompareDirectoriesExtension.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin-project/plugin/src/main/groovy/com/kazurayam/dircomp/CompareDirectoriesTask.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugin-project/plugin/src/main/groovy/com/kazurayam/dircomp/CompareDirectoriesTask.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin-project/plugin/src/main/groovy/com/kazurayam/dircomp/DirectoriesDifferences.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/plugin-project/plugin/src/main/groovy/com/kazurayam/dircomp/DirectoriesDifferences.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rehearsal-project/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/rehearsal-project/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rehearsal-project/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/rehearsal-project/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rehearsal-project/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/rehearsal-project/settings.gradle" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$/plugin-project">
+      <ProjectState />
+    </projectState>
+    <projectState path="$PROJECT_DIR$/rehearsal-project">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand />
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2NpH8sS57jPQKwLYR0wlIO06CQK" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;aspect.path.notification.shown&quot;: &quot;true&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
+  }
+}</component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="112ed216-e57c-4843-8829-c6b7aea6461f" name="Changes" comment="" />
+      <created>1680353951721</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1680353951721</updated>
+      <workItem from="1680353958085" duration="364000" />
+      <workItem from="1680356173458" duration="5654000" />
+      <workItem from="1680606654027" duration="1129000" />
+      <workItem from="1680607917705" duration="1908000" />
+      <workItem from="1680610581051" duration="867000" />
+      <workItem from="1680611638849" duration="1047000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

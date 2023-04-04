@@ -22,4 +22,6 @@ gradle-app.setting
 
 .DS_Store
 
-.idea/workspace.xml
+.idea/
+!.idea/icon*.png
+*.iml

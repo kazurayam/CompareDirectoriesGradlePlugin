@@ -1,25 +1,27 @@
-import com.kazurayam.dircomp.CompareDirectoriesTask
-
 plugins {
     id "com.kazurayam.compareDirectories"
 }
 
-ext.fixturesDir = "../plugin-project/plugin/src/test/fixtures"
+ext {
+    fixturesDir = "../plugin-project/plugin/src/test/fixtures"
+}
 
 compareDirectories {
-    dirA = "${fixturesDir}/A"
-    dirB = "${fixturesDir}/B"
-    outputFile = "build/differences.json"
-    diffDir = "build/diff"
+    dirA = layout.projectDirectory.dir("${fixturesDir}/A")
+    dirB = layout.projectDirectory.dir("${fixturesDir}/B")
+    outputFile = layout.buildDirectory.file("differences.json")
+    diffDir = layout.buildDirectory.dir("diff")
 }
 
 // how to run the task
 // $ cd rehearsal
 // $ gradle compareDirectories
 
+import com.kazurayam.dircomp.CompareDirectoriesTask
+
 task dc(type: CompareDirectoriesTask) {
-    dirA = "${fixturesDir}/A"
-    dirB = "${fixturesDir}/B"
-    outputFile = "build/differences.json"
-    diffDir = "build/diff"
+    dirA = layout.projectDirectory.dir("${fixturesDir}/A")
+    dirB = layout.projectDirectory.dir("${fixturesDir}/B")
+    outputFile = layout.buildDirectory.file("differences.json")
+    diffDir = layout.buildDirectory.dir("diff")
 }

@@ -1,10 +1,10 @@
 package com.kazurayam.dircomp
 
-import com.github.difflib.patch.AbstractDelta
 import groovy.json.JsonOutput
 import org.gradle.api.DefaultTask
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileTree
-import org.gradle.api.provider.Property
+import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.OutputFile
@@ -13,47 +13,47 @@ import org.gradle.api.tasks.TaskAction
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
-import com.github.difflib.DiffUtils
-import com.github.difflib.patch.Patch
 
 abstract class CompareDirectoriesTask extends DefaultTask {
 
     @InputDirectory
-    abstract Property<String> getDirA()
+    abstract DirectoryProperty getDirA()
 
     @InputDirectory
-    abstract Property<String> getDirB()
+    abstract DirectoryProperty getDirB()
 
     @OutputFile
-    abstract Property<String> getOutputFile()
+    abstract RegularFileProperty getOutputFile()
 
     @OutputDirectory
-    abstract Property<String> getDiffDir()
+    abstract DirectoryProperty getDiffDir()
 
     CompareDirectoriesTask() {
-        getDirA().convention("./dirA")
-        getDirB().convention("./dirB")
-        getOutputFile().convention("./differences.json")
-        getDiffDir().convention("./diff")
+        getDirA().convention(project.layout.buildDirectory.dir("./dirA"))
+        getDirB().convention(project.layout.buildDirectory.dir("./dirB"))
+        getOutputFile().convention(project.layout.buildDirectory.file("./differences.json"))
+        getDiffDir().convention(project.layout.buildDirectory.dir("./diff"))
     }
 
     @TaskAction
     void action() {
         try {
-            FileTree sourceTree = project.fileTree(getDirA().get())
-            Path sourceDir = sourceTree.getDir().toPath()
+            Path baseDir = project.buildDir.toPath()
 
-            FileTree targetTree = project.fileTree(getDirB().get())
-            Path targetDir = targetTree.getDir().toPath()
+            FileTree fileTreeA = project.fileTree(getDirA().get())
+            Path pathDirA = fileTreeA.getDir().toPath()
 
-            Path output = Paths.get(getOutputFile().get().toString())
+            FileTree fileTreeB = project.fileTree(getDirB().get())
+            Path pathDirB = fileTreeB.getDir().toPath()
 
             CompareDirectories comparator =
-                    new CompareDirectories(sourceDir, targetDir)
+                    new CompareDirectories(baseDir, pathDirA, pathDirB)
 
-            DirectoriesDifferences differences = comparator.getDifferences()
+            DirectoriesDifferences differences =
+                    comparator.getDifferences()
 
             // write the differences.json
+            Path output = Paths.get(getOutputFile().get().toString())
             output.text = JsonOutput.prettyPrint(differences.serialize())
 
             //
