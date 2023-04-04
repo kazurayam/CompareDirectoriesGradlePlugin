@@ -55,6 +55,7 @@ gradlePlugin {
             displayName = "Compare 2 Directories"
             description = "Compares 2 directories to find files as intersection and remainder"
             implementationClass = "com.kazurayam.dircomp.CompareDirectoriesPlugin"
+            tags.set(["file-tree"])
         }
     }
 }
