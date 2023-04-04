@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.kazurayam"
-version = "0.1.5"
+version = "0.1.6"
 
 ext {
     isReleaseVersion = !version.endsWith("SNAPSHOT")
@@ -55,6 +55,7 @@ gradlePlugin {
             displayName = "Compare 2 Directories"
             description = "Compares 2 directories to find files as intersection and remainder"
             implementationClass = "com.kazurayam.dircomp.CompareDirectoriesPlugin"
+            tags.set(["file-tree"])
         }
     }
 }
