@@ -167,11 +167,15 @@ class DirectoriesDifferences {
                 List<String> unifiedDiff =
                         UnifiedDiffUtils.generateUnifiedDiff(
                                 relativePathA, relativePathB, textA, diff, 0)
+
                 // debug
+                /*
                 println "unifiedDiff.size()=" + unifiedDiff.size()
                 unifiedDiff.each {
                     println it
                 }
+                */
+
                 //
                 String dirAName = this.getDirA().getFileName().toString()
                 String dirBName = this.getDirB().getFileName().toString()
@@ -190,9 +194,6 @@ class DirectoriesDifferences {
                 }
                 br.flush()
                 br.close()
-
-                println "diffOutputFile=" + diffOutputFile.toString()
-
                 result += 1
             } catch (Exception e) {
                 e.printStackTrace()

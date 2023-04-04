@@ -2,9 +2,9 @@ rootProject.name = "rehearsal-project"
 
 // include the build of the plugin development project
 includeBuild("../plugin-project") {
-    dependencySubstitution {
+    //dependencySubstitution {
         // explicitly load the output of the included build
         // into the consumer project's classpath
-        substitute(module('com.kazurayam:plugin-project'))
-    }
+        //substitute(module('com.kazurayam:plugin-project'))
+    //}
 }
