@@ -6,6 +6,8 @@ import com.github.difflib.DiffUtils
 import com.github.difflib.UnifiedDiffUtils
 import com.github.difflib.patch.AbstractDelta
 import com.github.difflib.patch.Patch
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 import java.nio.file.Files
 import java.nio.file.Path
@@ -14,10 +16,10 @@ import java.util.stream.Collectors
 
 class DirectoriesDifferences {
 
+    private static Logger logger = LoggerFactory.getLogger(DirectoriesDifferences.class)
+
     private Path baseDir
-
     private Path dirA
-
     private Path dirB
 
     /**
@@ -152,12 +154,12 @@ class DirectoriesDifferences {
         assert Files.exists(diffDir)
         int result = 0
         this.getModifiedFiles().forEach {relativePath ->
-            //println "relativePath: " + relativePath
+            println "relativePath: " + relativePath
             try {
                 Path fileA = this.getDirA().resolve(relativePath).toAbsolutePath()
                 Path fileB = this.getDirB().resolve(relativePath).toAbsolutePath()
-                List<String> textA = Files.readAllLines(fileA)
-                List<String> textB = Files.readAllLines(fileB)
+                List<String> textA = readAllLines(fileA)
+                List<String> textB = readAllLines(fileB)
                 // generating diff information
                 Patch<String> diff = DiffUtils.diff(textA, textB)
 
@@ -168,13 +170,11 @@ class DirectoriesDifferences {
                         UnifiedDiffUtils.generateUnifiedDiff(
                                 relativePathA, relativePathB, textA, diff, 0)
 
-                // debug
-                /*
-                println "unifiedDiff.size()=" + unifiedDiff.size()
+                logger.debug("unifiedDiff.size()=" + unifiedDiff.size())
                 unifiedDiff.each {
-                    println it
+                    logger.trace("========== " + relativePath + " ==========")
+                    logger.trace(it)
                 }
-                */
 
                 //
                 String dirAName = this.getDirA().getFileName().toString()
@@ -201,5 +201,9 @@ class DirectoriesDifferences {
             }
         }
         return result
+    }
+
+    static List<String> readAllLines(Path file) {
+        return Files.readAllLines(file)
     }
 }

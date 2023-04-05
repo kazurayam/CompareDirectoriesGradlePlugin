@@ -23,8 +23,9 @@ class CompareDirectories {
         assert Files.exists(dirA)
         assert Files.exists(dirB)
         //
-        directoryA = dirA.toAbsolutePath().normalize()
-        directoryB = dirB.toAbsolutePath().normalize()
+        this.baseDir = baseDir
+        this.directoryA = dirA.toAbsolutePath().normalize()
+        this.directoryB = dirB.toAbsolutePath().normalize()
         //
         Set<String> subPathsA = FileTreeBuilder.scan(directoryA)
         Set<String> subPathsB = FileTreeBuilder.scan(directoryB)
