@@ -4,14 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.difflib.DiffUtils
 import com.github.difflib.UnifiedDiffUtils
-import com.github.difflib.patch.AbstractDelta
 import com.github.difflib.patch.Patch
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
+import java.nio.charset.MalformedInputException
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
 import java.util.stream.Collectors
 
 class DirectoriesDifferences {
@@ -32,6 +31,9 @@ class DirectoriesDifferences {
      */
     private Set<String> filesOnlyInB
 
+    /**
+     * The files found in both directories regardless if the content is same or not
+     */
     private Set<String> intersection
 
     /**
@@ -39,7 +41,7 @@ class DirectoriesDifferences {
      */
     private Set<String> modifiedFiles
 
-    /*
+    /**
      * com.fasterxml.jackson.databind requires the default constructor without args
      */
     DirectoriesDifferences() {
@@ -154,7 +156,8 @@ class DirectoriesDifferences {
         assert Files.exists(diffDir)
         int result = 0
         this.getModifiedFiles().forEach {relativePath ->
-            println "relativePath: " + relativePath
+            println "* relativePath: " + relativePath
+            //logger.info("* relative path: " + relativePath)
             try {
                 Path fileA = this.getDirA().resolve(relativePath).toAbsolutePath()
                 Path fileB = this.getDirB().resolve(relativePath).toAbsolutePath()
@@ -170,11 +173,13 @@ class DirectoriesDifferences {
                         UnifiedDiffUtils.generateUnifiedDiff(
                                 relativePathA, relativePathB, textA, diff, 0)
 
+                /*
                 logger.debug("unifiedDiff.size()=" + unifiedDiff.size())
                 unifiedDiff.each {
                     logger.trace("========== " + relativePath + " ==========")
                     logger.trace(it)
                 }
+                 */
 
                 //
                 String dirAName = this.getDirA().getFileName().toString()
@@ -196,14 +201,19 @@ class DirectoriesDifferences {
                 br.close()
                 result += 1
             } catch (Exception e) {
-                e.printStackTrace()
-                throw e
+                logger.warn(e.getMessage())
             }
         }
         return result
     }
 
-    static List<String> readAllLines(Path file) {
-        return Files.readAllLines(file)
+    static List<String> readAllLines(Path file) throws IOException {
+        List<String> lines = new ArrayList<>()
+        try {
+            lines = new ArrayList<>(Files.readAllLines(file))
+        } catch (MalformedInputException e) {
+            lines.add("${file.toString()} is not a text filed encoded by charset utf-8")
+        }
+        return lines
     }
 }

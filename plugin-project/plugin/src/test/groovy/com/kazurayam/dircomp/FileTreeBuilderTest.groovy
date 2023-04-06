@@ -16,6 +16,6 @@ class FileTreeBuilderTest {
         for (String p : subPaths) {
             println p
         }
-        assertEquals(5, subPaths.size())
+        assertEquals(6, subPaths.size())
     }
 }

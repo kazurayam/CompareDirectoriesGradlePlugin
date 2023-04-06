@@ -12,10 +12,10 @@ class CompareDirectoriesPluginFunctionalTest extends Specification {
 
     // fields
     @TempDir
-    private Path tempDir
+    private File tempDir
 
-    private Path projectDir
-    private Path fixturesDir
+    private static Path projectDir
+    private static Path fixturesDir
     private Path outputFile
     private Path diffDir
 
@@ -26,8 +26,8 @@ class CompareDirectoriesPluginFunctionalTest extends Specification {
     }
 
     def setup() {
-        outputFile = tempDir.resolve( "build/tmp/differences.json").toAbsolutePath()
-        diffDir = tempDir.resolve("build/tmp/diff").toAbsolutePath()
+        outputFile = tempDir.toPath().resolve( "build/tmp/differences.json").toAbsolutePath()
+        diffDir = tempDir.toPath().resolve("build/tmp/diff").toAbsolutePath()
         settingsFile << ""
         buildFile << """
 plugins {
@@ -50,7 +50,7 @@ compareDirectories {
         given:
         assert Files.exists(fixturesDir)
         println "fixturesDir=${fixturesDir.toString()}"
-        Files.createDirectories(tempDir.resolve("build"))
+        Files.createDirectories(tempDir.toPath().resolve("build"))
 
         when:
         def runner = GradleRunner.create()
@@ -73,10 +73,10 @@ compareDirectories {
 
     // helper methods
     private Path getBuildFile() {
-        return tempDir.resolve("build.gradle")
+        return tempDir.toPath().resolve("build.gradle")
     }
 
     private Path getSettingsFile() {
-        return tempDir.resolve("settings.gradle")
+        return tempDir.toPath().resolve("settings.gradle")
     }
 }
