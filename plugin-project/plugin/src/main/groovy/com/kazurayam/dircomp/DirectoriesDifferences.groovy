@@ -156,7 +156,7 @@ class DirectoriesDifferences {
         assert Files.exists(diffDir)
         int result = 0
         this.getModifiedFiles().forEach {relativePath ->
-            println "* relativePath: " + relativePath
+            //println "* relativePath: " + relativePath
             //logger.info("* relative path: " + relativePath)
             try {
                 Path fileA = this.getDirA().resolve(relativePath).toAbsolutePath()
