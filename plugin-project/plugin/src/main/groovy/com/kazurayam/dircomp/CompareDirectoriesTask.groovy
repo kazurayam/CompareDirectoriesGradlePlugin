@@ -37,33 +37,21 @@ abstract class CompareDirectoriesTask extends DefaultTask {
 
     @TaskAction
     void action() {
-        try {
-            Path baseDir = project.buildDir.toPath()
+        Path baseDir = project.buildDir.toPath()
 
-            FileTree fileTreeA = project.fileTree(getDirA().get())
-            Path pathDirA = fileTreeA.getDir().toPath()
+        FileTree fileTreeA = project.fileTree(getDirA().get())
+        Path dirA = fileTreeA.getDir().toPath()
 
-            FileTree fileTreeB = project.fileTree(getDirB().get())
-            Path pathDirB = fileTreeB.getDir().toPath()
+        FileTree fileTreeB = project.fileTree(getDirB().get())
+        Path dirB = fileTreeB.getDir().toPath()
 
-            CompareDirectories comparator =
-                    new CompareDirectories(baseDir, pathDirA, pathDirB)
+        Path outputFile = Paths.get(getOutputFile().get().toString())
 
-            DirectoriesDifferences differences =
-                    comparator.getDifferences()
+        Path diffDir = Paths.get(getDiffDir().get().toString())
 
-            // write the differences.json
-            Path output = Paths.get(getOutputFile().get().toString())
-            output.text = JsonOutput.prettyPrint(differences.serialize())
+        CompareDirectoriesAction actionObject =
+                new CompareDirectoriesAction(baseDir, dirA, dirB, outputFile, diffDir)
 
-            //
-            Path diffDir = Paths.get(getDiffDir().get().toString())
-            Files.createDirectories(diffDir)
-            differences.makeDiffFiles(diffDir)
-
-        } catch (Exception e) {
-            e.printStackTrace()
-            throw e
-        }
+        actionObject.action()
     }
 }
