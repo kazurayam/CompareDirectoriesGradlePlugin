@@ -1,5 +1,13 @@
 # Compare Directories Gradle Plugin
 
+## Published at the Gradle Plugin Portal
+
+This plugin is published at 
+
+- https://plugins.gradle.org/plugin/com.kazurayam.compareDirectories
+
+## What it is
+
 This project provides a Gradle Plugin, with which you can compare 2 directories to find the differences.
 
 Provided you pass 2 directory A and B to the plugin, it reports the following information:
@@ -45,6 +53,20 @@ intersection:
 remainder in target:
     ../src/test/fixtures/B/j.txt
     ../src/test/fixtures/B/sub/h.txt
-
-
 ```
+
+## Outputs
+
+The `compareDirectories` task will create an output tree like this:
+
+![output tree](http://kazurayam.github.io/CompareDirectoriesGradlePlugin/images/output-tree.png)
+
+The `difference.json` file contains a tree of file names categorized as "filesOnlyInA", "filesOnlyInB", "intersection" and "modifiedFiles".
+
+![output tree](http://kazurayam.github.io/CompareDirectoriesGradlePlugin/images/differences.json.png)
+
+The `compareDirectories` task creates the `diff` directory. In the directory you will find the **unified diff** of each indivisidual "modified" files.
+
+![output tree](http://kazurayam.github.io/CompareDirectoriesGradlePlugin/images/unified-diff.png)
+
+
