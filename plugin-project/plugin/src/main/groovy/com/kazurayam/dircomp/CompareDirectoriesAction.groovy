@@ -1,11 +1,9 @@
 package com.kazurayam.dircomp
 
 import groovy.json.JsonOutput
-import org.gradle.api.file.FileTree
 
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
 
 class CompareDirectoriesAction {
 

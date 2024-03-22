@@ -1,6 +1,5 @@
 package com.kazurayam.dircomp
 
-import groovy.json.JsonOutput
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileTree
@@ -10,7 +9,6 @@ import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 
-import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
@@ -37,7 +35,8 @@ abstract class CompareDirectoriesTask extends DefaultTask {
 
     @TaskAction
     void action() {
-        Path baseDir = project.buildDir.toPath()
+        Path baseDir = project.getLayout().getBuildDirectory()
+                .get().getAsFile().toPath()
 
         FileTree fileTreeA = project.fileTree(getDirA().get())
         Path dirA = fileTreeA.getDir().toPath()
@@ -50,7 +49,8 @@ abstract class CompareDirectoriesTask extends DefaultTask {
         Path diffDir = Paths.get(getDiffDir().get().toString())
 
         CompareDirectoriesAction actionObject =
-                new CompareDirectoriesAction(baseDir, dirA, dirB, outputFile, diffDir)
+                new CompareDirectoriesAction(baseDir, dirA, dirB,
+                        outputFile, diffDir)
 
         actionObject.action()
     }
