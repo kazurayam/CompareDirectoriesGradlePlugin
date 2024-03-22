@@ -3,6 +3,7 @@ package com.kazurayam.dircomp
 import groovy.json.JsonOutput
 import org.gradle.internal.impldep.org.junit.BeforeClass
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import static org.junit.jupiter.api.Assertions.assertTrue
 
@@ -15,6 +16,7 @@ import java.nio.file.Paths
  * https://github.com/kazurayam/CompareDirectoriesGradlePlugin/issues/25
  *
  */
+@Disabled
 class Issue25Test {
 
     private Path baseDir

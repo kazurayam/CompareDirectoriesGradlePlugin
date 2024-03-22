@@ -24,12 +24,18 @@ You want to write your build.gradle file as follows:
 
 ```
 plugin {
-    id "com.kazurayam.directoriesComparator" version "0.1.0"
+    id "com.kazurayam.compareDirectories"
 }
-...
+
+ext {
+    fixturesDir = "../plugin-project/plugin/src/test/fixtures"
+}
+
 compareDirectories {
-    sourceDir = "src/test/fixtures/A"
-    targetDir = "src/test/fixtures/B"
+    dirA = layout.projectDirectory.dir("${fixturesDir}/A")
+    dirB = layout.projectDirectory.dir("${fixturesDir}/B")
+    outputFile = layout.buildDirectory.file("differneces.json)
+    diffDir = layout.buildDirectory.dir("diff")
 }
 ```
 
@@ -41,32 +47,53 @@ $ ./gradlew compareDirectories
 You will see the result in the console like this:
 
 ```
-remainder in source:
-    ../src/test/fixtures/A/sub/f.txt
-    ../src/test/fixtures/A/sub/i.txt
-
-intersection:
-    <baseDir>/d.txt
-    <baseDir>/e.txt
-    <baseDir>/sub/g.txt
-
-remainder in target:
-    ../src/test/fixtures/B/j.txt
-    ../src/test/fixtures/B/sub/h.txt
+> Task :compareDirectories
+filesOnlyInA: 1 files
+filesOnlyInB: 2 files
+intersection: 5 files
+modifiedFiles: 1 files
 ```
 
 ## Outputs
 
-The `compareDirectories` task will create an output tree like this:
+The `compareDirectories` task will create an output tree `build/difference.json`, which contains lines like this:
 
-![output tree](http://kazurayam.github.io/CompareDirectoriesGradlePlugin/images/output-tree.png)
+[![output tree](http://kazurayam.github.io/CompareDirectoriesGradlePlugin/images/output-tree.png)
+]()
 
-The `difference.json` file contains a tree of file names categorized as "filesOnlyInA", "filesOnlyInB", "intersection" and "modifiedFiles".
+The `difference.json` file contains a tree of file names categorized as "filesOnlyInA", "filesOnlyInB","intersection" and "modifiedFiles".
 
-![output tree](http://kazurayam.github.io/CompareDirectoriesGradlePlugin/images/differences.json.png)
+```
+{
+    "dirA": "file:///Users/kazurayam/github/CompareDirectoriesGradlePlugin/plugin-project/plugin/src/test/fixtures/A/",
+    "dirB": "file:///Users/kazurayam/github/CompareDirectoriesGradlePlugin/plugin-project/plugin/src/test/fixtures/B/",
+    "filesOnlyInA": [
+        "sub/i.txt"
+    ],
+    "filesOnlyInB": [
+        "j.txt",
+        "sub/h.txt"
+    ],
+    "intersection": [
+        "apple.png",
+        "d.txt",
+        "e.txt",
+        "sub/f.txt",
+        "sub/g.txt"
+    ],
+    "modifiedFiles": [
+        "sub/g.txt"
+    ]
+}
+```
 
-The `compareDirectories` task creates the `diff` directory. In the directory you will find the **unified diff** of each indivisidual "modified" files.
+The `compareDirectories` task creates the `diff` directory. In the directory you will find the **unified diff** of each individual "modified" files.
 
-![output tree](http://kazurayam.github.io/CompareDirectoriesGradlePlugin/images/unified-diff.png)
-
+```
+--- /Users/kazuakiurayama/github/CompareDirectoriesGradlePlugin/plugin-project/plugin/src/test/fixtures/A/sub/g.txt
++++ /Users/kazuakiurayama/github/CompareDirectoriesGradlePlugin/plugin-project/plugin/src/test/fixtures/B/sub/g.txt
+@@ -1,1 +1,1 @@
+-g
++g is changed
+```
 
