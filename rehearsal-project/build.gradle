@@ -1,5 +1,5 @@
 plugins {
-    id "com.kazurayam.compareDirectories"
+    id("com.kazurayam.compareDirectories")
 }
 
 ext {

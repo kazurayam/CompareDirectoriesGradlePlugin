@@ -23,8 +23,8 @@ The plugin compares the relative path information of files under the base direct
 You want to write your build.gradle file as follows:
 
 ```
-plugin {
-    id "com.kazurayam.compareDirectories"
+plugins {
+    id("com.kazurayam.compareDirectories")
 }
 
 ext {
