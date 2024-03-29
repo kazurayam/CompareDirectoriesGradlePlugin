@@ -33,11 +33,23 @@ class CompareDirectoriesPluginFunctionalTest extends Specification {
 plugins {
     id('com.kazurayam.compare-directories')
 }
+
 compareDirectories {
     dirA = layout.projectDirectory.dir("${fixturesDir.toString()}/A")
     dirB = layout.projectDirectory.dir("${fixturesDir.toString()}/B")
     outputFile = layout.buildDirectory.file("tmp/differences.json")
     diffDir = layout.buildDirectory.dir("tmp/diff")
+}
+
+task dircomp2 {
+    doLast {
+        compareDirectories {
+            dirA = layout.projectDirectory.dir("${fixturesDir.toString()}/A")
+            dirB = layout.projectDirectory.dir("${fixturesDir.toString()}/B")
+            outputFile = layout.buildDirectory.file("tmp/differences.json")
+            diffDir = layout.buildDirectory.dir("tmp/diff")
+        }
+    }
 }
 """
     }
@@ -46,7 +58,7 @@ compareDirectories {
 
 
     // feature methods
-    def "can run task"() {
+    def "can run compareDirectories task"() {
         given:
         assert Files.exists(fixturesDir)
         println "fixturesDir=${fixturesDir.toString()}"
@@ -70,6 +82,29 @@ compareDirectories {
         message.contains("modifiedFiles")
     }
 
+    def "can run dircomp2 task"() {
+        given:
+        assert Files.exists(fixturesDir)
+        println "fixturesDir=${fixturesDir.toString()}"
+        Files.createDirectories(tempDir.toPath().resolve("build"))
+
+        when:
+        def runner = GradleRunner.create()
+        runner.forwardOutput()
+        runner.withPluginClasspath()
+        runner.withArguments("dircomp2") // THIS IS THE DIFFERENCE
+        runner.withProjectDir(tempDir)
+        def result = runner.build()
+        String message = outputFile.toFile().text
+        println "[CompareDirectoriesPluginFunctionalTest]"
+        println message
+
+        then:
+        message.contains("filesOnlyInA")
+        message.contains("filesOnlyInB")
+        message.contains("intersection")
+        message.contains("modifiedFiles")
+    }
 
     // helper methods
     private Path getBuildFile() {
