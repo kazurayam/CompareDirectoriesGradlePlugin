@@ -24,20 +24,28 @@ You want to write your build.gradle file as follows:
 
 ```
 plugins {
-    id("com.kazurayam.compare-directories")
+    id "com.kazurayam.compare-directories"
 }
 
 ext {
-    fixturesDir = "../plugin-project/plugin/src/test/fixtures"
+    fixturesDir = "../plugin/src/test/fixtures"
+    outDir = "build/out"
 }
 
-import com.kazurayam.dircom.CompareDirectoriesTask
-
-tasks.register<CompareDirectoriesTask>('dircomp') {
+// The com.kazurayam.compare-directories plugin registeres a task named 'compareDirectories'
+compareDirectories {
     dirA = layout.projectDirectory.dir("${fixturesDir}/A")
     dirB = layout.projectDirectory.dir("${fixturesDir}/B")
-    outputFile = layout.buildDirectory.file("differneces.json)
-    diffDir = layout.buildDirectory.dir("diff")
+    outputFile = layout.buildDirectory.file("${outDir}/differences.json")
+    diffDir = layout.buildDirectory.dir("${outDir}/diff")
+}
+
+// or you can register a task with name you like, which calls the CompareDirectoriesTask
+tasks.register('dircomp', com.kazurayam.dircomp.CompareDirectoriesTask) {
+    dirA = layout.projectDirectory.dir("${fixturesDir}/A")
+    dirB = layout.projectDirectory.dir("${fixturesDir}/B")
+    outputFile = layout.buildDirectory.file("${outDir}/differences.json")
+    diffDir = layout.buildDirectory.dir("${outDir}/diff")
 }
 ```
 

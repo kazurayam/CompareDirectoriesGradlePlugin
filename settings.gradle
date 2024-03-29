@@ -1,11 +1,9 @@
-/*
 pluginManagement {
     repositories {
         mavenLocal()
         gradlePluginPortal()
     }
 }
-*/
 
 rootProject.name = 'CompareDirectoriesGradlePlugin'
 include('plugin')

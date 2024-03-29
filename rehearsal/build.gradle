@@ -1,5 +1,5 @@
 plugins {
-    id("com.kazurayam.compare-directories") version('0.2.0-SNAPSHOT')
+    id "com.kazurayam.compare-directories"
 }
 
 ext {
@@ -7,17 +7,23 @@ ext {
     outDir = "build/out"
 }
 
-import com.kazurayam.dircomp.CompareDirectoriesTask
-
-tasks.register<CompareDirectoriesTask>('dircomp') {
+// The com.kazurayam.compare-directories plugin registeres a task named 'compareDirectories'
+compareDirectories {
     dirA = layout.projectDirectory.dir("${fixturesDir}/A")
     dirB = layout.projectDirectory.dir("${fixturesDir}/B")
     outputFile = layout.buildDirectory.file("${outDir}/differences.json")
     diffDir = layout.buildDirectory.dir("${outDir}/diff")
 }
 
-/*
-task dircomp {
+// or you can register a task with name you like, which calls the CompareDirectoriesTask
+tasks.register('dircomp', com.kazurayam.dircomp.CompareDirectoriesTask) {
+    dirA = layout.projectDirectory.dir("${fixturesDir}/A")
+    dirB = layout.projectDirectory.dir("${fixturesDir}/B")
+    outputFile = layout.buildDirectory.file("${outDir}/differences.json")
+    diffDir = layout.buildDirectory.dir("${outDir}/diff")
+}
+
+task cleanDircomp {
     doFirst {
         delete(outDir)
         mkdir(outDir)
@@ -34,4 +40,3 @@ task dircomp {
         println "output into ${outDir}/differences.json"
     }
 }
- */
