@@ -31,7 +31,7 @@ class CompareDirectoriesPluginFunctionalTest extends Specification {
         settingsFile << ""
         buildFile << """
 plugins {
-    id('com.kazurayam.compareDirectories')
+    id('com.kazurayam.compare-directories')
 }
 compareDirectories {
     dirA = layout.projectDirectory.dir("${fixturesDir.toString()}/A")

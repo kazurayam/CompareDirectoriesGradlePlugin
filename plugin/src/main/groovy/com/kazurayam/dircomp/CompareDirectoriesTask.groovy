@@ -31,10 +31,12 @@ abstract class CompareDirectoriesTask extends DefaultTask {
         getDirB().convention(project.layout.buildDirectory.dir("./dirB"))
         getOutputFile().convention(project.layout.buildDirectory.file("./differences.json"))
         getDiffDir().convention(project.layout.buildDirectory.dir("./diff"))
+        println "CompareDirectoriesTask has been instantiated"
     }
 
     @TaskAction
     void action() {
+        println "entered into CompareDirectoriesTask#action()"
         Path baseDir = project.getLayout().getBuildDirectory()
                 .get().getAsFile().toPath()
 
@@ -48,10 +50,12 @@ abstract class CompareDirectoriesTask extends DefaultTask {
 
         Path diffDir = Paths.get(getDiffDir().get().toString())
 
+        println "going to instantiate CompareDirectoriesAction object"
         CompareDirectoriesAction actionObject =
                 new CompareDirectoriesAction(baseDir, dirA, dirB,
                         outputFile, diffDir)
+        int modifiedFiles = actionObject.action()
 
-        actionObject.action()
+        println "number of modified files: ${modifiedFiles}"
     }
 }

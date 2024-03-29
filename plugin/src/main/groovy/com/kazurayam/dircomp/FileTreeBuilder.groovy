@@ -10,6 +10,7 @@ import java.nio.file.SimpleFileVisitor
 import java.nio.file.attribute.BasicFileAttributes
 
 class FileTreeBuilder extends SimpleFileVisitor<Path> {
+
     private static final Logger logger = LoggerFactory.getLogger(FileTreeBuilder.class)
     private final Path baseDir
     private final Set<String> subPaths

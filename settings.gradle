@@ -1,0 +1,17 @@
+/*
+pluginManagement {
+    repositories {
+        mavenLocal()
+        gradlePluginPortal()
+    }
+}
+*/
+
+rootProject.name = 'CompareDirectoriesGradlePlugin'
+include('plugin')
+
+
+//include('rehearsal')
+// not necessary to include the rehearsal subproject because
+// the rehearsal project includes the plugin project's artfiacts for itself.
+// see the `rehearsal/settings.gradle` file.

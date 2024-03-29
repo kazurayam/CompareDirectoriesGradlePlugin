@@ -12,7 +12,7 @@ class CompareDirectoriesPlugin implements Plugin<Project> {
                 project.getExtensions()
                         .create("compareDirectories",
                                 CompareDirectoriesExtension.class)
-        // create the 'compareDirectories' task
+        // create the 'compareDirectories' task and register it into the project
         project.getTasks().register("compareDirectories",
                 CompareDirectoriesTask.class,
                 task -> {
@@ -21,5 +21,6 @@ class CompareDirectoriesPlugin implements Plugin<Project> {
                     task.getOutputFile().set(extension.getOutputFile())
                     task.getDiffDir().set(extension.getDiffDir())
         })
+        println "CompareDirectoriesPlugin registered compareDirectories task !!!"
     }
 }

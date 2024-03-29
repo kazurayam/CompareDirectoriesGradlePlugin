@@ -23,28 +23,36 @@ class CompareDirectoriesAction {
         this.dirB = dirB
         this.outputFile = outputFile
         this.diffDir = diffDir
+        if (!Files.exists(baseDir)) {
+            throw new FileNotFoundException("${baseDir} is not found")
+        }
+        if (!Files.exists(dirA)) {
+            throw new FileNotFoundException("${dirA} is not found")
+        }
+        if (!Files.exists(dirB)) {
+            throw new FileNotFoundException("${dirB} is not found")
+        }
+        Files.createDirectories(outputFile.getParent())
+        Files.createDirectories(diffDir)
     }
 
     int action() {
         CompareDirectories comparator =
                 new CompareDirectories(baseDir, dirA, dirB)
-
-        DirectoriesDifferences differences =
-                comparator.getDifferences()
-
+        // make the differences information
+        DirectoriesDifferences differences = comparator.getDifferences()
         println "filesOnlyInA: ${differences.filesOnlyInA.size()} files"
         println "filesOnlyInB: ${differences.filesOnlyInB.size()} files"
         println "intersection: ${differences.intersection.size()} files"
         println "modifiedFiles: ${differences.modifiedFiles.size()} files"
 
         // write the differences.json
-        Files.createDirectories(outputFile.getParent())
         outputFile.text = JsonOutput.prettyPrint(differences.serialize())
 
         // write unified-diff files of modified files
-        Files.createDirectories(diffDir)
         differences.makeDiffFiles(diffDir)
 
+        // return the number of modified files
         return differences.modifiedFiles.size()
     }
 }

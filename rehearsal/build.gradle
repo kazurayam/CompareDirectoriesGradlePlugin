@@ -1,0 +1,37 @@
+plugins {
+    id("com.kazurayam.compare-directories") version('0.2.0-SNAPSHOT')
+}
+
+ext {
+    fixturesDir = "../plugin/src/test/fixtures"
+    outDir = "build/out"
+}
+
+import com.kazurayam.dircomp.CompareDirectoriesTask
+
+tasks.register<CompareDirectoriesTask>('dircomp') {
+    dirA = layout.projectDirectory.dir("${fixturesDir}/A")
+    dirB = layout.projectDirectory.dir("${fixturesDir}/B")
+    outputFile = layout.buildDirectory.file("${outDir}/differences.json")
+    diffDir = layout.buildDirectory.dir("${outDir}/diff")
+}
+
+/*
+task dircomp {
+    doFirst {
+        delete(outDir)
+        mkdir(outDir)
+        println "initialized ${outDir}"
+    }
+    doLast {
+        println "comparing ${fixturesDir}/A and ${fixturesDir}/B"
+        compareDirectories {
+            dirA = layout.projectDirectory.dir("${fixturesDir}/A")
+            dirB = layout.projectDirectory.dir("${fixturesDir}/B")
+            outputFile = layout.buildDirectory.file("${outDir}/differences.json")
+            diffDir = layout.buildDirectory.dir("${outDir}/diff")
+        }
+        println "output into ${outDir}/differences.json"
+    }
+}
+ */

@@ -1,11 +1,13 @@
 plugins {
-    //id 'java-gradle-plugin'
     id 'groovy'
-    id "com.gradle.plugin-publish" version "1.1.0"
+    id 'java-gradle-plugin'
+    id 'maven-publish'
+    id "com.gradle.plugin-publish" version '1.2.1'
 }
 
 group = "com.kazurayam"
-version = "0.1.8"
+archivesBaseName = 'compare-directories-plugin'
+version = "0.2.0-SNAPSHOT"
 
 ext {
     isReleaseVersion = !version.endsWith("SNAPSHOT")
@@ -54,15 +56,23 @@ gradlePlugin {
     vcsUrl = 'https://github.com/kazurayam/CompareDirectoriesGradlePlugin/'
     plugins {
         compareDirectories {
-            id = "com.kazurayam.compareDirectories"
-            displayName = "Compare 2 Directories"
-            description = "Compares 2 directories to find files as intersection and remainder"
-            implementationClass = "com.kazurayam.dircomp.CompareDirectoriesPlugin"
-            tags.set(["file-tree"])
+            id = 'com.kazurayam.compare-directories'
+            displayName = 'Compare 2 directories'
+            description = 'Compares 2 directories to find files as intersection and remainder'
+            tags.set(['file-tree'])
+            implementationClass = 'com.kazurayam.dircomp.CompareDirectoriesPlugin'
         }
     }
 }
 
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifactId = "${archivesBaseName}"
+            from components.java
+        }
+    }
+}
 
 // How to publish the plugin to the Gradle Plugin Portal?
 // $ ./gradlew publishPlugins

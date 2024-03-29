@@ -13,6 +13,9 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.util.stream.Collectors
 
+/**
+ * Data object that contains information of the differences between 2 directories
+ */
 class DirectoriesDifferences {
 
     private static Logger logger = LoggerFactory.getLogger(DirectoriesDifferences.class)
