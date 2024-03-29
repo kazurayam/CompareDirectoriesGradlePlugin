@@ -24,14 +24,16 @@ You want to write your build.gradle file as follows:
 
 ```
 plugins {
-    id("com.kazurayam.compareDirectories")
+    id("com.kazurayam.compare-directories")
 }
 
 ext {
     fixturesDir = "../plugin-project/plugin/src/test/fixtures"
 }
 
-compareDirectories {
+import com.kazurayam.dircom.CompareDirectoriesTask
+
+tasks.register<CompareDirectoriesTask>('dircomp') {
     dirA = layout.projectDirectory.dir("${fixturesDir}/A")
     dirB = layout.projectDirectory.dir("${fixturesDir}/B")
     outputFile = layout.buildDirectory.file("differneces.json)
@@ -41,7 +43,7 @@ compareDirectories {
 
 Then you want to execute:
 ```
-$ ./gradlew compareDirectories
+$ gradle dircomp
 ```
 
 You will see the result in the console like this:
@@ -56,7 +58,7 @@ modifiedFiles: 1 files
 
 ## Outputs
 
-The `compareDirectories` task will create an output tree `build/difference.json`, which contains lines like this:
+The `dircomp` task will create an output tree `build/difference.json`, which contains lines like this:
 
 [![output tree](http://kazurayam.github.io/CompareDirectoriesGradlePlugin/images/output-tree.png)
 ]()
@@ -87,7 +89,7 @@ The `difference.json` file contains a tree of file names categorized as "filesOn
 }
 ```
 
-The `compareDirectories` task creates the `diff` directory. In the directory you will find the **unified diff** of each individual "modified" files.
+The `dircomp` task creates the `diff` directory. In the directory you will find the **unified diff** of each individual "modified" files.
 
 ```
 --- /Users/kazuakiurayama/github/CompareDirectoriesGradlePlugin/plugin-project/plugin/src/test/fixtures/A/sub/g.txt
