@@ -10,12 +10,12 @@ import java.nio.file.Paths
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static org.junit.jupiter.api.Assertions.assertNotNull
 
-class CompareDirectoriesTest {
+class DirectoriesComparatorTest {
 
     private static Path projectDir
     private static Path sourceDir
     private static Path targetDir
-    private CompareDirectories instance
+    private DirectoriesComparator instance
 
     private static final String SOURCE_DIR_RELATIVE_PATH = "src/test/fixtures/A"
     private static final String TARGET_DIR_RELATIVE_PATH = "src/test/fixtures/B"
@@ -30,7 +30,7 @@ class CompareDirectoriesTest {
     @BeforeEach
     void beforeEach() {
         instance =
-                new CompareDirectories(projectDir, sourceDir, targetDir)
+                new DirectoriesComparator(projectDir, sourceDir, targetDir)
     }
 
     @Test

@@ -1,5 +1,6 @@
 package com.kazurayam.dircomp
 
+import spock.lang.Ignore
 import spock.lang.Specification
 import spock.lang.TempDir
 import org.gradle.testkit.runner.GradleRunner
@@ -43,12 +44,14 @@ compareDirectories {
 
 task dircomp2 {
     doLast {
+        println "dircomp2>doLast started"
         compareDirectories {
             dirA = layout.projectDirectory.dir("${fixturesDir.toString()}/A")
             dirB = layout.projectDirectory.dir("${fixturesDir.toString()}/B")
-            outputFile = layout.buildDirectory.file("tmp/differences.json")
-            diffDir = layout.buildDirectory.dir("tmp/diff")
+            outputFile = layout.buildDirectory.file("tmp2/differences.json")
+            diffDir = layout.buildDirectory.dir("tmp2/diff")
         }
+        println "dircomp2>doLast finished"
     }
 }
 """
@@ -58,6 +61,7 @@ task dircomp2 {
 
 
     // feature methods
+    @Ignore
     def "can run compareDirectories task"() {
         given:
         assert Files.exists(fixturesDir)

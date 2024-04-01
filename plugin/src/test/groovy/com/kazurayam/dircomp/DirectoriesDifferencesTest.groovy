@@ -17,7 +17,7 @@ class DirectoriesDifferencesTest {
     private static Path dirB
     private static Path diffDir
     private static Path workDir
-    private CompareDirectories instance
+    private DirectoriesComparator instance
     private DirectoriesDifferences differences
 
     private static final String DIR_A_RELATIVE_PATH = "src/test/fixtures/A"
@@ -38,7 +38,7 @@ class DirectoriesDifferencesTest {
     @BeforeEach
     void beforeEach() {
         instance =
-                new CompareDirectories(projectDir, dirA, dirB)
+                new DirectoriesComparator(projectDir, dirA, dirB)
         differences =
                 instance.getDifferences()
     }

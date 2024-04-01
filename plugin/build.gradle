@@ -3,11 +3,14 @@ plugins {
     id 'java-gradle-plugin'
     id 'maven-publish'
     id "com.gradle.plugin-publish" version '1.2.1'
+    id 'base'
 }
 
 group = "com.kazurayam"
-archivesBaseName = 'compare-directories-plugin'
 version = "0.2.0-SNAPSHOT"
+base {
+    archivesName = 'compare-directories-plugin'
+}
 
 ext {
     isReleaseVersion = !version.endsWith("SNAPSHOT")
@@ -35,10 +38,10 @@ tasks.named('check') {
 
 dependencies {
     implementation "org.slf4j:slf4j-api:2.0.7"
-    implementation group: 'org.slf4j', name: 'slf4j-simple', version: "2.0.7"
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.2'
     implementation group: 'io.github.java-diff-utils', name: 'java-diff-utils', version: '4.12'
 
+    testImplementation group: 'org.slf4j', name: 'slf4j-simple', version: "2.0.7"
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.9.0'
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.9.0'
     functionalTestImplementation platform(group: 'org.spockframework', name: 'spock-bom', version: '2.3-groovy-3.0')
@@ -68,7 +71,7 @@ gradlePlugin {
 publishing {
     publications {
         maven(MavenPublication) {
-            artifactId = "${archivesBaseName}"
+            artifactId = "${base.archivesName}"
             from components.java
         }
     }

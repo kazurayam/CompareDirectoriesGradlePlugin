@@ -21,6 +21,5 @@ class CompareDirectoriesPlugin implements Plugin<Project> {
                     task.getOutputFile().set(extension.getOutputFile())
                     task.getDiffDir().set(extension.getDiffDir())
         })
-        println "CompareDirectoriesPlugin registered compareDirectories task !!!"
     }
 }

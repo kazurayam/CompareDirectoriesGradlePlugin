@@ -1,5 +1,6 @@
-package com.kazurayam.dircomp
+package misc
 
+import com.kazurayam.dircomp.FileTreeBuilder
 import org.junit.jupiter.api.Test
 import static org.junit.jupiter.api.Assertions.*
 import java.nio.file.Path

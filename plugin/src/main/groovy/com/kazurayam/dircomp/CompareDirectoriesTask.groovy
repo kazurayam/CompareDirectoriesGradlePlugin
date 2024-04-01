@@ -9,12 +9,16 @@ import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
 abstract class CompareDirectoriesTask extends DefaultTask {
+
+    private Logger logger = LoggerFactory.getLogger(CompareDirectoriesTask.class)
 
     @InputDirectory
     abstract DirectoryProperty getDirA()
@@ -29,16 +33,17 @@ abstract class CompareDirectoriesTask extends DefaultTask {
     abstract DirectoryProperty getDiffDir()
 
     CompareDirectoriesTask() {
+        //println "enter CompareDirectoriesTask()"
         getDirA().convention(project.layout.buildDirectory.dir("./dirA"))
         getDirB().convention(project.layout.buildDirectory.dir("./dirB"))
         getOutputFile().convention(project.layout.buildDirectory.file("./differences.json"))
         getDiffDir().convention(project.layout.buildDirectory.dir("./diff"))
-        println "CompareDirectoriesTask has been instantiated"
+        //println "leave CompareDirectoriesTask()"
     }
 
     @TaskAction
     void action() {
-        println "entered into CompareDirectoriesTask#action()"
+        //println "action() started"
         Path baseDir = project.getLayout().getBuildDirectory()
                 .get().getAsFile().toPath()
         if (!Files.exists(baseDir)) {
@@ -63,9 +68,9 @@ abstract class CompareDirectoriesTask extends DefaultTask {
         Path diffDir = Paths.get(getDiffDir().get().toString())
         Files.createDirectories(diffDir)
 
-        CompareDirectories comparator =
-                new CompareDirectories(baseDir, dirA, dirB)
-        // make the differences information
+        // compare 2 directories
+        DirectoriesComparator comparator =
+                new DirectoriesComparator(baseDir, dirA, dirB)
         DirectoriesDifferences differences = comparator.getDifferences()
         println "filesOnlyInA: ${differences.filesOnlyInA.size()} files"
         println "filesOnlyInB: ${differences.filesOnlyInB.size()} files"
@@ -77,5 +82,7 @@ abstract class CompareDirectoriesTask extends DefaultTask {
 
         // write unified-diff files of modified files
         differences.makeDiffFiles(diffDir)
+
+        //println "action() finished"
     }
 }

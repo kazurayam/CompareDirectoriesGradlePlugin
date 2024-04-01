@@ -1,4 +1,4 @@
-package com.kazurayam.dircomp
+package misc
 
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

@@ -1,10 +1,13 @@
 package com.kazurayam.dircomp
 
+import com.kazurayam.dircomp.DirectoriesDifferences
+import com.kazurayam.dircomp.FileTreeBuilder
+
 import java.nio.file.Files
 import java.nio.file.Path
 import java.security.MessageDigest
 
-class CompareDirectories {
+class DirectoriesComparator {
 
     private final MessageDigest digester = MessageDigest.getInstance('SHA')
 
@@ -13,9 +16,9 @@ class CompareDirectories {
     private Path directoryB
     private DirectoriesDifferences differences
 
-    CompareDirectories(Path baseDir,
-                       Path dirA,
-                       Path dirB) {
+    DirectoriesComparator(Path baseDir,
+                          Path dirA,
+                          Path dirB) {
         Objects.requireNonNull(baseDir)
         Objects.requireNonNull(dirA)
         Objects.requireNonNull(dirB)
