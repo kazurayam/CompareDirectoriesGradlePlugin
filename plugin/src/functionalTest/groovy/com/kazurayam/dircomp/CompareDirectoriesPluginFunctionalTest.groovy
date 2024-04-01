@@ -1,6 +1,5 @@
 package com.kazurayam.dircomp
 
-import spock.lang.Ignore
 import spock.lang.Specification
 import spock.lang.TempDir
 import org.gradle.testkit.runner.GradleRunner
@@ -36,22 +35,22 @@ plugins {
 }
 
 compareDirectories {
-    dirA = layout.projectDirectory.dir("${fixturesDir.toString()}/A")
-    dirB = layout.projectDirectory.dir("${fixturesDir.toString()}/B")
-    outputFile = layout.buildDirectory.file("tmp/differences.json")
-    diffDir = layout.buildDirectory.dir("tmp/diff")
+    dirA = file("${fixturesDir.toString()}/A")
+    dirB = file("${fixturesDir.toString()}/B")
+    outputFile = file("build/tmp/differences.json")
+    diffDir = file("build/tmp/diff")
 }
 
-task dircomp2 {
+task dircomp(type: com.kazurayam.dircomp.CompareDirectoriesTask) {
+    dirA = file("${fixturesDir.toString()}/A")
+    dirB = file("${fixturesDir.toString()}/B")
+    outputFile = file("build/tmp/differences.json")
+    diffDir = file("build/tmp/diff")
+    doFirst {
+        println "dircomp.doFirst was executed"
+    }
     doLast {
-        println "dircomp2>doLast started"
-        compareDirectories {
-            dirA = layout.projectDirectory.dir("${fixturesDir.toString()}/A")
-            dirB = layout.projectDirectory.dir("${fixturesDir.toString()}/B")
-            outputFile = layout.buildDirectory.file("tmp2/differences.json")
-            diffDir = layout.buildDirectory.dir("tmp2/diff")
-        }
-        println "dircomp2>doLast finished"
+        println "dircomp2.doLast was executed"
     }
 }
 """
@@ -59,9 +58,7 @@ task dircomp2 {
     //def cleanup() {}
     //def cleanupSpec() {}
 
-
     // feature methods
-    @Ignore
     def "can run compareDirectories task"() {
         given:
         assert Files.exists(fixturesDir)
@@ -86,7 +83,7 @@ task dircomp2 {
         message.contains("modifiedFiles")
     }
 
-    def "can run dircomp2 task"() {
+    def "can run dircomp task"() {
         given:
         assert Files.exists(fixturesDir)
         println "fixturesDir=${fixturesDir.toString()}"
@@ -96,7 +93,7 @@ task dircomp2 {
         def runner = GradleRunner.create()
         runner.forwardOutput()
         runner.withPluginClasspath()
-        runner.withArguments("dircomp2") // THIS IS THE DIFFERENCE
+        runner.withArguments("dircomp") // THIS IS THE DIFFERENCE
         runner.withProjectDir(tempDir)
         def result = runner.build()
         String message = outputFile.toFile().text

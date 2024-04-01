@@ -34,18 +34,24 @@ ext {
 
 // The com.kazurayam.compare-directories plugin registeres a task named 'compareDirectories'
 compareDirectories {
-    dirA = layout.projectDirectory.dir("${fixturesDir}/A")
-    dirB = layout.projectDirectory.dir("${fixturesDir}/B")
-    outputFile = layout.buildDirectory.file("${outDir}/differences.json")
-    diffDir = layout.buildDirectory.dir("${outDir}/diff")
+    dirA = file("${fixturesDir}/A")
+    dirB = file("${fixturesDir}/B")
+    outputFile = file("${outDir}/differences.json")
+    diffDir = file("${outDir}/diff")
 }
 
 // or you can register a task with name you like, which calls the CompareDirectoriesTask
 tasks.register('dircomp', com.kazurayam.dircomp.CompareDirectoriesTask) {
-    dirA = layout.projectDirectory.dir("${fixturesDir}/A")
-    dirB = layout.projectDirectory.dir("${fixturesDir}/B")
-    outputFile = layout.buildDirectory.file("${outDir}/differences.json")
-    diffDir = layout.buildDirectory.dir("${outDir}/diff")
+    dirA = file("${fixturesDir}/A")
+    dirB = file("${fixturesDir}/B")
+    outputFile = file("${outDir}/differences.json")
+    diffDir = file("${outDir}/diff")
+    doFirst {
+        delete file("${outDir}")
+    }
+    doLast {
+        println "you can find the output in the ${outDir}"
+    }
 }
 ```
 
@@ -57,7 +63,7 @@ $ gradle dircomp
 You will see the result in the console like this:
 
 ```
-> Task :compareDirectories
+> Task :dircomp
 filesOnlyInA: 1 files
 filesOnlyInB: 2 files
 intersection: 5 files
@@ -66,7 +72,7 @@ modifiedFiles: 1 files
 
 ## Outputs
 
-The `dircomp` task will create an output tree `build/difference.json`, which contains lines like this:
+The `dircomp` task will create an output tree `build/out/difference.json`, which contains lines like this:
 
 [![output tree](http://kazurayam.github.io/CompareDirectoriesGradlePlugin/images/output-tree.png)
 ]()
@@ -97,7 +103,7 @@ The `difference.json` file contains a tree of file names categorized as "filesOn
 }
 ```
 
-The `dircomp` task creates the `diff` directory. In the directory you will find the **unified diff** of each individual "modified" files.
+The `dircomp` task creates the `build/out/diff` directory. In the directory you will find the **unified diff** of each individual "modified" files.
 
 ```
 --- /Users/kazuakiurayama/github/CompareDirectoriesGradlePlugin/plugin-project/plugin/src/test/fixtures/A/sub/g.txt
@@ -106,4 +112,3 @@ The `dircomp` task creates the `diff` directory. In the directory you will find 
 -g
 +g is changed
 ```
-
