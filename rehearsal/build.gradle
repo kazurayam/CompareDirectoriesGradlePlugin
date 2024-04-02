@@ -7,24 +7,24 @@ ext {
 
 // 'compareDirectories' task is registered by the com.kazurayam.compare-directories plugin
 compareDirectories {
-    dirA = file("${fixturesDir}/A")
-    dirB = file("${fixturesDir}/B")
+    dirA = fileTree("${fixturesDir}/A")
+    dirB = fileTree("${fixturesDir}/B")
     outputFile = file("build/case1/differences.json")
     diffDir = file("build/case1/diff")
 }
 
 // or you can register a task with name you like, which calls the CompareDirectoriesTask
 tasks.register('dircomp', com.kazurayam.dircomp.CompareDirectoriesTask) {
-    dirA = file("${fixturesDir}/A")
-    dirB = file("${fixturesDir}/B")
+    dirA = fileTree("${fixturesDir}/A") { exclude "**/*.png" }
+    dirB = fileTree("${fixturesDir}/B") { exclude "**/*.png" }
     outputFile = file("build/case2/differences.json")
     diffDir = file("build/case2/diff")
 }
 
 task cleanDircomp(type: com.kazurayam.dircomp.CompareDirectoriesTask) {
     // specify the Inputs and Outputs
-    dirA = file("${fixturesDir}/A")
-    dirB = file("${fixturesDir}/B")
+    dirA = fileTree("${fixturesDir}/A") { exclude "**/*.png" }
+    dirB = fileTree("${fixturesDir}/B") { exclude "**/*.png" }
     outputFile = file("build/case3/differences.json")
     diffDir = file("build/case3/diff")
     // initialize the outputDirectory before the job body

@@ -36,15 +36,15 @@ plugins {
 }
 
 compareDirectories {
-    dirA = fileTree("${fixturesDir}/A") { include "**/*" }
-    dirB = fileTree("${fixturesDir}/B") { include "**/*" }
+    dirA = fileTree("${fixturesDir}/A")
+    dirB = fileTree("${fixturesDir}/B")
     outputFile = file("build/tmp/differences.json")
     diffDir = file("build/tmp/diff")
 }
 
 task dircomp(type: com.kazurayam.dircomp.CompareDirectoriesTask) {
-    dirA = fileTree("${fixturesDir}/A") { include "**/*" }
-    dirB = fileTree("${fixturesDir}/B") { include "**/*" }
+    dirA = fileTree("${fixturesDir}/A") { exclude "**/*.png" }
+    dirB = fileTree("${fixturesDir}/B") { exclude "**/*.png" }
     outputFile = file("build/tmp/differences.json")
     diffDir = file("build/tmp/diff")
     doFirst {
@@ -88,6 +88,7 @@ task dircomp(type: com.kazurayam.dircomp.CompareDirectoriesTask) {
         message.contains("filesOnlyInB")
         message.contains("intersection")
         message.contains("modifiedFiles")
+        message.contains("apple.png")
         result.output.contains("intersection")
         result.task(":compareDirectories").outcome == SUCCESS
     }
@@ -112,6 +113,7 @@ task dircomp(type: com.kazurayam.dircomp.CompareDirectoriesTask) {
         message.contains("filesOnlyInB")
         message.contains("intersection")
         message.contains("modifiedFiles")
+        ! message.contains("apple.png")    // the apple.png file is excluded
         result.output.contains("intersection")
         result.task(":dircomp").outcome == SUCCESS
     }

@@ -34,16 +34,17 @@ ext {
 
 // The com.kazurayam.compare-directories plugin registeres a task named 'compareDirectories'
 compareDirectories {
-    dirA = file("${fixturesDir}/A")
-    dirB = file("${fixturesDir}/B")
+    dirA = fileTree("${fixturesDir}/A")
+    dirB = fileTree("${fixturesDir}/B") 
     outputFile = file("${outDir}/differences.json")
     diffDir = file("${outDir}/diff")
 }
 
 // or you can register a task with name you like, which calls the CompareDirectoriesTask
+// you can include and exclude the files in the input directory by specifying Ant like pattern
 tasks.register('dircomp', com.kazurayam.dircomp.CompareDirectoriesTask) {
-    dirA = file("${fixturesDir}/A")
-    dirB = file("${fixturesDir}/B")
+    dirA = fileTree("${fixturesDir}/A") { exclude "**/*.png" }
+    dirB = fileTree("${fixturesDir}/B") { exclude "**/*.png" }
     outputFile = file("${outDir}/differences.json")
     diffDir = file("${outDir}/diff")
     doFirst {
