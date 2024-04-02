@@ -9,29 +9,24 @@ class DirectoriesComparator {
 
     private final MessageDigest digester = MessageDigest.getInstance('SHA')
 
-    private Path baseDir
-    private Path directoryA
-    private Path directoryB
+    private Path dirA
+    private Path dirB
     private DirectoriesDifferences differences
 
-    DirectoriesComparator(Path baseDir,
-                          Path dirA,
+    DirectoriesComparator(Path dirA,
                           Path dirB) {
-        Objects.requireNonNull(baseDir)
         Objects.requireNonNull(dirA)
         Objects.requireNonNull(dirB)
-        assert Files.exists(baseDir)
         assert Files.exists(dirA)
         assert Files.exists(dirB)
         //
-        this.baseDir = baseDir
-        this.directoryA = dirA.toAbsolutePath().normalize()
-        this.directoryB = dirB.toAbsolutePath().normalize()
+        this.dirA = dirA.toAbsolutePath().normalize()
+        this.dirB = dirB.toAbsolutePath().normalize()
         //
         Set<String> subPathsA =
-                new DirectoryScanner(directoryA).scan().getSubPaths()
+                new DirectoryScanner(this.dirA).scan().getSubPaths()
         Set<String> subPathsB =
-                new DirectoryScanner(directoryB).scan().getSubPaths()
+                new DirectoryScanner(this.dirB).scan().getSubPaths()
         //
         Set<String> filesOnlyInA = new HashSet<String>(subPathsA)
         filesOnlyInA.removeAll(subPathsB)
@@ -59,11 +54,11 @@ class DirectoriesComparator {
     }
 
     Path getDirA() {
-        return this.directoryA
+        return this.dirA
     }
 
     Path getDirB() {
-        return this.directoryB
+        return this.dirB
     }
 
     DirectoriesDifferences getDifferences() {

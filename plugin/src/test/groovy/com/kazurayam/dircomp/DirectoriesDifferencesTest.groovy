@@ -12,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.*
 
 class DirectoriesDifferencesTest {
 
-    private static Path projectDir
     private static Path dirA
     private static Path dirB
     private static Path diffDir
@@ -26,7 +25,7 @@ class DirectoriesDifferencesTest {
 
     @BeforeAll
     static void beforeAll() {
-        projectDir = Paths.get(".")
+        Path projectDir = Paths.get(".")
         dirA = projectDir.resolve(DIR_A_RELATIVE_PATH)
         dirB = projectDir.resolve(DIR_B_RELATIVE_PATH)
         diffDir = projectDir.resolve(DIFFDIR_RELATIVE_PATH)
@@ -37,8 +36,7 @@ class DirectoriesDifferencesTest {
 
     @BeforeEach
     void beforeEach() {
-        instance =
-                new DirectoriesComparator(projectDir, dirA, dirB)
+        instance = new DirectoriesComparator(dirA, dirB)
         differences =
                 instance.getDifferences()
     }
