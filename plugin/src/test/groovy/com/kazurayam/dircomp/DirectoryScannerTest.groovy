@@ -8,11 +8,11 @@ import java.nio.file.Path
 
 import static org.assertj.core.api.Assertions.assertThat
 
-class FileTreeBuilderTest {
+class DirectoryScannerTest {
 
     private static final TestOutputOrganizer too =
-            new TestOutputOrganizer.Builder(FileTreeBuilderTest.class)
-                    .subDirPath(FileTreeBuilderTest.class).build()
+            new TestOutputOrganizer.Builder(DirectoryScannerTest.class)
+                    .subDirPath(DirectoryScannerTest.class).build()
 
     @BeforeAll
     static void beforeAll() {
@@ -23,16 +23,21 @@ class FileTreeBuilderTest {
     }
 
     @Test
-    void test_getContainedFiles() {
-        List<Path> containedFiles =
-                FileTreeBuilder.containedFiles(too.getClassOutputDirectory())
-        assertThat(containedFiles).hasSizeGreaterThan(0)
-        //containedFiles.each { println it }
+    void test_getFiles() {
+        List<Path> files =
+                new DirectoryScanner(too.getClassOutputDirectory())
+                        .scan()
+                        .getFiles()
+        assertThat(files).hasSizeGreaterThan(0)
+        files.each { println it }
     }
 
     @Test
-    void test_scan() {
-        Set<String> subPaths = FileTreeBuilder.scan(too.getClassOutputDirectory())
+    void test_getSubPaths() {
+        Set<String> subPaths =
+                new DirectoryScanner(too.getClassOutputDirectory())
+                        .scan()
+                        .getSubPaths()
         assertThat(subPaths).hasSizeGreaterThan(0)
         subPaths.stream().sorted().each { println it}
     }

@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test
 
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
 
 import com.kazurayam.unittest.TestOutputOrganizer
 import static org.junit.jupiter.api.Assertions.*
@@ -41,8 +40,8 @@ class FileCollectionsDifferencesTest {
 
     @BeforeEach
     void beforeEach() {
-        List<Path> contentA = FileTreeBuilder.containedFiles(dirA)
-        List<Path> contentB = FileTreeBuilder.containedFiles(dirB)
+        List<Path> contentA = new DirectoryScanner(dirA).scan().getFiles()
+        List<Path> contentB = new DirectoryScanner(dirB).scan().getFiles()
         instance = new FileCollectionsComparator(dirA, contentA, dirB, contentB)
         differences = instance.getDifferences()
     }

@@ -1,7 +1,5 @@
 package com.kazurayam.dircomp
 
-import com.kazurayam.dircomp.DirectoriesDifferences
-import com.kazurayam.dircomp.FileTreeBuilder
 
 import java.nio.file.Files
 import java.nio.file.Path
@@ -30,21 +28,19 @@ class DirectoriesComparator {
         this.directoryA = dirA.toAbsolutePath().normalize()
         this.directoryB = dirB.toAbsolutePath().normalize()
         //
-        Set<String> subPathsA = FileTreeBuilder.scan(directoryA)
-        Set<String> subPathsB = FileTreeBuilder.scan(directoryB)
-
+        Set<String> subPathsA =
+                new DirectoryScanner(directoryA).scan().getSubPaths()
+        Set<String> subPathsB =
+                new DirectoryScanner(directoryB).scan().getSubPaths()
         //
         Set<String> filesOnlyInA = new HashSet<String>(subPathsA)
         filesOnlyInA.removeAll(subPathsB)
-
         //
         Set<String> filesOnlyInB = new HashSet<String>(subPathsB)
         filesOnlyInB.removeAll(subPathsA)
-
         // intersection of dirA and dirB
         Set<String> intersection = new HashSet<String>(subPathsA)
         intersection.retainAll(subPathsB)
-
         // find modified files
         Set<String> modifiedFiles = new HashSet<String>()
         for (String subPath : intersection) {

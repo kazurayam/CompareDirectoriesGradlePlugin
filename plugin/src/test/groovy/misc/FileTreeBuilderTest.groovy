@@ -1,6 +1,6 @@
 package misc
 
-import com.kazurayam.dircomp.FileTreeBuilder
+import com.kazurayam.dircomp.DirectoryScanner
 import org.junit.jupiter.api.Test
 import static org.junit.jupiter.api.Assertions.*
 import java.nio.file.Path
@@ -13,7 +13,7 @@ class FileTreeBuilderTest {
     @Test
     void testSmoke() {
         Path dirA = fixtures.resolve("A")
-        Set<String> subPaths = FileTreeBuilder.scan(dirA)
+        Set<String> subPaths = new DirectoryScanner(dirA).scan().getSubPaths()
         for (String p : subPaths) {
             println p
         }
