@@ -2,6 +2,7 @@ package com.kazurayam.dircomp
 
 import groovy.json.JsonOutput
 import org.gradle.api.DefaultTask
+import org.gradle.api.file.ConfigurableFileTree
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileTree
 import org.gradle.api.file.RegularFileProperty
@@ -21,10 +22,10 @@ abstract class CompareDirectoriesTask extends DefaultTask {
     private Logger logger = LoggerFactory.getLogger(CompareDirectoriesTask.class)
 
     @InputDirectory
-    abstract DirectoryProperty getDirA()
+    abstract ConfigurableFileTree getDirA()
 
     @InputDirectory
-    abstract DirectoryProperty getDirB()
+    abstract ConfigurableFileTree getDirB()
 
     @OutputFile
     abstract RegularFileProperty getOutputFile()
@@ -34,8 +35,8 @@ abstract class CompareDirectoriesTask extends DefaultTask {
 
     CompareDirectoriesTask() {
         //println "enter CompareDirectoriesTask()"
-        getDirA().convention(project.layout.buildDirectory.dir("./dirA"))
-        getDirB().convention(project.layout.buildDirectory.dir("./dirB"))
+        getDirA().convention(project.fileTree("./dirA"))
+        getDirB().convention(project.fileTree("./dirB"))
         getOutputFile().convention(project.layout.buildDirectory.file("./differences.json"))
         getDiffDir().convention(project.layout.buildDirectory.dir("./diff"))
         //println "leave CompareDirectoriesTask()"
@@ -50,15 +51,11 @@ abstract class CompareDirectoriesTask extends DefaultTask {
             throw new FileNotFoundException("${baseDir} is not found")
         }
 
-        FileTree fileTreeA = project.fileTree(getDirA().get())
-        Path dirA = fileTreeA.getDir().toPath()
-        if (!Files.exists(dirA)) {
+        if (!Files.exists(getDirA().getDir().toPath())) {
             throw new FileNotFoundException("${dirA} is not found")
         }
 
-        FileTree fileTreeB = project.fileTree(getDirB().get())
-        Path dirB = fileTreeB.getDir().toPath()
-        if (!Files.exists(dirB)) {
+        if (!Files.exists(getDirB().getDir().toPath())) {
             throw new FileNotFoundException("${dirB} is not found")
         }
 
