@@ -1,6 +1,7 @@
 plugins {
     id "com.kazurayam.compare-directories"
 }
+
 ext {
     fixturesDir = "../plugin/src/test/fixtures"
 }
@@ -29,12 +30,14 @@ task cleanDircomp(type: com.kazurayam.dircomp.CompareDirectoriesTask) {
     diffDir = file("build/case3/diff")
     // initialize the outputDirectory before the job body
     doFirst {
-        println "initializing the case3 directory"
+        println "initializing the outputs"
+        println ""
         delete file("build/case3")
         mkdir file("build/case3")
     }
     // do something after the job body
     doLast{
-        println "done cleanDircomp"
+        println ""
+        println "Find the result at " + file("build/case3")
     }
 }

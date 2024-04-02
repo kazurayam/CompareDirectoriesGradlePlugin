@@ -4,7 +4,9 @@
 
 This plugin is published at 
 
-- https://plugins.gradle.org/plugin/com.kazurayam.compareDirectories
+- https://plugins.gradle.org/plugin/com.kazurayam.compare-directories
+
+>Previously I named this project as "compareDirectories" and published it at https://plugins.gradle.org/plugin/com.kazurayam.compareDirectories I have renamed it so the previous version will be no longer maintained.
 
 ## What it is
 
