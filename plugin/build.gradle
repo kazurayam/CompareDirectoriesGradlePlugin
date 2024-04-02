@@ -49,6 +49,7 @@ dependencies {
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.9.0'
     functionalTestImplementation platform(group: 'org.spockframework', name: 'spock-bom', version: '2.3-groovy-3.0')
     functionalTestImplementation group: 'org.spockframework', name: 'spock-core', version: '2.3-groovy-3.0'
+    functionalTestImplementation("com.kazurayam:unittest-helper:0.3.0")
 }
 
 gradlePlugin {

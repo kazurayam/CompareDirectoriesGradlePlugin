@@ -1,33 +1,37 @@
 package com.kazurayam.dircomp
 
 import spock.lang.Specification
-import spock.lang.TempDir
 import org.gradle.testkit.runner.GradleRunner
+import com.kazurayam.unittest.TestOutputOrganizer
 
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
 
 class CompareDirectoriesPluginFunctionalTest extends Specification {
 
-    // fields
-    @TempDir
-    private File tempDir
+    private static final TestOutputOrganizer too =
+            new TestOutputOrganizer.Builder(CompareDirectoriesPluginFunctionalTest.class)
+                    .subDirPath(CompareDirectoriesPluginFunctionalTest.class).build()
 
+    // fields
     private static Path projectDir
     private static Path fixturesDir
+    private static Path targetDir
     private Path outputFile
     private Path diffDir
 
     // fixture methods
     def setupSpec() {
-        projectDir = Paths.get(".").toAbsolutePath().normalize()
+        too.cleanClassOutputDirectory()
+        projectDir = too.getProjectDir()
         fixturesDir = projectDir.resolve("src/test/fixtures").toAbsolutePath()
+        targetDir = too.getClassOutputDirectory()
+        too.copyDir(fixturesDir, targetDir)
     }
 
     def setup() {
-        outputFile = tempDir.toPath().resolve( "build/tmp/differences.json").toAbsolutePath()
-        diffDir = tempDir.toPath().resolve("build/tmp/diff").toAbsolutePath()
+        outputFile = targetDir.resolve( "build/tmp/differences.json").toAbsolutePath()
+        diffDir = targetDir.resolve("build/tmp/diff").toAbsolutePath()
         settingsFile << ""
         buildFile << """
 plugins {
@@ -35,15 +39,15 @@ plugins {
 }
 
 compareDirectories {
-    dirA = file("${fixturesDir.toString()}/A")
-    dirB = file("${fixturesDir.toString()}/B")
+    dirA = fileTree(dir: "${fixturesDir.toString()}/A")
+    dirB = fileTree(dir: "${fixturesDir.toString()}/B")
     outputFile = file("build/tmp/differences.json")
     diffDir = file("build/tmp/diff")
 }
 
 task dircomp(type: com.kazurayam.dircomp.CompareDirectoriesTask) {
-    dirA = file("${fixturesDir.toString()}/A")
-    dirB = file("${fixturesDir.toString()}/B")
+    dirA = fileTree(dir: "${fixturesDir.toString()}/A")
+    dirB = fileTree(dir: "${fixturesDir.toString()}/B")
     outputFile = file("build/tmp/differences.json")
     diffDir = file("build/tmp/diff")
     doFirst {
@@ -63,14 +67,14 @@ task dircomp(type: com.kazurayam.dircomp.CompareDirectoriesTask) {
         given:
         assert Files.exists(fixturesDir)
         println "fixturesDir=${fixturesDir.toString()}"
-        Files.createDirectories(tempDir.toPath().resolve("build"))
+        Files.createDirectories(targetDir.toPath().resolve("build"))
 
         when:
         def runner = GradleRunner.create()
         runner.forwardOutput()
         runner.withPluginClasspath()
         runner.withArguments("compareDirectories")
-        runner.withProjectDir(tempDir)
+        runner.withProjectDir(targetDir)
         def result = runner.build()
         String message = outputFile.toFile().text
         println "[CompareDirectoriesPluginFunctionalTest]"
@@ -87,14 +91,14 @@ task dircomp(type: com.kazurayam.dircomp.CompareDirectoriesTask) {
         given:
         assert Files.exists(fixturesDir)
         println "fixturesDir=${fixturesDir.toString()}"
-        Files.createDirectories(tempDir.toPath().resolve("build"))
+        Files.createDirectories(targetDir.toPath().resolve("build"))
 
         when:
         def runner = GradleRunner.create()
         runner.forwardOutput()
         runner.withPluginClasspath()
         runner.withArguments("dircomp") // THIS IS THE DIFFERENCE
-        runner.withProjectDir(tempDir)
+        runner.withProjectDir(targetDir)
         def result = runner.build()
         String message = outputFile.toFile().text
         println "[CompareDirectoriesPluginFunctionalTest]"
@@ -109,10 +113,10 @@ task dircomp(type: com.kazurayam.dircomp.CompareDirectoriesTask) {
 
     // helper methods
     private Path getBuildFile() {
-        return tempDir.toPath().resolve("build.gradle")
+        return targetDir.toPath().resolve("build.gradle")
     }
 
     private Path getSettingsFile() {
-        return tempDir.toPath().resolve("settings.gradle")
+        return targetDir.toPath().resolve("settings.gradle")
     }
 }

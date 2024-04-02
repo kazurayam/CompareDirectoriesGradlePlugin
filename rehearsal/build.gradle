@@ -15,8 +15,12 @@ compareDirectories {
 
 // or you can register a task with name you like, which calls the CompareDirectoriesTask
 tasks.register('dircomp', com.kazurayam.dircomp.CompareDirectoriesTask) {
-    dirA = file("${fixturesDir}/A")
-    dirB = file("${fixturesDir}/B")
+    dirA = fileTree("${fixturesDir}/A") {
+        exclude "**/*.png"
+    }
+    dirB = file("${fixturesDir}/B") {
+        exclude "**/*.png"
+    }
     outputFile = file("build/case2/differences.json")
     diffDir = file("build/case2/diff")
 }

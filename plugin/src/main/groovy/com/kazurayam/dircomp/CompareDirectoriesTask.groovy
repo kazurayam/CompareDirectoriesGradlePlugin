@@ -2,11 +2,10 @@ package com.kazurayam.dircomp
 
 import groovy.json.JsonOutput
 import org.gradle.api.DefaultTask
-import org.gradle.api.file.ConfigurableFileTree
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.file.FileTree
+import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.tasks.InputDirectory
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
@@ -21,11 +20,11 @@ abstract class CompareDirectoriesTask extends DefaultTask {
 
     private Logger logger = LoggerFactory.getLogger(CompareDirectoriesTask.class)
 
-    @InputDirectory
-    abstract ConfigurableFileTree getDirA()
+    @Input
+    abstract FileCollection getDirA()
 
-    @InputDirectory
-    abstract ConfigurableFileTree getDirB()
+    @Input
+    abstract FileCollection getDirB()
 
     @OutputFile
     abstract RegularFileProperty getOutputFile()
@@ -35,8 +34,8 @@ abstract class CompareDirectoriesTask extends DefaultTask {
 
     CompareDirectoriesTask() {
         //println "enter CompareDirectoriesTask()"
-        getDirA().convention(project.fileTree("./dirA"))
-        getDirB().convention(project.fileTree("./dirB"))
+        //getDirA().convention(project.layout.projectDirectory.dir("./dirA"))
+        //getDirB().convention(project.layout.projectDirectory.dir("./dirB"))
         getOutputFile().convention(project.layout.buildDirectory.file("./differences.json"))
         getDiffDir().convention(project.layout.buildDirectory.dir("./diff"))
         //println "leave CompareDirectoriesTask()"
