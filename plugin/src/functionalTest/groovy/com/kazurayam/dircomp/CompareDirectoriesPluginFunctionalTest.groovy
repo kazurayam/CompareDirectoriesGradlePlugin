@@ -1,5 +1,6 @@
 package com.kazurayam.dircomp
 
+import org.gradle.testkit.runner.BuildResult
 import spock.lang.Specification
 import spock.lang.TempDir
 import org.gradle.testkit.runner.GradleRunner
@@ -7,6 +8,8 @@ import org.gradle.testkit.runner.GradleRunner
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+
+import static org.gradle.testkit.runner.TaskOutcome.SUCCESS
 
 class CompareDirectoriesPluginFunctionalTest extends Specification {
 
@@ -26,8 +29,6 @@ class CompareDirectoriesPluginFunctionalTest extends Specification {
     }
 
     def setup() {
-        outputFile = tempDir.toPath().resolve( "build/tmp/differences.json").toAbsolutePath()
-        diffDir = tempDir.toPath().resolve("build/tmp/diff").toAbsolutePath()
         settingsFile << ""
         buildFile << """
 plugins {
@@ -35,25 +36,33 @@ plugins {
 }
 
 compareDirectories {
-    dirA = file("${fixturesDir.toString()}/A")
-    dirB = file("${fixturesDir.toString()}/B")
+    dirA = fileTree("${fixturesDir}/A") { include "**/*" }
+    dirB = fileTree("${fixturesDir}/B") { include "**/*" }
     outputFile = file("build/tmp/differences.json")
     diffDir = file("build/tmp/diff")
 }
 
 task dircomp(type: com.kazurayam.dircomp.CompareDirectoriesTask) {
-    dirA = file("${fixturesDir.toString()}/A")
-    dirB = file("${fixturesDir.toString()}/B")
+    dirA = fileTree("${fixturesDir}/A") { include "**/*" }
+    dirB = fileTree("${fixturesDir}/B") { include "**/*" }
     outputFile = file("build/tmp/differences.json")
     diffDir = file("build/tmp/diff")
     doFirst {
         println "dircomp.doFirst was executed"
     }
     doLast {
-        println "dircomp2.doLast was executed"
+        println "dircomp.doLast was executed"
     }
 }
 """
+        outputFile = tempDir.toPath().resolve( "build/tmp/differences.json").toAbsolutePath()
+        diffDir = tempDir.toPath().resolve("build/tmp/diff").toAbsolutePath()
+
+        println '=============================================================='
+        Files.readAllLines(buildFile).eachWithIndex { line, index ->
+            println "${index+1} ${line}"
+        }
+        println '=============================================================='
     }
     //def cleanup() {}
     //def cleanupSpec() {}
@@ -66,14 +75,12 @@ task dircomp(type: com.kazurayam.dircomp.CompareDirectoriesTask) {
         Files.createDirectories(tempDir.toPath().resolve("build"))
 
         when:
-        def runner = GradleRunner.create()
-        runner.forwardOutput()
-        runner.withPluginClasspath()
-        runner.withArguments("compareDirectories")
-        runner.withProjectDir(tempDir)
-        def result = runner.build()
+        BuildResult result = GradleRunner.create()
+                .withProjectDir(tempDir)
+                .withArguments("compareDirectories")
+                .withPluginClasspath()
+                .build()
         String message = outputFile.toFile().text
-        println "[CompareDirectoriesPluginFunctionalTest]"
         println message
 
         then:
@@ -81,6 +88,8 @@ task dircomp(type: com.kazurayam.dircomp.CompareDirectoriesTask) {
         message.contains("filesOnlyInB")
         message.contains("intersection")
         message.contains("modifiedFiles")
+        result.output.contains("intersection")
+        result.task(":compareDirectories").outcome == SUCCESS
     }
 
     def "can run dircomp task"() {
@@ -90,14 +99,12 @@ task dircomp(type: com.kazurayam.dircomp.CompareDirectoriesTask) {
         Files.createDirectories(tempDir.toPath().resolve("build"))
 
         when:
-        def runner = GradleRunner.create()
-        runner.forwardOutput()
-        runner.withPluginClasspath()
-        runner.withArguments("dircomp") // THIS IS THE DIFFERENCE
-        runner.withProjectDir(tempDir)
-        def result = runner.build()
+        BuildResult result = GradleRunner.create()
+                .withProjectDir(tempDir)
+                .withArguments("dircomp") // THIS IS THE DIFFERENCE
+                .withPluginClasspath()
+                .build()
         String message = outputFile.toFile().text
-        println "[CompareDirectoriesPluginFunctionalTest]"
         println message
 
         then:
@@ -105,6 +112,8 @@ task dircomp(type: com.kazurayam.dircomp.CompareDirectoriesTask) {
         message.contains("filesOnlyInB")
         message.contains("intersection")
         message.contains("modifiedFiles")
+        result.output.contains("intersection")
+        result.task(":dircomp").outcome == SUCCESS
     }
 
     // helper methods

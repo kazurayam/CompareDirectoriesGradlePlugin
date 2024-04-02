@@ -4,9 +4,9 @@ import groovy.json.JsonOutput
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.ConfigurableFileTree
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.file.FileTree
+import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.tasks.InputDirectory
+import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
@@ -15,60 +15,51 @@ import org.slf4j.LoggerFactory
 
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
 
-abstract class CompareDirectoriesTask extends DefaultTask {
+class CompareDirectoriesTask extends DefaultTask {
 
     private Logger logger = LoggerFactory.getLogger(CompareDirectoriesTask.class)
 
-    @InputDirectory
-    abstract ConfigurableFileTree getDirA()
+    @InputFiles
+    ConfigurableFileTree dirA
 
-    @InputDirectory
-    abstract ConfigurableFileTree getDirB()
+    @InputFiles
+    ConfigurableFileTree dirB
 
     @OutputFile
-    abstract RegularFileProperty getOutputFile()
+    File outputFile
 
     @OutputDirectory
-    abstract DirectoryProperty getDiffDir()
+    File diffDir
 
     CompareDirectoriesTask() {
         //println "enter CompareDirectoriesTask()"
-        getDirA().convention(project.fileTree("./dirA"))
-        getDirB().convention(project.fileTree("./dirB"))
-        getOutputFile().convention(project.layout.buildDirectory.file("./differences.json"))
-        getDiffDir().convention(project.layout.buildDirectory.dir("./diff"))
+        //getDirA().convention(project.fileTree("./dirA"))
+        //getDirB().convention(project.fileTree("./dirB"))
+        //outputFile.convention(project.layout.buildDirectory.file("./differences.json"))
+        //diffDir.convention(project.layout.buildDirectory.dir("./diff"))
         //println "leave CompareDirectoriesTask()"
     }
 
     @TaskAction
     void action() {
         //println "action() started"
-        Path baseDir = project.getLayout().getBuildDirectory()
-                .get().getAsFile().toPath()
-        if (!Files.exists(baseDir)) {
-            throw new FileNotFoundException("${baseDir} is not found")
-        }
 
-        if (!Files.exists(getDirA().getDir().toPath())) {
-            throw new FileNotFoundException("${dirA} is not found")
-        }
-
-        if (!Files.exists(getDirB().getDir().toPath())) {
-            throw new FileNotFoundException("${dirB} is not found")
-        }
-
-        Path outputFile = Paths.get(getOutputFile().get().toString())
+        Path outputFile = getOutputFile().toPath()
         Files.createDirectories(outputFile.getParent())
 
-        Path diffDir = Paths.get(getDiffDir().get().toString())
+        Path diffDir = getDiffDir().toPath()
         Files.createDirectories(diffDir)
 
         // compare 2 directories
-        DirectoriesComparator comparator =
-                new DirectoriesComparator(baseDir, dirA, dirB)
-        DirectoriesDifferences differences = comparator.getDifferences()
+        File baseDirA = getDirA().getDir()
+        FileCollection filesA = (FileCollection)getDirA()
+        File baseDirB = getDirB().getDir()
+        FileCollection filesB = (FileCollection)getDirB()
+        //
+        FileCollectionsComparator comparator =
+                new FileCollectionsComparator(baseDirA, filesA, baseDirB, filesB)
+        FileCollectionsDifferences differences = comparator.getDifferences()
         println "filesOnlyInA: ${differences.filesOnlyInA.size()} files"
         println "filesOnlyInB: ${differences.filesOnlyInB.size()} files"
         println "intersection: ${differences.intersection.size()} files"
