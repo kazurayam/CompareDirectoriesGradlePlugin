@@ -20,7 +20,6 @@ class DirectoriesDifferences {
 
     private static Logger logger = LoggerFactory.getLogger(DirectoriesDifferences.class)
 
-    private Path baseDir
     private Path dirA
     private Path dirB
 
@@ -48,7 +47,6 @@ class DirectoriesDifferences {
      * com.fasterxml.jackson.databind requires the default constructor without args
      */
     DirectoriesDifferences() {
-        this.baseDir = null;
         this.dirA = null;
         this.dirB = null;
         this.filesOnlyInA = new HashSet<>();
@@ -57,14 +55,12 @@ class DirectoriesDifferences {
         this.modifiedFiles = new HashSet<>();
     }
 
-    DirectoriesDifferences(Path baseDir,
-                           Path dirA,
+    DirectoriesDifferences(Path dirA,
                            Path dirB,
                            Set<String> filesOnlyInA,
                            Set<String> filesOnlyInB,
                            Set<String> intersection,
                            Set<String> modifiedFiles) {
-        this.baseDir = baseDir.normalize().toAbsolutePath()
         this.dirA = dirA.normalize()
         this.dirB = dirB.normalize()
         this.filesOnlyInA = filesOnlyInA
@@ -91,7 +87,7 @@ class DirectoriesDifferences {
                 .collect(Collectors.toList());
     }
 
-    public void setFilesOnlyInB(Collection<String> filesOnlyInB) {
+    void setFilesOnlyInB(Collection<String> filesOnlyInB) {
         this.filesOnlyInB = new HashSet<>(filesOnlyInB);
     }
 
@@ -111,7 +107,7 @@ class DirectoriesDifferences {
                 .collect(Collectors.toList());
     }
 
-    public void setModifiedFiles(Collection<String> modifiedFiles) {
+    void setModifiedFiles(Collection<String> modifiedFiles) {
         this.modifiedFiles = new HashSet<>(modifiedFiles);
     }
 

@@ -51,7 +51,7 @@ class DirectoriesComparator {
             }
         }
         differences =
-                new DirectoriesDifferences(baseDir, dirA, dirB,
+                new DirectoriesDifferences(dirA, dirB,
                         filesOnlyInA,
                         filesOnlyInB,
                         intersection,
