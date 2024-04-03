@@ -24,14 +24,25 @@ tasks.withType(Test) {
     useJUnitPlatform()
 }
 
-def functionalTest = sourceSets.create("functionalTest")
-def functionalTestTask = tasks.register("functionalTest", Test) {
+sourceSets {
+    functionalTest {
+        java {
+            srcDir 'src/functionalTest/java'
+            srcDir 'src/functionalTest/groovy'
+        }
+        resources {
+            srcDir 'src/functionalTest/resources'
+        }
+        compileClasspath += sourceSets.main.runtimeClasspath
+    }
+}
+tasks.register("functionalTest", Test) {
     description = "Runs the functional tests."
     group = "verification"
-    testClassesDirs = functionalTest.output.classesDirs
-    classpath = functionalTest.runtimeClasspath
-    mustRunAfter(tasks.named('test'))
+    testClassesDirs = sourceSets.functionalTest.output.classesDirs
+    classpath += sourceSets.functionalTest.runtimeClasspath
 }
+functionalTest.mustRunAfter test
 tasks.named('check') {
     dependsOn(test, functionalTestTask)
 }
