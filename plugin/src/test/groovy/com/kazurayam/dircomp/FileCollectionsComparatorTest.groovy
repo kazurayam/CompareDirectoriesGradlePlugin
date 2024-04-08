@@ -25,7 +25,7 @@ class FileCollectionsComparatorTest {
     @Test
     void test_toSubPaths() {
         Path dir = too.getClassOutputDirectory().resolve("A")
-        List<Path> files = new DirectoryScanner(dir).scan().getFiles()
+        Set<Path> files = new DirectoryScanner(dir).scan().getFiles()
         Set<String> subPaths = FileCollectionsComparator.toSubPaths(dir, files)
         assertThat(subPaths).hasSizeGreaterThan(0)
         subPaths.stream().sorted().each { println it}

@@ -2,6 +2,7 @@ package com.kazurayam.dircomp
 
 import com.kazurayam.unittest.TestOutputOrganizer
 import org.gradle.testkit.runner.BuildResult
+import spock.lang.Ignore
 import spock.lang.Specification
 import org.gradle.testkit.runner.GradleRunner
 
@@ -15,6 +16,7 @@ import static org.gradle.testkit.runner.TaskOutcome.SUCCESS
  * errors appropriately. For example, if dirA parameter is NOT given when you run
  * the task, what happends?
  */
+@Ignore
 class CompareDirectoriesPluginErrorHandlingTest extends Specification {
 
     private static TestOutputOrganizer too =

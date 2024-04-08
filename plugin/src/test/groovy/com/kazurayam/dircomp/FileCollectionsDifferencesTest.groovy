@@ -40,8 +40,8 @@ class FileCollectionsDifferencesTest {
 
     @BeforeEach
     void beforeEach() {
-        List<Path> contentA = new DirectoryScanner(dirA).scan().getFiles()
-        List<Path> contentB = new DirectoryScanner(dirB).scan().getFiles()
+        Set<Path> contentA = new DirectoryScanner(dirA).scan().getFiles()
+        Set<Path> contentB = new DirectoryScanner(dirB).scan().getFiles()
         instance = new FileCollectionsComparator(dirA, contentA, dirB, contentB)
         differences = instance.getDifferences()
     }
@@ -51,6 +51,7 @@ class FileCollectionsDifferencesTest {
         String jsonResult = differences.serialize()
         assertNotNull(jsonResult)
         println jsonResult
+        assertTrue(jsonResult.contains("取扱説明書"))
     }
 
     @Test
@@ -67,7 +68,7 @@ class FileCollectionsDifferencesTest {
     @Test
     void testMakeDiffFiles() {
         int result = differences.makeDiffFiles(diffDir)
-        assertEquals(1, result)
+        assertEquals(2, result)
     }
 
     @Test

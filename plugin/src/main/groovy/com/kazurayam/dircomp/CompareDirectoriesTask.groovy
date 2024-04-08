@@ -1,25 +1,19 @@
 package com.kazurayam.dircomp
 
-import groovy.json.JsonOutput
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.ConfigurableFileTree
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 import java.nio.file.Files
 import java.nio.file.Path
 
 abstract class CompareDirectoriesTask extends DefaultTask {
-
-    private Logger logger = LoggerFactory.getLogger(CompareDirectoriesTask.class)
 
     @InputFiles
     abstract Property<ConfigurableFileTree> getDirA()
@@ -42,12 +36,11 @@ abstract class CompareDirectoriesTask extends DefaultTask {
 
     @TaskAction
     void action() {
-
         // compare 2 directories
         File baseDirA = getDirA().get().getDir()
-        FileCollection filesA = (FileCollection)getDirA()
+        Set<File> filesA = getDirA().get().getFiles()
         File baseDirB = getDirB().get().getDir()
-        FileCollection filesB = (FileCollection)getDirB()
+        Set<File> filesB = getDirB().get().getFiles()
 
         // do compare the 2 FileCollections retrieved out of the given FileTrees
         FileCollectionsComparator comparator =
@@ -57,10 +50,10 @@ abstract class CompareDirectoriesTask extends DefaultTask {
         // write the summary json
         Path outputFile = getOutputFile().get().asFile.toPath()
         Files.createDirectories(outputFile.getParent())
-        outputFile.text = JsonOutput.prettyPrint(differences.serialize())
+        outputFile.text = differences.serialize()
 
         // create the unified-diff files, write them into to diffDir
-        Path diffDir = getDiffDir().get().asFile().toPath()
+        Path diffDir = getDiffDir().get().asFile.toPath()
         Files.createDirectories(diffDir)
         differences.makeDiffFiles(diffDir)
 

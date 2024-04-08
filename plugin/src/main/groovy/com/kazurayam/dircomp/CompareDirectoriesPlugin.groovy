@@ -9,14 +9,16 @@ class CompareDirectoriesPlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
         // add the 'compareDirectories' extension object into the project
-        def ext = project.extensions.create("compareDirectories", CompareDirectoriesExtension)
+        def ext =
+                project.extensions.create("compareDirectories", CompareDirectoriesExtension)
 
         // create the 'compareDirectories' task and register it into the project
-        project.tasks.register("compareDirectories", CompareDirectoriesTask) { task ->
-            task.dirA = (ConfigurableFileTree)ext.dirA.get()
-            task.dirB = (ConfigurableFileTree)ext.dirB.get()
-            task.outputFile = (File)ext.outputFile.get()
-            task.diffDir = (File)ext.diffDir.get()
+        project.tasks.register("compareDirectories", CompareDirectoriesTask)
+                { task ->
+            task.dirA.convention(ext.dirA)
+            task.dirB.convention(ext.dirB)
+            task.outputFile.convention(ext.outputFile)
+            task.diffDir.convention(ext.diffDir)
         }
     }
 }
