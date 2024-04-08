@@ -3,7 +3,10 @@ package com.kazurayam.dircomp
 import groovy.json.JsonOutput
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.ConfigurableFileTree
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
+import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.OutputFile
@@ -14,31 +17,36 @@ import org.slf4j.LoggerFactory
 import java.nio.file.Files
 import java.nio.file.Path
 
-class CompareDirectoriesTask extends DefaultTask {
+abstract class CompareDirectoriesTask extends DefaultTask {
 
     private Logger logger = LoggerFactory.getLogger(CompareDirectoriesTask.class)
 
     @InputFiles
-    ConfigurableFileTree dirA
+    abstract Property<ConfigurableFileTree> getDirA()
 
     @InputFiles
-    ConfigurableFileTree dirB
+    abstract Property<ConfigurableFileTree> getDirB()
 
     @OutputFile
-    File outputFile
+    abstract RegularFileProperty getOutputFile()
 
     @OutputDirectory
-    File diffDir
+    abstract DirectoryProperty getDiffDir()
 
-    CompareDirectoriesTask() {}
+    CompareDirectoriesTask() {
+        getDirA().convention(project.fileTree(project.layout.projectDirectory.dir("src")))
+        getDirB().convention(project.fileTree(project.layout.projectDirectory.dir("src")))
+        getOutputFile().convention(project.layout.buildDirectory.file("difference.json"))
+        getDiffDir().convention(project.layout.buildDirectory.dir("diffDir"))
+    }
 
     @TaskAction
     void action() {
 
         // compare 2 directories
-        File baseDirA = getDirA().getDir()
+        File baseDirA = getDirA().get().getDir()
         FileCollection filesA = (FileCollection)getDirA()
-        File baseDirB = getDirB().getDir()
+        File baseDirB = getDirB().get().getDir()
         FileCollection filesB = (FileCollection)getDirB()
 
         // do compare the 2 FileCollections retrieved out of the given FileTrees
@@ -47,12 +55,12 @@ class CompareDirectoriesTask extends DefaultTask {
         FileCollectionsDifferences differences = comparator.getDifferences()
 
         // write the summary json
-        Path outputFile = getOutputFile().toPath()
+        Path outputFile = getOutputFile().get().asFile.toPath()
         Files.createDirectories(outputFile.getParent())
         outputFile.text = JsonOutput.prettyPrint(differences.serialize())
 
         // create the unified-diff files, write them into to diffDir
-        Path diffDir = getDiffDir().toPath()
+        Path diffDir = getDiffDir().get().asFile().toPath()
         Files.createDirectories(diffDir)
         differences.makeDiffFiles(diffDir)
 

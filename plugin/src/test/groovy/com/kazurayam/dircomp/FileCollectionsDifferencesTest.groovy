@@ -59,7 +59,7 @@ class FileCollectionsDifferencesTest {
         tmpFile.text = differences.serialize()
         assertTrue(Files.size(tmpFile) > 0)
         //
-        DirectoriesDifferences instance = DirectoriesDifferences.deserialize(tmpFile)
+        FileCollectionsDifferences instance = FileCollectionsDifferences.deserialize(tmpFile)
         assertNotNull(instance)
         println instance.serialize()
     }
@@ -68,5 +68,14 @@ class FileCollectionsDifferencesTest {
     void testMakeDiffFiles() {
         int result = differences.makeDiffFiles(diffDir)
         assertEquals(1, result)
+    }
+
+    @Test
+    void testReadAllLines_PNG() {
+        Path apple = dirA.resolve("apple.png")
+        List<String> content = FileCollectionsDifferences.readAllLines(apple)
+        assertTrue(content.get(0).contains("Failed to read"))
+        assertTrue(content.get(0).contains("apple.png"))
+        assertTrue(content.get(0).contains("as a text in UTF-8"))
     }
 }

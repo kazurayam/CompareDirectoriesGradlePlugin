@@ -1,19 +1,16 @@
 package com.kazurayam.dircomp
 
 import org.gradle.api.Project
+import org.gradle.api.file.ConfigurableFileTree
+import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 
-class CompareDirectoriesExtension {
+abstract class CompareDirectoriesExtension {
 
-    Property<Object> dirA
-    Property<Object> dirB
-    Property<Object> outputFile
-    Property<Object> diffDir
+    abstract Property<ConfigurableFileTree> getDirA()
+    abstract Property<ConfigurableFileTree> getDirB()
+    abstract RegularFileProperty getOutputFile()
+    abstract DirectoryProperty getDiffDir()
 
-    CompareDirectoriesExtension(Project project) {
-        this.dirA = project.objects.property(Object)
-        this.dirB = project.objects.property(Object)
-        this.outputFile = project.objects.property(Object)
-        this.diffDir = project.objects.property(Object)
-    }
 }
