@@ -46,7 +46,7 @@ tasks.register("functionalTest", Test) {
 }
 functionalTest.mustRunAfter test
 tasks.named('check') {
-    dependsOn(test, functionalTestTask)
+    dependsOn(test, functionalTest)
 }
 
 dependencies {
