@@ -9,6 +9,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 import java.nio.charset.MalformedInputException
+import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.stream.Collectors
@@ -210,9 +211,11 @@ class FileCollectionsDifferences {
     static List<String> readAllLines(Path file) throws IOException {
         List<String> lines = new ArrayList<>()
         try {
-            lines = new ArrayList<>(Files.readAllLines(file))
+            lines = new ArrayList<>(Files.readAllLines(file, StandardCharsets.UTF_8))
         } catch (MalformedInputException e) {
-            lines.add("${file.toString()} is not a text filed encoded by charset utf-8")
+            String msg = "Failed to read " + file.toString() + " as a text in UTF-8"
+            lines.add(msg)
+            logger.warn(msg)
         }
         return lines
     }

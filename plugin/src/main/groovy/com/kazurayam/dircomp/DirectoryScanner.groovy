@@ -29,9 +29,9 @@ class DirectoryScanner {
         return this
     }
 
-    List<Path> getFiles() {
+    Set<Path> getFiles() {
         List<Path> files = visitor.getFiles()
-        return files.stream().sorted().collect(Collectors.toList())
+        return files.stream().sorted().collect(Collectors.toSet())
     }
 
     Set<String> getSubPaths() {

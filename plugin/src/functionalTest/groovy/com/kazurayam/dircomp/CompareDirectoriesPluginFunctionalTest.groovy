@@ -38,15 +38,15 @@ plugins {
 compareDirectories {
     dirA = fileTree("${fixturesDir}/A")
     dirB = fileTree("${fixturesDir}/B")
-    outputFile = file("build/tmp/differences.json")
-    diffDir = file("build/tmp/diff")
+    outputFile = layout.buildDirectory.file("tmp/differences.json")
+    diffDir = layout.buildDirectory.dir("tmp/diff")
 }
 
 task dircomp(type: com.kazurayam.dircomp.CompareDirectoriesTask) {
     dirA = fileTree("${fixturesDir}/A") { exclude "**/*.png" }
     dirB = fileTree("${fixturesDir}/B") { exclude "**/*.png" }
-    outputFile = file("build/tmp/differences.json")
-    diffDir = file("build/tmp/diff")
+    outputFile = layout.buildDirectory.file("tmp/differences.json")
+    diffDir = layout.buildDirectory.dir("tmp/diff")
     doFirst {
         println "dircomp.doFirst was executed"
     }

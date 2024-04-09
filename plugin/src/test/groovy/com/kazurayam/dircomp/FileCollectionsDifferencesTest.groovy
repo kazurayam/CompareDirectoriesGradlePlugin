@@ -40,8 +40,8 @@ class FileCollectionsDifferencesTest {
 
     @BeforeEach
     void beforeEach() {
-        List<Path> contentA = new DirectoryScanner(dirA).scan().getFiles()
-        List<Path> contentB = new DirectoryScanner(dirB).scan().getFiles()
+        Set<Path> contentA = new DirectoryScanner(dirA).scan().getFiles()
+        Set<Path> contentB = new DirectoryScanner(dirB).scan().getFiles()
         instance = new FileCollectionsComparator(dirA, contentA, dirB, contentB)
         differences = instance.getDifferences()
     }
@@ -51,6 +51,7 @@ class FileCollectionsDifferencesTest {
         String jsonResult = differences.serialize()
         assertNotNull(jsonResult)
         println jsonResult
+        assertTrue(jsonResult.contains("取扱説明書"))
     }
 
     @Test
@@ -59,7 +60,7 @@ class FileCollectionsDifferencesTest {
         tmpFile.text = differences.serialize()
         assertTrue(Files.size(tmpFile) > 0)
         //
-        DirectoriesDifferences instance = DirectoriesDifferences.deserialize(tmpFile)
+        FileCollectionsDifferences instance = FileCollectionsDifferences.deserialize(tmpFile)
         assertNotNull(instance)
         println instance.serialize()
     }
@@ -67,6 +68,15 @@ class FileCollectionsDifferencesTest {
     @Test
     void testMakeDiffFiles() {
         int result = differences.makeDiffFiles(diffDir)
-        assertEquals(1, result)
+        assertEquals(2, result)
+    }
+
+    @Test
+    void testReadAllLines_PNG() {
+        Path apple = dirA.resolve("apple.png")
+        List<String> content = FileCollectionsDifferences.readAllLines(apple)
+        assertTrue(content.get(0).contains("Failed to read"))
+        assertTrue(content.get(0).contains("apple.png"))
+        assertTrue(content.get(0).contains("as a text in UTF-8"))
     }
 }

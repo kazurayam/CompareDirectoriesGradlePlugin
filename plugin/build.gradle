@@ -7,7 +7,8 @@ plugins {
 }
 
 group = "com.kazurayam"
-version = "0.2.0"
+version = "0.2.1"
+
 base {
     archivesName = 'compare-directories-plugin'
 }
@@ -18,22 +19,34 @@ ext {
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 tasks.withType(Test) {
     useJUnitPlatform()
 }
 
-def functionalTest = sourceSets.create("functionalTest")
-def functionalTestTask = tasks.register("functionalTest", Test) {
+sourceSets {
+    functionalTest {
+        java {
+            srcDir 'src/functionalTest/java'
+            srcDir 'src/functionalTest/groovy'
+        }
+        resources {
+            srcDir 'src/functionalTest/resources'
+        }
+        compileClasspath += sourceSets.main.runtimeClasspath
+    }
+}
+tasks.register("functionalTest", Test) {
     description = "Runs the functional tests."
     group = "verification"
-    testClassesDirs = functionalTest.output.classesDirs
-    classpath = functionalTest.runtimeClasspath
-    mustRunAfter(tasks.named('test'))
+    testClassesDirs = sourceSets.functionalTest.output.classesDirs
+    classpath += sourceSets.functionalTest.runtimeClasspath
 }
+functionalTest.mustRunAfter test
 tasks.named('check') {
-    dependsOn(test, functionalTestTask)
+    dependsOn(test, functionalTest)
 }
 
 dependencies {
@@ -43,12 +56,13 @@ dependencies {
 
     testImplementation group: 'org.slf4j', name: 'slf4j-simple', version: "2.0.7"
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.9.0'
-    testImplementation("com.kazurayam:unittest-helper:0.3.0")
+    testImplementation("com.kazurayam:unittest-helper:0.3.1")
     testImplementation 'org.assertj:assertj-core:3.25.3'
     testImplementation gradleTestKit()
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.9.0'
     functionalTestImplementation platform(group: 'org.spockframework', name: 'spock-bom', version: '2.3-groovy-3.0')
     functionalTestImplementation group: 'org.spockframework', name: 'spock-core', version: '2.3-groovy-3.0'
+    functionalTestImplementation("com.kazurayam:unittest-helper:0.3.1")
 }
 
 gradlePlugin {

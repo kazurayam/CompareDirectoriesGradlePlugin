@@ -11,33 +11,33 @@ class FileCollectionsComparator {
     private final MessageDigest digester = MessageDigest.getInstance('SHA')
 
     private final Path dirA
-    private final List<Path> collectionA
+    private final Set<Path> collectionA
     private final Path dirB
-    private final List<Path> collectionB
+    private final Set<Path> collectionB
     private FileCollectionsDifferences differences
 
     FileCollectionsComparator(File dirA,
                               FileCollection collectionA,
                               File dirB,
                               FileCollection collectionB) {
-        this(dirA, collectionA as List<File>, dirB, collectionB as List<File>)
+        this(dirA, collectionA as Set<File>, dirB, collectionB as Set<File>)
     }
 
     FileCollectionsComparator(File dirA,
-                              List<File> collectionA,
+                              Set<File> collectionA,
                               File dirB,
-                              List<File> collectionB) {
+                              Set<File> collectionB) {
         this(dirA.toPath(),
-                collectionA.stream().map(f -> f.toPath()).collect(Collectors.toList()),
+                collectionA.stream().map(f -> f.toPath()).collect(Collectors.toSet()),
                 dirB.toPath(),
-                collectionB.stream().map(f -> f.toPath()).collect(Collectors.toList())
+                collectionB.stream().map(f -> f.toPath()).collect(Collectors.toSet())
                 )
     }
 
     FileCollectionsComparator(Path dirA,
-                              List<Path> collectionA,
+                              Set<Path> collectionA,
                               Path dirB,
-                              List<Path> collectionB) {
+                              Set<Path> collectionB) {
         this.dirA = dirA
         this.collectionA = collectionA
         this.dirB = dirB
@@ -83,6 +83,11 @@ class FileCollectionsComparator {
     }
 
     static Set<String> toSubPaths(Path dir, List<Path> paths) {
+        Set<Path> set = new HashSet<>(paths)
+        return toSubPaths(dir, set)
+    }
+
+    static Set<String> toSubPaths(Path dir, Set<Path> paths) {
         Set<String> set = new HashSet<>()
         paths.each {path ->
             set.add(dir.relativize(path).toString())
