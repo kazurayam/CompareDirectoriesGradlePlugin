@@ -17,9 +17,9 @@ import java.util.stream.Collectors
 /**
  * Data object that contains information of the differences between 2 directories
  */
-class FileCollectionsDifferences {
+class DirectoriesDifferences {
 
-    private static Logger logger = LoggerFactory.getLogger(FileCollectionsDifferences.class)
+    private static Logger logger = LoggerFactory.getLogger(DirectoriesDifferences.class)
 
     private Path dirA
     private Path dirB
@@ -47,7 +47,7 @@ class FileCollectionsDifferences {
     /**
      * com.fasterxml.jackson.databind requires the default constructor without args
      */
-    FileCollectionsDifferences() {
+    DirectoriesDifferences() {
         this.dirA = null;
         this.dirB = null;
         this.filesOnlyInA = new HashSet<>();
@@ -56,7 +56,7 @@ class FileCollectionsDifferences {
         this.modifiedFiles = new HashSet<>();
     }
 
-    FileCollectionsDifferences(
+    DirectoriesDifferences(
             Path dirA,
             Path dirB,
             Set<String> filesOnlyInA,
@@ -135,15 +135,15 @@ class FileCollectionsDifferences {
         }
     }
 
-    static FileCollectionsDifferences deserialize(File json) {
+    static DirectoriesDifferences deserialize(File json) {
         return deserialize(json.toPath());
     }
 
-    static FileCollectionsDifferences deserialize(Path jsonFile) {
+    static DirectoriesDifferences deserialize(Path jsonFile) {
         try {
             String json = String.join("\n", Files.readAllLines(jsonFile));
             ObjectMapper mapper = new ObjectMapper();
-            return mapper.readValue(json, FileCollectionsDifferences.class);
+            return mapper.readValue(json, DirectoriesDifferences.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

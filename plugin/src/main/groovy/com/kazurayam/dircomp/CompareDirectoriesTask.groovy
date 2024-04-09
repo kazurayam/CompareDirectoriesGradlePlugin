@@ -37,15 +37,13 @@ abstract class CompareDirectoriesTask extends DefaultTask {
     @TaskAction
     void action() {
         // compare 2 directories
-        File baseDirA = getDirA().get().getDir()
-        Set<File> filesA = getDirA().get().getFiles()
-        File baseDirB = getDirB().get().getDir()
-        Set<File> filesB = getDirB().get().getFiles()
+        ConfigurableFileTree fileTreeA = getDirA().get()
+        ConfigurableFileTree fileTreeB = getDirB().get()
 
         // do compare the 2 FileCollections retrieved out of the given FileTrees
-        FileCollectionsComparator comparator =
-                new FileCollectionsComparator(baseDirA, filesA, baseDirB, filesB)
-        FileCollectionsDifferences differences = comparator.getDifferences()
+        DirectoriesComparator comparator =
+                new DirectoriesComparator(fileTreeA, fileTreeB)
+        DirectoriesDifferences differences = comparator.getDifferences()
 
         // write the summary json
         Path outputFile = getOutputFile().get().asFile.toPath()

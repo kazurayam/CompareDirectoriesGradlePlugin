@@ -1,12 +1,12 @@
 package com.kazurayam.dircomp
 
-import org.gradle.api.file.FileCollection
+import org.gradle.api.file.ConfigurableFileTree
 
 import java.nio.file.Path
 import java.security.MessageDigest
 import java.util.stream.Collectors
 
-class FileCollectionsComparator {
+class DirectoriesComparator {
 
     private final MessageDigest digester = MessageDigest.getInstance('SHA')
 
@@ -14,19 +14,17 @@ class FileCollectionsComparator {
     private final Set<Path> collectionA
     private final Path dirB
     private final Set<Path> collectionB
-    private FileCollectionsDifferences differences
+    private DirectoriesDifferences differences
 
-    FileCollectionsComparator(File dirA,
-                              FileCollection collectionA,
-                              File dirB,
-                              FileCollection collectionB) {
-        this(dirA, collectionA as Set<File>, dirB, collectionB as Set<File>)
+    DirectoriesComparator(ConfigurableFileTree fileTreeA,
+                          ConfigurableFileTree fileTreeB) {
+        this(fileTreeA.getDir(), fileTreeA.files, fileTreeB.getDir(), fileTreeB.files)
     }
 
-    FileCollectionsComparator(File dirA,
-                              Set<File> collectionA,
-                              File dirB,
-                              Set<File> collectionB) {
+    DirectoriesComparator(File dirA,
+                          Set<File> collectionA,
+                          File dirB,
+                          Set<File> collectionB) {
         this(dirA.toPath(),
                 collectionA.stream().map(f -> f.toPath()).collect(Collectors.toSet()),
                 dirB.toPath(),
@@ -34,10 +32,10 @@ class FileCollectionsComparator {
                 )
     }
 
-    FileCollectionsComparator(Path dirA,
-                              Set<Path> collectionA,
-                              Path dirB,
-                              Set<Path> collectionB) {
+    DirectoriesComparator(Path dirA,
+                          Set<Path> collectionA,
+                          Path dirB,
+                          Set<Path> collectionB) {
         this.dirA = dirA
         this.collectionA = collectionA
         this.dirB = dirB
@@ -71,14 +69,14 @@ class FileCollectionsComparator {
             }
         }
         differences =
-                new FileCollectionsDifferences(dirA, dirB,
+                new DirectoriesDifferences(dirA, dirB,
                         filesOnlyInA,
                         filesOnlyInB,
                         intersection,
                         modifiedFiles)
     }
 
-    FileCollectionsDifferences getDifferences() {
+    DirectoriesDifferences getDifferences() {
         return this.differences
     }
 
