@@ -79,18 +79,10 @@ class DirectoriesDifferences {
         return dirB
     }
 
-    void setFilesOnlyInA(Collection<String> filesOnlyInA) {
-        this.filesOnlyInA = new HashSet<>(filesOnlyInA);
-    }
-
     List<String> getFilesOnlyInA() {
         return filesOnlyInA.stream()
                 .sorted()
                 .collect(Collectors.toList());
-    }
-
-    void setFilesOnlyInB(Collection<String> filesOnlyInB) {
-        this.filesOnlyInB = new HashSet<>(filesOnlyInB);
     }
 
     List<String> getFilesOnlyInB() {
@@ -99,18 +91,10 @@ class DirectoriesDifferences {
                 .collect(Collectors.toList());
     }
 
-    void setIntersection(Collection<String> intersection) {
-        this.intersection = new HashSet<>(intersection);
-    }
-
     List<String> getIntersection() {
         return intersection.stream()
                 .sorted()
                 .collect(Collectors.toList());
-    }
-
-    void setModifiedFiles(Collection<String> modifiedFiles) {
-        this.modifiedFiles = new HashSet<>(modifiedFiles);
     }
 
     List<String> getModifiedFiles() {
