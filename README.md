@@ -30,24 +30,25 @@ plugins {
 }
 
 compareDirectories {
-    dirA = fileTree(layout.projectDirectory.dir("src/test/fixtures/A")) { exclude "**/*.png" }
-    dirB = fileTree(layout.projectDirectory.dir("src/test/fixtures/B")) { exclude "**/*.png" }
-    outputFile = layout.buildDirectory.file("tmp/differences.json")
-    diffDir = layout.buildDirectory.dir("tmp/diff")
+    dirA = fileTree(layout.projectDirectory.dir("data/A")) { exclude "**/*.png" }
+    dirB = fileTree(layout.projectDirectory.dir("data/B")) { exclude "**/*.png" }
+    outputFile = layout.buildDirectory.file("out/differences.json")
+    diffDir = layout.buildDirectory.dir("out/diff")
 }
 
 tasks.register("dircomp", com.kazurayam.dircomp.CompareDirectoriesTask) {
     dirA = fileTree(layout.projectDirectory.dir("src/test/fixtures/A")) { exclude "**/*.png" }
     dirB = fileTree(layout.projectDirectory.dir("src/test/fixtures/B")) { exclude "**/*.png" }
-    outputFile = layout.buildDirectory.file("tmp/differences.json")
-    diffDir = layout.buildDirectory.dir("tmp/diff")
+    outputFile = layout.buildDirectory.file("out/differences.json")
+    diffDir = layout.buildDirectory.dir("out/diff")
     doFirst {
-        delete layout.buildDirectory.dir("tmp")
+        delete layout.buildDirectory.dir("out")
     }
     doLast {
-        println "output at " + layout.buildDirectory.dir("tmp").get()
+        println "output at " + layout.buildDirectory.dir("out").get()
     }
 }
+
 ```
 
 Then you want to execute:
@@ -77,34 +78,33 @@ The `difference.json` file contains a tree of file names categorized as "filesOn
 
 ```
 {
-    "dirA": "file:///Users/kazurayam/github/CompareDirectoriesGradlePlugin/plugin-project/plugin/src/test/fixtures/A/",
-    "dirB": "file:///Users/kazurayam/github/CompareDirectoriesGradlePlugin/plugin-project/plugin/src/test/fixtures/B/",
-    "filesOnlyInA": [
-        "sub/i.txt"
-    ],
-    "filesOnlyInB": [
-        "j.txt",
-        "sub/h.txt"
-    ],
-    "intersection": [
-        "apple.png",
-        "d.txt",
-        "e.txt",
-        "sub/f.txt",
-        "sub/g.txt"
-    ],
-    "modifiedFiles": [
-        "sub/g.txt"
-    ]
+  "dirA" : "file:///Users/kazuakiurayama/github/CompareDirectoriesGradlePlugin/plugin/test-output/com.kazurayam.dircomp.CompareDirectoriesPluginFunctionalTest/data/A/",
+  "dirB" : "file:///Users/kazuakiurayama/github/CompareDirectoriesGradlePlugin/plugin/test-output/com.kazurayam.dircomp.CompareDirectoriesPluginFunctionalTest/data/B/",
+  "filesOnlyInA" : [ "sub/i.txt" ],
+  "filesOnlyInB" : [ "j.txt", "sub/h.txt" ],
+  "intersection" : [ "d.txt", "e.txt", "sub/f.txt", "sub/g.txt", "このファイルはシフトJISだよん.txt", "取扱説明書.md" ],
+  "modifiedFiles" : [ "sub/g.txt", "このファイルはシフトJISだよん.txt", "取扱説明書.md" ]
 }
 ```
 
 The `dircomp` task creates the `build/out/diff` directory. In the directory you will find the **unified diff** of each individual "modified" files.
 
 ```
---- /Users/kazuakiurayama/github/CompareDirectoriesGradlePlugin/plugin-project/plugin/src/test/fixtures/A/sub/g.txt
-+++ /Users/kazuakiurayama/github/CompareDirectoriesGradlePlugin/plugin-project/plugin/src/test/fixtures/B/sub/g.txt
+--- /Users/kazuakiurayama/github/CompareDirectoriesGradlePlugin/plugin/test-output/com.kazurayam.dircomp.CompareDirectoriesPluginFunctionalTest/data/A/sub/g.txt
++++ /Users/kazuakiurayama/github/CompareDirectoriesGradlePlugin/plugin/test-output/com.kazurayam.dircomp.CompareDirectoriesPluginFunctionalTest/data/B/sub/g.txt
 @@ -1,1 +1,1 @@
 -g
 +g is changed
+```
+
+
+Please note that this plugin assumes that all text files are encoded with UTF-8. If any files are encoded with other charsets (such as ShiftJIS), then this plugin would just skip presuming the correct charset; hence the unified-diff will result as follows:
+
+`diff/A_B/sub/このファイルはシフトJISだよん.txt`
+```
+--- /Users/.../data/A/このファイルはシフトJISだよん.txt
++++ /Users/.../data/B/このファイルはシフトJISだよん.txt
+@@ -1,1 +1,1 @@
+-Failed to read /Users/.../data/A/このファイルはシフトJISだよん.txt as a text in UTF-8
++Failed to read /Users/.../data/B/このファイルはシフトJISだよん.txt as a text in UTF-8
 ```
