@@ -10,6 +10,7 @@ import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 
+import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -48,7 +49,7 @@ abstract class CompareDirectoriesTask extends DefaultTask {
         // write the summary json
         Path outputFile = getOutputFile().get().asFile.toPath()
         Files.createDirectories(outputFile.getParent())
-        outputFile.text = differences.serialize()
+        differences.serialize(outputFile)
 
         // create the unified-diff files, write them into to diffDir
         Path diffDir = getDiffDir().get().asFile.toPath()

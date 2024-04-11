@@ -5,8 +5,12 @@ import org.gradle.api.file.ConfigurableFileTree
 import java.nio.file.Path
 import java.security.MessageDigest
 import java.util.stream.Collectors
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 class DirectoriesComparator {
+
+    private static final Logger logger = LoggerFactory.getLogger(DirectoriesComparator.class)
 
     private final MessageDigest digester = MessageDigest.getInstance('SHA')
 
@@ -88,6 +92,10 @@ class DirectoriesComparator {
     static Set<String> toSubPaths(Path dir, Set<Path> paths) {
         Set<String> set = new HashSet<>()
         paths.each {path ->
+
+            System.out.println("dir : " + dir)
+            System.out.println("path: " + path)
+
             set.add(dir.relativize(path).toString())
         }
         return set

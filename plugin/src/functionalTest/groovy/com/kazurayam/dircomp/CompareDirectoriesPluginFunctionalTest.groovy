@@ -1,5 +1,6 @@
 package com.kazurayam.dircomp
 
+import com.kazurayam.unittest.TestOutputOrganizer
 import org.gradle.testkit.runner.BuildResult
 import spock.lang.Specification
 import spock.lang.TempDir
@@ -13,19 +14,20 @@ import static org.gradle.testkit.runner.TaskOutcome.SUCCESS
 
 class CompareDirectoriesPluginFunctionalTest extends Specification {
 
-    // fields
-    @TempDir
-    private File tempDir
+    private static TestOutputOrganizer too =
+            new TestOutputOrganizer.Builder(CompareDirectoriesPluginFunctionalTest.class)
+                    .subDirPath(CompareDirectoriesPluginFunctionalTest.class).build()
 
-    private static Path projectDir
     private static Path fixturesDir
     private Path outputFile
     private Path diffDir
 
     // fixture methods
     def setupSpec() {
-        projectDir = Paths.get(".").toAbsolutePath().normalize()
-        fixturesDir = projectDir.resolve("src/test/fixtures").toAbsolutePath()
+        too.cleanClassOutputDirectory()
+        fixturesDir = too.getProjectDir().resolve("src/test/fixtures").toAbsolutePath()
+        Path dataDir = too.getClassOutputDirectory().resolve("data")
+        too.copyDir(fixturesDir, dataDir)
     }
 
     def setup() {
@@ -36,27 +38,14 @@ plugins {
 }
 
 compareDirectories {
-    dirA = fileTree("${fixturesDir}/A")
-    dirB = fileTree("${fixturesDir}/B")
-    outputFile = layout.buildDirectory.file("tmp/differences.json")
-    diffDir = layout.buildDirectory.dir("tmp/diff")
-}
-
-task dircomp(type: com.kazurayam.dircomp.CompareDirectoriesTask) {
-    dirA = fileTree("${fixturesDir}/A") { exclude "**/*.png" }
-    dirB = fileTree("${fixturesDir}/B") { exclude "**/*.png" }
-    outputFile = layout.buildDirectory.file("tmp/differences.json")
-    diffDir = layout.buildDirectory.dir("tmp/diff")
-    doFirst {
-        println "dircomp.doFirst was executed"
-    }
-    doLast {
-        println "dircomp.doLast was executed"
-    }
+    dirA = fileTree("data/A") { exclude "**/*.png" }
+    dirB = fileTree("data/B") { exclude "**/*.png" }
+    outputFile = layout.buildDirectory.file("out/differences.json")
+    diffDir = layout.buildDirectory.dir("out/diff")
 }
 """
-        outputFile = tempDir.toPath().resolve( "build/tmp/differences.json").toAbsolutePath()
-        diffDir = tempDir.toPath().resolve("build/tmp/diff").toAbsolutePath()
+        outputFile = too.getClassOutputDirectory().resolve( "build/out/differences.json").toAbsolutePath()
+        diffDir = too.getClassOutputDirectory().resolve("build/out/diff").toAbsolutePath()
 
         println '=============================================================='
         Files.readAllLines(buildFile).eachWithIndex { line, index ->
@@ -72,11 +61,11 @@ task dircomp(type: com.kazurayam.dircomp.CompareDirectoriesTask) {
         given:
         assert Files.exists(fixturesDir)
         println "fixturesDir=${fixturesDir.toString()}"
-        Files.createDirectories(tempDir.toPath().resolve("build"))
+        Files.createDirectories(too.getClassOutputDirectory().resolve("build"))
 
         when:
         BuildResult result = GradleRunner.create()
-                .withProjectDir(tempDir)
+                .withProjectDir(too.getClassOutputDirectory().toFile())
                 .withArguments("compareDirectories")
                 .withPluginClasspath()
                 .build()
@@ -88,42 +77,17 @@ task dircomp(type: com.kazurayam.dircomp.CompareDirectoriesTask) {
         message.contains("filesOnlyInB")
         message.contains("intersection")
         message.contains("modifiedFiles")
-        message.contains("apple.png")
+        !message.contains("apple.png")
         result.output.contains("intersection")
         result.task(":compareDirectories").outcome == SUCCESS
     }
 
-    def "can run dircomp task"() {
-        given:
-        assert Files.exists(fixturesDir)
-        println "fixturesDir=${fixturesDir.toString()}"
-        Files.createDirectories(tempDir.toPath().resolve("build"))
-
-        when:
-        BuildResult result = GradleRunner.create()
-                .withProjectDir(tempDir)
-                .withArguments("dircomp") // THIS IS THE DIFFERENCE
-                .withPluginClasspath()
-                .build()
-        String message = outputFile.toFile().text
-        println message
-
-        then:
-        message.contains("filesOnlyInA")
-        message.contains("filesOnlyInB")
-        message.contains("intersection")
-        message.contains("modifiedFiles")
-        ! message.contains("apple.png")    // the apple.png file is excluded
-        result.output.contains("intersection")
-        result.task(":dircomp").outcome == SUCCESS
-    }
-
     // helper methods
     private Path getBuildFile() {
-        return tempDir.toPath().resolve("build.gradle")
+        return too.getClassOutputDirectory().resolve("build.gradle")
     }
 
     private Path getSettingsFile() {
-        return tempDir.toPath().resolve("settings.gradle")
+        return too.getClassOutputDirectory().resolve("settings.gradle")
     }
 }
