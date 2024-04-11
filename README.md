@@ -98,7 +98,7 @@ The `dircomp` task creates the `build/out/diff` directory. In the directory you 
 ```
 
 
-Please note that this plugin assumes that all text files are encoded with UTF-8. If any files are encoded with other charsets (such as ShiftJIS), then this plugin would just skip presuming the correct charset; hence the unified-diff will result as follows:
+Please note that this plugin assumes that all text files are encoded with UTF-8. If any files are encoded with other charsets (such as ShiftJIS), then this plugin would just skip presuming the correct charset; hence the unified-diff will be useless as follows:
 
 `diff/A_B/sub/このファイルはシフトJISだよん.txt`
 ```
