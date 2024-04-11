@@ -4,12 +4,16 @@ import com.kazurayam.unittest.TestOutputOrganizer
 import org.gradle.api.file.ConfigurableFileTree
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 import java.nio.file.Path
 
 import static org.assertj.core.api.Assertions.assertThat
 
 class DirectoriesComparatorTest {
+
+    private static final Logger logger = LoggerFactory.getLogger(DirectoriesComparatorTest)
 
     private static final TestOutputOrganizer too =
             new TestOutputOrganizer.Builder(DirectoriesComparatorTest.class)
@@ -43,6 +47,7 @@ class DirectoriesComparatorTest {
     @Test
     void test_toSubPaths() {
         Path dir = too.getClassOutputDirectory().resolve("A")
+        logger.info("dir : " + dir.toString())
         Set<Path> files = new DirectoryScanner(dir).scan().getFiles()
         Set<String> subPaths = DirectoriesComparator.toSubPaths(dir, files)
         assertThat(subPaths).hasSizeGreaterThan(0)

@@ -52,6 +52,6 @@ class DirectoryScannerTest {
         for (String p : subPaths) {
             println p
         }
-        assertEquals(7, subPaths.size())
+        assertEquals(8, subPaths.size())
     }
 }

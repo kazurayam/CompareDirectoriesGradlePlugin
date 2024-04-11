@@ -48,12 +48,12 @@ class DirectoriesDifferences {
      * com.fasterxml.jackson.databind requires the default constructor without args
      */
     DirectoriesDifferences() {
-        this.dirA = null;
-        this.dirB = null;
-        this.filesOnlyInA = new HashSet<>();
-        this.filesOnlyInB = new HashSet<>();
-        this.intersection = new HashSet<>();
-        this.modifiedFiles = new HashSet<>();
+        this.dirA = null
+        this.dirB = null
+        this.filesOnlyInA = new HashSet<>()
+        this.filesOnlyInB = new HashSet<>()
+        this.intersection = new HashSet<>()
+        this.modifiedFiles = new HashSet<>()
     }
 
     DirectoriesDifferences(
@@ -82,54 +82,60 @@ class DirectoriesDifferences {
     List<String> getFilesOnlyInA() {
         return filesOnlyInA.stream()
                 .sorted()
-                .collect(Collectors.toList());
+                .collect(Collectors.toList())
     }
 
     List<String> getFilesOnlyInB() {
         return filesOnlyInB.stream()
                 .sorted()
-                .collect(Collectors.toList());
+                .collect(Collectors.toList())
     }
 
     List<String> getIntersection() {
         return intersection.stream()
                 .sorted()
-                .collect(Collectors.toList());
+                .collect(Collectors.toList())
     }
 
     List<String> getModifiedFiles() {
         return modifiedFiles.stream()
                 .sorted()
-                .collect(Collectors.toList());
+                .collect(Collectors.toList())
     }
 
     @Override
     String toString() {
-        return serialize();
+        return toJSON()
     }
 
-    String serialize() {
+    String toJSON() {
         try {
-            ObjectMapper mapper = new ObjectMapper();
+            ObjectMapper mapper = new ObjectMapper()
             String jsonResult =
-                    mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
-            return jsonResult;
+                    mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this)
+            return jsonResult
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e)
         }
     }
 
+    void serialize(Path into) {
+        List<String> iterable = new ArrayList<>()
+        iterable.add(this.toJSON())
+        Files.write(into, iterable, StandardCharsets.UTF_8)
+    }
+
     static DirectoriesDifferences deserialize(File json) {
-        return deserialize(json.toPath());
+        return deserialize(json.toPath())
     }
 
     static DirectoriesDifferences deserialize(Path jsonFile) {
         try {
-            String json = String.join("\n", Files.readAllLines(jsonFile));
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.readValue(json, DirectoriesDifferences.class);
+            String json = String.join("\n", Files.readAllLines(jsonFile))
+            ObjectMapper mapper = new ObjectMapper()
+            return mapper.readValue(json, DirectoriesDifferences.class)
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e)
         }
     }
 

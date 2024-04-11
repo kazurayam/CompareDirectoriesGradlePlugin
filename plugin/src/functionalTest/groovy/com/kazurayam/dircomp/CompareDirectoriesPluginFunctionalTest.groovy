@@ -26,6 +26,8 @@ class CompareDirectoriesPluginFunctionalTest extends Specification {
     def setupSpec() {
         too.cleanClassOutputDirectory()
         fixturesDir = too.getProjectDir().resolve("src/test/fixtures").toAbsolutePath()
+        Path dataDir = too.getClassOutputDirectory().resolve("data")
+        too.copyDir(fixturesDir, dataDir)
     }
 
     def setup() {
@@ -36,14 +38,14 @@ plugins {
 }
 
 compareDirectories {
-    dirA = fileTree("${fixturesDir}/A") { exclude "**/*.png" }
-    dirB = fileTree("${fixturesDir}/B") { exclude "**/*.png" }
-    outputFile = layout.buildDirectory.file("tmp/differences.json")
-    diffDir = layout.buildDirectory.dir("tmp/diff")
+    dirA = fileTree("data/A") { exclude "**/*.png" }
+    dirB = fileTree("data/B") { exclude "**/*.png" }
+    outputFile = layout.buildDirectory.file("out/differences.json")
+    diffDir = layout.buildDirectory.dir("out/diff")
 }
 """
-        outputFile = too.getClassOutputDirectory().resolve( "build/tmp/differences.json").toAbsolutePath()
-        diffDir = too.getClassOutputDirectory().resolve("build/tmp/diff").toAbsolutePath()
+        outputFile = too.getClassOutputDirectory().resolve( "build/out/differences.json").toAbsolutePath()
+        diffDir = too.getClassOutputDirectory().resolve("build/out/diff").toAbsolutePath()
 
         println '=============================================================='
         Files.readAllLines(buildFile).eachWithIndex { line, index ->

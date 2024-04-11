@@ -18,57 +18,54 @@ class DirectoriesDifferencesTest {
 
     private static Path dirA
     private static Path dirB
-    private static Path diffDir
     private static Path workDir
-    private DirectoriesComparator instance
-    private DirectoriesDifferences differences
+    private static Path diffDir
+    private static Path fixturesDir
 
-    private static final String DIR_A_RELATIVE_PATH = "src/test/fixtures/A"
-    private static final String DIR_B_RELATIVE_PATH = "src/test/fixtures/B"
-    private static final String DIFFDIR_RELATIVE_PATH = "build/tmp/test/diff"
+    private DirectoriesDifferences differences
 
     @BeforeAll
     static void beforeAll() {
-        Path projectDir = too.getProjectDir()
-        dirA = projectDir.resolve(DIR_A_RELATIVE_PATH)
-        dirB = projectDir.resolve(DIR_B_RELATIVE_PATH)
-        diffDir = projectDir.resolve(DIFFDIR_RELATIVE_PATH)
+        too.cleanClassOutputDirectory()
+        fixturesDir = too.getProjectDir().resolve("src/test/fixtures")
+        dirA = fixturesDir.resolve("A")
+        dirB = fixturesDir.resolve("B")
+        workDir = too.getClassOutputDirectory()
+        diffDir = workDir.resolve("diff")
         Files.createDirectories(diffDir)
-        workDir = projectDir.resolve("build/tmp/test")
-        Files.createDirectories(workDir)
     }
 
     @BeforeEach
     void beforeEach() {
         Set<Path> contentA = new DirectoryScanner(dirA).scan().getFiles()
         Set<Path> contentB = new DirectoryScanner(dirB).scan().getFiles()
-        instance = new DirectoriesComparator(dirA, contentA, dirB, contentB)
-        differences = instance.getDifferences()
+        DirectoriesComparator dirComp = new DirectoriesComparator(dirA, contentA, dirB, contentB)
+        differences = dirComp.getDifferences()
     }
 
     @Test
-    void testSerialize() {
-        String jsonResult = differences.serialize()
+    void testToJSON() {
+        String jsonResult = differences.toJSON()
         assertNotNull(jsonResult)
         println jsonResult
         assertTrue(jsonResult.contains("取扱説明書"))
     }
 
     @Test
-    void testDeserialize() {
-        Path tmpFile = workDir.resolve("tmp.json")
-        tmpFile.text = differences.serialize()
-        assertTrue(Files.size(tmpFile) > 0)
+    void testSerializeAndDeserialize() {
+        Path differencesFile = workDir.resolve("differences.json")
+        differences.serialize(differencesFile)
+        assertTrue(Files.size(differencesFile) > 0)
         //
-        DirectoriesDifferences instance = DirectoriesDifferences.deserialize(tmpFile)
+        DirectoriesDifferences instance = DirectoriesDifferences.deserialize(differencesFile)
         assertNotNull(instance)
-        println instance.serialize()
+        println instance.toJSON()
     }
 
     @Test
     void testMakeDiffFiles() {
         int result = differences.makeDiffFiles(diffDir)
-        assertEquals(2, result)
+        assertEquals(3, result)
     }
 
     @Test
