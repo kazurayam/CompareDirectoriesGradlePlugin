@@ -34,14 +34,27 @@ class CompareDirectoriesPluginFunctionalTest extends Specification {
         settingsFile << ""
         buildFile << """
 plugins {
-    id('com.kazurayam.compare-directories')
+    id("com.kazurayam.compare-directories") version "0.2.3"
 }
 
 compareDirectories {
-    dirA = fileTree("data/A") { exclude "**/*.png" }
-    dirB = fileTree("data/B") { exclude "**/*.png" }
-    outputFile = layout.buildDirectory.file("out/differences.json")
-    diffDir = layout.buildDirectory.dir("out/diff")
+    dirA = fileTree(layout.projectDirectory.dir("src/test/fixtures/A")) { exclude "**/*.png" }
+    dirB = fileTree(layout.projectDirectory.dir("src/test/fixtures/B")) { exclude "**/*.png" }
+    outputFile = layout.buildDirectory.file("tmp/differences.json")
+    diffDir = layout.buildDirectory.dir("tmp/diff")
+}
+
+tasks.register("dircomp", com.kazurayam.dircomp.CompareDirectoriesTask) {
+    dirA = fileTree(layout.projectDirectory.dir("src/test/fixtures/A")) { exclude "**/*.png" }
+    dirB = fileTree(layout.projectDirectory.dir("src/test/fixtures/B")) { exclude "**/*.png" }
+    outputFile = layout.buildDirectory.file("tmp/differences.json")
+    diffDir = layout.buildDirectory.dir("tmp/diff")
+    doFirst {
+        delete layout.buildDirectory.dir("tmp")
+    }
+    doLast {
+        println "output at " + layout.buildDirectory.dir("tmp").get()
+    }
 }
 """
         outputFile = too.getClassOutputDirectory().resolve( "build/out/differences.json").toAbsolutePath()

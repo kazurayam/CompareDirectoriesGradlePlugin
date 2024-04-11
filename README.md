@@ -26,34 +26,26 @@ You want to write your build.gradle file as follows:
 
 ```
 plugins {
-    id "com.kazurayam.compare-directories"
+    id("com.kazurayam.compare-directories") version "0.2.3"
 }
 
-ext {
-    fixturesDir = "../plugin/src/test/fixtures"
-    outDir = "build/out"
-}
-
-// The com.kazurayam.compare-directories plugin registeres a task named 'compareDirectories'
 compareDirectories {
-    dirA = fileTree("${fixturesDir}/A")
-    dirB = fileTree("${fixturesDir}/B") 
-    outputFile = file("${outDir}/differences.json")
-    diffDir = file("${outDir}/diff")
+    dirA = fileTree(layout.projectDirectory.dir("src/test/fixtures/A")) { exclude "**/*.png" }
+    dirB = fileTree(layout.projectDirectory.dir("src/test/fixtures/B")) { exclude "**/*.png" }
+    outputFile = layout.buildDirectory.file("tmp/differences.json")
+    diffDir = layout.buildDirectory.dir("tmp/diff")
 }
 
-// or you can register a task with name you like, which calls the CompareDirectoriesTask
-// you can include and exclude the files in the input directory by specifying Ant like pattern
-tasks.register('dircomp', com.kazurayam.dircomp.CompareDirectoriesTask) {
-    dirA = fileTree("${fixturesDir}/A") { exclude "**/*.png" }
-    dirB = fileTree("${fixturesDir}/B") { exclude "**/*.png" }
-    outputFile = file("${outDir}/differences.json")
-    diffDir = file("${outDir}/diff")
+tasks.register("dircomp", com.kazurayam.dircomp.CompareDirectoriesTask) {
+    dirA = fileTree(layout.projectDirectory.dir("src/test/fixtures/A")) { exclude "**/*.png" }
+    dirB = fileTree(layout.projectDirectory.dir("src/test/fixtures/B")) { exclude "**/*.png" }
+    outputFile = layout.buildDirectory.file("tmp/differences.json")
+    diffDir = layout.buildDirectory.dir("tmp/diff")
     doFirst {
-        delete file("${outDir}")
+        delete layout.buildDirectory.dir("tmp")
     }
     doLast {
-        println "you can find the output in the ${outDir}"
+        println "output at " + layout.buildDirectory.dir("tmp").get()
     }
 }
 ```
@@ -71,6 +63,7 @@ filesOnlyInA: 1 files
 filesOnlyInB: 2 files
 intersection: 5 files
 modifiedFiles: 1 files
+output at ...
 ```
 
 ## Outputs
