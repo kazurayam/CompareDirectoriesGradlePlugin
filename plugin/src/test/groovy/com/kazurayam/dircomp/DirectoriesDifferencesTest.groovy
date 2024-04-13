@@ -49,6 +49,7 @@ class DirectoriesDifferencesTest {
         assertNotNull(jsonResult)
         println jsonResult
         assertTrue(jsonResult.contains("取扱説明書"))
+        assertFalse(jsonResult.contains("file:///"))
     }
 
     @Test

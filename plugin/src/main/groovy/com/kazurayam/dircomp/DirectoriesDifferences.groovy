@@ -2,6 +2,7 @@ package com.kazurayam.dircomp
 
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.module.SimpleModule
 import com.github.difflib.DiffUtils
 import com.github.difflib.UnifiedDiffUtils
 import com.github.difflib.patch.Patch
@@ -75,8 +76,16 @@ class DirectoriesDifferences {
         return dirA
     }
 
+    void setDirA(Path dirA) {
+        this.dirA = dirA
+    }
+
     Path getDirB() {
         return dirB
+    }
+
+    void setDirB(Path dirB) {
+        this.dirB = dirB
     }
 
     List<String> getFilesOnlyInA() {
@@ -85,10 +94,18 @@ class DirectoriesDifferences {
                 .collect(Collectors.toList())
     }
 
+    void setFilesOnlyInA(Set<String> filesOnlyInA) {
+        this.filesOnlyInA = filesOnlyInA
+    }
+
     List<String> getFilesOnlyInB() {
         return filesOnlyInB.stream()
                 .sorted()
                 .collect(Collectors.toList())
+    }
+
+    void setFilesOnlyInB(Set<String> filesOnlyInB) {
+        this.filesOnlyInB = filesOnlyInB
     }
 
     List<String> getIntersection() {
@@ -97,11 +114,20 @@ class DirectoriesDifferences {
                 .collect(Collectors.toList())
     }
 
+    void setIntersection(Set<String> intersection) {
+        this.intersection = intersection
+    }
+
     List<String> getModifiedFiles() {
         return modifiedFiles.stream()
                 .sorted()
                 .collect(Collectors.toList())
     }
+
+    void setModifiedFiles(Set<String> modifiedFiles) {
+        this.modifiedFiles = modifiedFiles
+    }
+
 
     @Override
     String toString() {
@@ -111,6 +137,10 @@ class DirectoriesDifferences {
     String toJSON() {
         try {
             ObjectMapper mapper = new ObjectMapper()
+            SimpleModule simpleModule = new SimpleModule();
+            simpleModule.addSerializer(DirectoriesDifferences.class,
+                    new DirectoriesDifferencesSerializer())
+            mapper.registerModule(simpleModule)
             String jsonResult =
                     mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this)
             return jsonResult

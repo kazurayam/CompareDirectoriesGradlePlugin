@@ -3,12 +3,10 @@ package com.kazurayam.dircomp
 import com.kazurayam.unittest.TestOutputOrganizer
 import org.gradle.testkit.runner.BuildResult
 import spock.lang.Specification
-import spock.lang.TempDir
 import org.gradle.testkit.runner.GradleRunner
 
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
 
 import static org.gradle.testkit.runner.TaskOutcome.SUCCESS
 
@@ -34,14 +32,27 @@ class CompareDirectoriesPluginFunctionalTest extends Specification {
         settingsFile << ""
         buildFile << """
 plugins {
-    id('com.kazurayam.compare-directories')
+    id("com.kazurayam.compare-directories") version "0.2.3"
 }
 
 compareDirectories {
-    dirA = fileTree("data/A") { exclude "**/*.png" }
-    dirB = fileTree("data/B") { exclude "**/*.png" }
+    dirA = fileTree(layout.projectDirectory.dir("data/A")) { exclude "**/*.png" }
+    dirB = fileTree(layout.projectDirectory.dir("data/B")) { exclude "**/*.png" }
     outputFile = layout.buildDirectory.file("out/differences.json")
     diffDir = layout.buildDirectory.dir("out/diff")
+}
+
+tasks.register("dircomp", com.kazurayam.dircomp.CompareDirectoriesTask) {
+    dirA = fileTree(layout.projectDirectory.dir("src/test/fixtures/A")) { exclude "**/*.png" }
+    dirB = fileTree(layout.projectDirectory.dir("src/test/fixtures/B")) { exclude "**/*.png" }
+    outputFile = layout.buildDirectory.file("out/differences.json")
+    diffDir = layout.buildDirectory.dir("out/diff")
+    doFirst {
+        delete layout.buildDirectory.dir("out")
+    }
+    doLast {
+        println "output at " + layout.buildDirectory.dir("out").get()
+    }
 }
 """
         outputFile = too.getClassOutputDirectory().resolve( "build/out/differences.json").toAbsolutePath()
