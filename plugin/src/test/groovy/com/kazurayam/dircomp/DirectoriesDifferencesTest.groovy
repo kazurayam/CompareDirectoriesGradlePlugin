@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
+import java.nio.charset.Charset
+import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -41,6 +43,7 @@ class DirectoriesDifferencesTest {
         Set<Path> contentB = new DirectoryScanner(dirB).scan().getFiles()
         DirectoriesComparator dirComp = new DirectoriesComparator(dirA, contentA, dirB, contentB)
         differences = dirComp.getDifferences()
+        differences.addCharsetsToTry(Arrays.asList("Shift_JIS"));
     }
 
     @Test
@@ -72,9 +75,15 @@ class DirectoriesDifferencesTest {
     @Test
     void testReadAllLines_PNG() {
         Path apple = dirA.resolve("apple.png")
-        List<String> content = DirectoriesDifferences.readAllLines(apple)
+        List<String> content = differences.readAllLines(apple)
         assertTrue(content.get(0).contains("Failed to read"))
         assertTrue(content.get(0).contains("apple.png"))
-        assertTrue(content.get(0).contains("as a text in UTF-8"))
+    }
+
+    @Test
+    void testReadAllLines_Shift_JIS() {
+        Path apple = dirA.resolve("このファイルはシフトJISだよん.txt")
+        List<String> content = differences.readAllLines(apple);
+        assertTrue(content.get(0).contains("シフトJIS"));
     }
 }
