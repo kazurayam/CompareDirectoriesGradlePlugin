@@ -34,6 +34,7 @@ compareDirectories {
     dirB = fileTree(layout.projectDirectory.dir("data/B")) { exclude "**/*.png" }
     outputFile = layout.buildDirectory.file("out/differences.json")
     diffDir = layout.buildDirectory.dir("out/diff")
+    charsetsToTry.add("Shift_JIS")
 }
 
 tasks.register("dircomp", com.kazurayam.dircomp.CompareDirectoriesTask) {
@@ -41,6 +42,7 @@ tasks.register("dircomp", com.kazurayam.dircomp.CompareDirectoriesTask) {
     dirB = fileTree(layout.projectDirectory.dir("src/test/fixtures/B")) { exclude "**/*.png" }
     outputFile = layout.buildDirectory.file("out/differences.json")
     diffDir = layout.buildDirectory.dir("out/diff")
+    charsetsToTry.add("Shift_JIS")
     doFirst {
         delete layout.buildDirectory.dir("out")
     }
@@ -98,7 +100,7 @@ The `dircomp` task creates the `build/out/diff` directory. In the directory you 
 ```
 
 
-Please note that this plugin assumes that all text files are encoded with UTF-8. If any files are encoded with other charsets (such as ShiftJIS), then this plugin would just skip presuming the correct charset; hence the unified-diff will be useless as follows:
+Please note that this plugin tries to load all files primarily as a text file encoded with UTF-8. If any files are encoded with other charsets (such as "Shift_JIS"), this plugin won't presume the correct charset; hence the unified-diff will be useless as follows:
 
 `diff/A_B/sub/このファイルはシフトJISだよん.txt`
 ```
@@ -107,4 +109,26 @@ Please note that this plugin assumes that all text files are encoded with UTF-8.
 @@ -1,1 +1,1 @@
 -Failed to read /Users/.../data/A/このファイルはシフトJISだよん.txt as a text in UTF-8
 +Failed to read /Users/.../data/B/このファイルはシフトJISだよん.txt as a text in UTF-8
+```
+
+However, you can specify additional charsets to try as:
+```
+compareDirectories {
+    ...
+    charsetsToTry("Shift_JIS")
+    charsetsToTry("EUC-JP")
+}
+```
+
+The plugin tries to read a file primarily assuming UTF-8; when failed, it will re-try
+reading the file assuming Shift_JIS; when failed, it will continue re-try
+reading the file assuming EUC-JP; ... If you could give an appropriate Charset, the plugin
+will be able to load a file in Shift_JIS and consequently will generate a diff file like this:
+
+```
+--- /Users/.../A/このファイルはシフトJISだよん.txt
++++ /Users/.../B/このファイルはシフトJISだよん.txt
+@@ -1,1 +1,1 @@
+-このファイルはシフトJISだよん。
++このファイルはシフトJISだよん。ほんとだよん。
 ```
