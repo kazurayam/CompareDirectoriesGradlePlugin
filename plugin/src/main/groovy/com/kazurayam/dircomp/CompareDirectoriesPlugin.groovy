@@ -18,6 +18,7 @@ class CompareDirectoriesPlugin implements Plugin<Project> {
             task.dirB.convention(ext.dirB)
             task.outputFile.convention(ext.outputFile)
             task.diffDir.convention(ext.diffDir)
+            task.charsetsToTry.convention(ext.charsetsToTry)
         }
     }
 }

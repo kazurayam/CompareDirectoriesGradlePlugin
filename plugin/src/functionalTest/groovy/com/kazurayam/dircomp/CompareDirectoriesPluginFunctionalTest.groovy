@@ -40,6 +40,7 @@ compareDirectories {
     dirB = fileTree(layout.projectDirectory.dir("data/B")) { exclude "**/*.png" }
     outputFile = layout.buildDirectory.file("out/differences.json")
     diffDir = layout.buildDirectory.dir("out/diff")
+    charsetsToTry.add("Shift_JIS")
 }
 
 tasks.register("dircomp", com.kazurayam.dircomp.CompareDirectoriesTask) {
@@ -47,6 +48,7 @@ tasks.register("dircomp", com.kazurayam.dircomp.CompareDirectoriesTask) {
     dirB = fileTree(layout.projectDirectory.dir("src/test/fixtures/B")) { exclude "**/*.png" }
     outputFile = layout.buildDirectory.file("out/differences.json")
     diffDir = layout.buildDirectory.dir("out/diff")
+    charsetsToTry.add("Shift_JIS")
     doFirst {
         delete layout.buildDirectory.dir("out")
     }

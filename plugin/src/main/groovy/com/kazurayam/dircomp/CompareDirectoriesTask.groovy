@@ -4,13 +4,14 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.file.ConfigurableFileTree
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 
-import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -28,11 +29,15 @@ abstract class CompareDirectoriesTask extends DefaultTask {
     @OutputDirectory
     abstract DirectoryProperty getDiffDir()
 
+    @Input
+    abstract ListProperty<String> getCharsetsToTry()
+
     CompareDirectoriesTask() {
         getDirA().convention(project.fileTree(project.layout.projectDirectory.dir("src")))
         getDirB().convention(project.fileTree(project.layout.projectDirectory.dir("src")))
         getOutputFile().convention(project.layout.buildDirectory.file("difference.json"))
         getDiffDir().convention(project.layout.buildDirectory.dir("diffDir"))
+        getCharsetsToTry().convention([])
     }
 
     @TaskAction
@@ -45,6 +50,11 @@ abstract class CompareDirectoriesTask extends DefaultTask {
         DirectoriesComparator comparator =
                 new DirectoriesComparator(fileTreeA, fileTreeB)
         DirectoriesDifferences differences = comparator.getDifferences()
+
+        // not only UTF-8, try additional Charsets
+        if (getCharsetsToTry().get().size() > 0) {
+            differences.addCharsetsToTry(getCharsetsToTry().get())
+        }
 
         // write the summary json
         Path outputFile = getOutputFile().get().asFile.toPath()

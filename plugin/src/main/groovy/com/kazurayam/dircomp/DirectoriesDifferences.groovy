@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory
 
 import java.nio.charset.MalformedInputException
 import java.nio.charset.StandardCharsets
+import java.nio.charset.Charset
+import java.nio.charset.UnmappableCharacterException
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.stream.Collectors
@@ -45,6 +47,8 @@ class DirectoriesDifferences {
      */
     private Set<String> modifiedFiles
 
+    private List<Charset> charsetsToTry;
+
     /**
      * com.fasterxml.jackson.databind requires the default constructor without args
      */
@@ -55,6 +59,8 @@ class DirectoriesDifferences {
         this.filesOnlyInB = new HashSet<>()
         this.intersection = new HashSet<>()
         this.modifiedFiles = new HashSet<>()
+        this.charsetsToTry = new ArrayList<>();
+        this.charsetsToTry.add(StandardCharsets.UTF_8);
     }
 
     DirectoriesDifferences(
@@ -64,6 +70,7 @@ class DirectoriesDifferences {
             Set<String> filesOnlyInB,
             Set<String> intersection,
             Set<String> modifiedFiles) {
+        this();
         this.dirA = dirA.normalize()
         this.dirB = dirB.normalize()
         this.filesOnlyInA = filesOnlyInA
@@ -126,6 +133,15 @@ class DirectoriesDifferences {
 
     void setModifiedFiles(Set<String> modifiedFiles) {
         this.modifiedFiles = modifiedFiles
+    }
+
+    void addCharsetsToTry(List<String> charsetsToTry) {
+        if (charsetsToTry.size() == 0) {
+            throw new IllegalArgumentException("charsetsToTry must not be empty")
+        }
+        charsetsToTry.forEach(name -> {
+            this.charsetsToTry.add(Charset.forName(name));
+        })
     }
 
 
@@ -228,15 +244,27 @@ class DirectoriesDifferences {
         return result
     }
 
-    static List<String> readAllLines(Path file) throws IOException {
+    List<String> readAllLines(Path file) throws IOException {
         List<String> lines = new ArrayList<>()
-        try {
-            lines = new ArrayList<>(Files.readAllLines(file, StandardCharsets.UTF_8))
-        } catch (MalformedInputException e) {
-            String msg = "Failed to read " + file.toString() + " as a text in UTF-8"
+        List<Charset> failedCharsets = new ArrayList<>()
+        boolean success = false;
+        for (int i = 0; !success && i < charsetsToTry.size(); i++) {
+            Charset charset = charsetsToTry.get(i);
+            try {
+                lines = new ArrayList<>(Files.readAllLines(file, charset))
+                success = true;
+            } catch (IOException e) {
+                failedCharsets.add(charset);
+            }
+        }
+        if (!success) {
+            String msg = "Failed to read " + file.toString() +
+                    " as a Text file. Tried charsets " + failedCharsets +
+                    ". The file could be a binary file" +
+                    ", otherwise you may want to add Charset to try.";
             lines.add(msg)
             logger.warn(msg)
         }
-        return lines
+        return lines;
     }
 }
