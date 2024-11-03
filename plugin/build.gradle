@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.kazurayam"
-version = "0.2.5"
+version = "0.2.6"
 
 base {
     archivesName = 'compare-directories-plugin'
@@ -20,6 +20,12 @@ ext {
 repositories {
     mavenCentral()
     mavenLocal()
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
 }
 
 tasks.withType(Test) {
