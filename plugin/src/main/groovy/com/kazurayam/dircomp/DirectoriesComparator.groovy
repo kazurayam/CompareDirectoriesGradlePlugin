@@ -93,18 +93,30 @@ class DirectoriesComparator {
         Set<String> set = new HashSet<>()
         paths.each {path ->
 
-            System.out.println("dir : " + dir)
-            System.out.println("path: " + path)
+            //System.out.println("dir : " + dir)
+            //System.out.println("path: " + path)
 
             set.add(dir.relativize(path).toString())
         }
         return set
     }
 
+    /**
+     * calculate the message digest of fileA and fileB, return true
+     * if the values differ. return false if the values are equal.
+     * @param fileA
+     * @param fileB
+     * @return
+     */
     private boolean different(Path fileA, Path fileB) {
         hashFile(fileA) != hashFile(fileB)
     }
 
+    /**
+     * calculate the message digest of the file
+     * @param filePath
+     * @return
+     */
     private byte[] hashFile(Path filePath) {
         digester.digest(filePath.toFile().bytes)
     }
