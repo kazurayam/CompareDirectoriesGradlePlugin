@@ -67,6 +67,9 @@ abstract class CompareDirectoriesTask extends DefaultTask {
         differences.makeDiffFiles(diffDir)
 
         // diagnose the result
+        println "dirA: ${getDirA().get().getDir()}"
+        println "dirB: ${getDirB().get().getDir()}"
+        println "---------------------------------"
         println "filesOnlyInA: ${differences.filesOnlyInA.size()} files"
         println "filesOnlyInB: ${differences.filesOnlyInB.size()} files"
         println "intersection: ${differences.intersection.size()} files"
