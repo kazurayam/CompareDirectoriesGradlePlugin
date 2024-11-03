@@ -1,8 +1,11 @@
 package com.kazurayam.dircomp
 
 import com.fasterxml.jackson.core.JsonProcessingException
+import com.fasterxml.jackson.core.util.DefaultIndenter
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.module.SimpleModule
+import com.fasterxml.jackson.databind.SerializationFeature
 import com.github.difflib.DiffUtils
 import com.github.difflib.UnifiedDiffUtils
 import com.github.difflib.patch.Patch
@@ -157,8 +160,12 @@ class DirectoriesDifferences {
             simpleModule.addSerializer(DirectoriesDifferences.class,
                     new DirectoriesDifferencesSerializer())
             mapper.registerModule(simpleModule)
+
+            mapper.enable(SerializationFeature.INDENT_OUTPUT)
+            DefaultPrettyPrinter prettyPrinter = new DefaultPrettyPrinter()
+            prettyPrinter.indentArraysWith(DefaultIndenter.SYSTEM_LINEFEED_INSTANCE)
             String jsonResult =
-                    mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this)
+                    mapper.writer(prettyPrinter).writeValueAsString(this)
             return jsonResult
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e)

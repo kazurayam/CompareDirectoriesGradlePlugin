@@ -43,7 +43,7 @@ class DirectoriesDifferencesTest {
         Set<Path> contentB = new DirectoryScanner(dirB).scan().getFiles()
         DirectoriesComparator dirComp = new DirectoriesComparator(dirA, contentA, dirB, contentB)
         differences = dirComp.getDifferences()
-        differences.addCharsetsToTry(Arrays.asList("Shift_JIS"));
+        differences.addCharsetsToTry(Arrays.asList("Shift_JIS"))
     }
 
     @Test
@@ -83,7 +83,7 @@ class DirectoriesDifferencesTest {
     @Test
     void testReadAllLines_Shift_JIS() {
         Path apple = dirA.resolve("このファイルはシフトJISだよん.txt")
-        List<String> content = differences.readAllLines(apple);
-        assertTrue(content.get(0).contains("シフトJIS"));
+        List<String> content = differences.readAllLines(apple)
+        assertTrue(content.get(0).contains("シフトJIS"))
     }
 }
