@@ -93,8 +93,8 @@ class DirectoriesComparator {
         Set<String> set = new HashSet<>()
         paths.each {path ->
 
-            System.out.println("dir : " + dir)
-            System.out.println("path: " + path)
+            //System.out.println("dir : " + dir)
+            //System.out.println("path: " + path)
 
             set.add(dir.relativize(path).toString())
         }
