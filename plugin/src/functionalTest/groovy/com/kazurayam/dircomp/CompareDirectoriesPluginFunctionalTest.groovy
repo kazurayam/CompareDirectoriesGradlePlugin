@@ -37,8 +37,8 @@ plugins {
 }
 
 compareDirectories {
-    dirA = fileTree(layout.projectDirectory.dir("data/A")) { exclude "**/*.png" }
-    dirB = fileTree(layout.projectDirectory.dir("data/B")) { exclude "**/*.png" }
+    dirA = fileTree(layout.projectDirectory.dir("data/A")) { include "**/*" }
+    dirB = fileTree(layout.projectDirectory.dir("data/B")) { include "**/*" }
     outputFile = layout.buildDirectory.file("out/differences.json")
     diffDir = layout.buildDirectory.dir("out/diff")
     charsetsToTry.add("Shift_JIS")
@@ -92,7 +92,7 @@ tasks.register("dircomp", com.kazurayam.dircomp.CompareDirectoriesTask) {
         message.contains("filesOnlyInB")
         message.contains("intersection")
         message.contains("modifiedFiles")
-        !message.contains("apple.png")
+        message.contains("apple.png")
         result.output.contains("intersection")
         result.task(":compareDirectories").outcome == SUCCESS
     }
