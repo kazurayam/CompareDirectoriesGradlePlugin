@@ -15,7 +15,8 @@ class DirectoriesDifferencesTest {
 
     private static final TestOutputOrganizer too =
             new TestOutputOrganizer.Builder(DirectoriesDifferencesTest.class)
-                    .subDirPath(DirectoriesDifferencesTest.class).build()
+                    .outputDirectoryRelativeToProject("build/tmp/testOutput")
+                    .subOutputDirectory(DirectoriesDifferencesTest.class).build()
 
     private static Path fixturesDir
     private static Path dirA
@@ -24,7 +25,8 @@ class DirectoriesDifferencesTest {
 
     @BeforeAll
     static void beforeAll() {
-        fixturesDir = too.getProjectDir().resolve("src/test/fixtures")
+        too.cleanClassOutputDirectory()
+        fixturesDir = too.getProjectDirectory().resolve("src/test/fixtures")
         dirA = fixturesDir.resolve("A")
         dirB = fixturesDir.resolve("B")
         Set<Path> contentA = new DirectoryScanner(dirA).scan().getFiles()
@@ -32,8 +34,6 @@ class DirectoriesDifferencesTest {
         DirectoriesComparator dirComp = new DirectoriesComparator(dirA, contentA, dirB, contentB)
         differences = dirComp.getDifferences()
         differences.addCharsetsToTry(Arrays.asList("Shift_JIS"))
-        //
-        too.cleanClassOutputDirectory()
     }
 
     @BeforeEach
@@ -50,7 +50,7 @@ class DirectoriesDifferencesTest {
 
     @Test
     void testSerializeAndDeserialize() {
-        Path workDir = too.getMethodOutputDirectory("testSerializeAndDeserialize")
+        Path workDir = too.cleanMethodOutputDirectory("testSerializeAndDeserialize")
         //
         Path differencesFile = workDir.resolve("differences.json")
         differences.serialize(differencesFile)
@@ -109,7 +109,7 @@ class DirectoriesDifferencesTest {
 
     @Test
     void test_reportNameStatusList() {
-        Path workDir = too.getMethodOutputDirectory("test_reportNameStatusList")
+        Path workDir = too.resolveMethodOutputDirectory("test_reportNameStatusList")
         Path outputText = workDir.resolve("nameStatusList.tsv")
         differences.reportNameStatusList(outputText)
         assertTrue(Files.exists(outputText))

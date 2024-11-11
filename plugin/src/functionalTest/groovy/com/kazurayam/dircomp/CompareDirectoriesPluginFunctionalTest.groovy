@@ -14,7 +14,8 @@ class CompareDirectoriesPluginFunctionalTest extends Specification {
 
     private static TestOutputOrganizer too =
             new TestOutputOrganizer.Builder(CompareDirectoriesPluginFunctionalTest.class)
-                    .subDirPath(CompareDirectoriesPluginFunctionalTest.class).build()
+                    .outputDirectoryRelativeToProject("build/tmp/testOutput")
+                    .subOutputDirectory(CompareDirectoriesPluginFunctionalTest.class).build()
 
     private static Path fixturesDir
     private Path outputFile
@@ -23,8 +24,8 @@ class CompareDirectoriesPluginFunctionalTest extends Specification {
     // fixture methods
     def setupSpec() {
         too.cleanClassOutputDirectory()
-        fixturesDir = too.getProjectDir().resolve("src/test/fixtures").toAbsolutePath()
-        Path dataDir = too.getClassOutputDirectory().resolve("data")
+        fixturesDir = too.getProjectDirectory().resolve("src/test/fixtures").toAbsolutePath()
+        Path dataDir = too.resolveClassOutputDirectory().resolve("data")
         too.copyDir(fixturesDir, dataDir)
     }
 
@@ -58,8 +59,8 @@ tasks.register("dircomp", com.kazurayam.dircomp.CompareDirectoriesTask) {
     }
 }
 """
-        outputFile = too.getClassOutputDirectory().resolve( "build/out/differences.json").toAbsolutePath()
-        diffDir = too.getClassOutputDirectory().resolve("build/out/diff").toAbsolutePath()
+        outputFile = too.resolveClassOutputDirectory().resolve( "build/out/differences.json").toAbsolutePath()
+        diffDir = too.resolveClassOutputDirectory().resolve("build/out/diff").toAbsolutePath()
 
         println '=============================================================='
         Files.readAllLines(buildFile).eachWithIndex { line, index ->
@@ -75,11 +76,11 @@ tasks.register("dircomp", com.kazurayam.dircomp.CompareDirectoriesTask) {
         given:
         assert Files.exists(fixturesDir)
         println "fixturesDir=${fixturesDir.toString()}"
-        Files.createDirectories(too.getClassOutputDirectory().resolve("build"))
+        Files.createDirectories(too.resolveClassOutputDirectory().resolve("build"))
 
         when:
         BuildResult result = GradleRunner.create()
-                .withProjectDir(too.getClassOutputDirectory().toFile())
+                .withProjectDir(too.resolveClassOutputDirectory().toFile())
                 .withArguments("compareDirectories")
                 .withPluginClasspath()
                 .build()
@@ -98,10 +99,10 @@ tasks.register("dircomp", com.kazurayam.dircomp.CompareDirectoriesTask) {
 
     // helper methods
     private Path getBuildFile() {
-        return too.getClassOutputDirectory().resolve("build.gradle")
+        return too.resolveClassOutputDirectory().resolve("build.gradle")
     }
 
     private Path getSettingsFile() {
-        return too.getClassOutputDirectory().resolve("settings.gradle")
+        return too.resolveClassOutputDirectory().resolve("settings.gradle")
     }
 }

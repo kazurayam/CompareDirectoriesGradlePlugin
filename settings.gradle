@@ -1,6 +1,15 @@
 rootProject.name = 'CompareDirectoriesGradlePlugin'
 include('plugin')
 
+dependencyResolutionManagement {
+    versionCatalogs {
+        libs {
+            version('unittesthelper', '0.5.1')
+            library('unittesthelper', 'com.kazurayam', 'unittest-helper').versionRef('unittesthelper')
+        }
+    }
+}
+
 
 //include('rehearsal')
 // not necessary to include the rehearsal subproject because
