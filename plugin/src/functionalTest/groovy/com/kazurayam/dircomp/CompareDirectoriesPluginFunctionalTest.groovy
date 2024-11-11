@@ -32,7 +32,7 @@ class CompareDirectoriesPluginFunctionalTest extends Specification {
         settingsFile << ""
         buildFile << """
 plugins {
-    id("com.kazurayam.compare-directories") version "0.2.3"
+    id("com.kazurayam.compare-directories") version "0.2.10"
 }
 
 compareDirectories {
@@ -47,6 +47,7 @@ tasks.register("dircomp", com.kazurayam.dircomp.CompareDirectoriesTask) {
     dirA = fileTree(layout.projectDirectory.dir("src/test/fixtures/A")) { exclude "**/*.png" }
     dirB = fileTree(layout.projectDirectory.dir("src/test/fixtures/B")) { exclude "**/*.png" }
     outputFile = layout.buildDirectory.file("out/differences.json")
+    nameStatusList = layout.buildDirectory.file("out/nameStatusList.tsv")
     diffDir = layout.buildDirectory.dir("out/diff")
     charsetsToTry.add("Shift_JIS")
     doFirst {

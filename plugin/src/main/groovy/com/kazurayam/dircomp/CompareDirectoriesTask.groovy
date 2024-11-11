@@ -26,6 +26,9 @@ abstract class CompareDirectoriesTask extends DefaultTask {
     @OutputFile
     abstract RegularFileProperty getOutputFile()
 
+    @OutputFile
+    abstract RegularFileProperty getNameStatusList()
+
     @OutputDirectory
     abstract DirectoryProperty getDiffDir()
 
@@ -36,6 +39,7 @@ abstract class CompareDirectoriesTask extends DefaultTask {
         getDirA().convention(project.fileTree(project.layout.projectDirectory.dir("src")))
         getDirB().convention(project.fileTree(project.layout.projectDirectory.dir("src")))
         getOutputFile().convention(project.layout.buildDirectory.file("difference.json"))
+        getNameStatusList().convention(project.layout.buildDirectory.file("nameStatusList.tsv"))
         getDiffDir().convention(project.layout.buildDirectory.dir("diffDir"))
         getCharsetsToTry().convention([])
     }
@@ -60,6 +64,11 @@ abstract class CompareDirectoriesTask extends DefaultTask {
         Path outputFile = getOutputFile().get().asFile.toPath()
         Files.createDirectories(outputFile.getParent())
         differences.serialize(outputFile)
+
+        // write the name status list in TAB-separated-text format
+        Path nameStatusList = getNameStatusList().get().asFile.toPath()
+        Files.createDirectories(nameStatusList.getParent())
+        differences.reportNameStatusList(nameStatusList)
 
         // create the unified-diff files, write them into to diffDir
         Path diffDir = getDiffDir().get().asFile.toPath()

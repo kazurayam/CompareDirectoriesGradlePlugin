@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.kazurayam"
-version = "0.2.9"
+version = "0.2.10"
 
 base {
     archivesName = 'compare-directories-plugin'
@@ -26,6 +26,11 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(11)
     }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 }
 
 tasks.withType(Test) {

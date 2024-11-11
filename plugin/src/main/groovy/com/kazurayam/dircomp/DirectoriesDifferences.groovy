@@ -4,20 +4,23 @@ import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.core.util.DefaultIndenter
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.databind.module.SimpleModule
 import com.github.difflib.DiffUtils
 import com.github.difflib.UnifiedDiffUtils
 import com.github.difflib.patch.Patch
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-import java.nio.charset.MalformedInputException
-import java.nio.charset.StandardCharsets
 import java.nio.charset.Charset
-import java.nio.charset.UnmappableCharacterException
+import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.attribute.FileTime
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.stream.Collectors
 
 /**
@@ -273,5 +276,123 @@ class DirectoriesDifferences {
             logger.warn(msg)
         }
         return lines;
+    }
+
+    void reportNameStatusList(Path outputText) {
+        Set<String> allNames = new TreeSet()
+        allNames.addAll(this.filesOnlyInA)
+        allNames.addAll(this.filesOnlyInB)
+        allNames.addAll(this.intersection)
+        allNames.addAll(this.modifiedFiles)
+        //
+        Files.createDirectories(outputText.getParent())
+        OutputStream os = outputText.newOutputStream()
+        PrintWriter pw = new PrintWriter(
+                new BufferedWriter(
+                        new OutputStreamWriter(os,
+                                StandardCharsets.UTF_8)))
+        pw.println("name\tstatus\ttimestampA\t<>\ttimestampB\tsizeA\t<>\tsizeB")
+        for (String name : allNames) {
+            String line= compileNameStatus(name, this.dirA, this.dirB)
+            pw.println(line);
+        }
+        pw.flush()
+        pw.close()
+    }
+
+    static String compileNameStatus(String name, Path dirA, Path dirB) {
+        Path fileA = dirA.resolve(name)
+        Path fileB = dirB.resolve(name)
+        StringBuilder sb = new StringBuilder()
+        sb.append(name)
+        sb.append("\t")
+        sb.append(formatFileStatus(fileA, fileB))
+        sb.append("\t")
+        sb.append(formatLastModified(fileA))
+        sb.append("\t")
+        sb.append(lastModifiedComparison(fileA, fileB))
+        sb.append("\t")
+        sb.append(formatLastModified(fileB))
+        sb.append("\t")
+        sb.append(formatFileSize(fileA))
+        sb.append("\t")
+        sb.append(fileSizeComparison(fileA, fileB))
+        sb.append("\t")
+        sb.append(formatFileSize(fileB))
+        return sb.toString()
+    }
+
+    static String formatFileStatus(Path fileA, Path fileB) {
+        if (Files.exists(fileA) && Files.exists(fileB)) {
+            if (fileA.size() != fileB.size()) {
+                return "M"   // Modified
+            } else {
+                return "-"    // not modified
+            }
+        } else if (Files.exists(fileA)) {
+            return "D"  // Deleted
+        } else {
+            return "A"  // Added
+        }
+    }
+
+    static LocalDateTime convertLastModifiedToLocalDateTime(Path p) {
+        if (Files.exists(p)) {
+            FileTime fileTime = Files.getLastModifiedTime(p)
+            Instant instant = fileTime.toInstant()
+            return LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
+        } else {
+            return LocalDateTime.MIN
+        }
+    }
+
+    static String formatLastModified(Path p) {
+        if (Files.exists(p)) {
+            LocalDateTime ldt = convertLastModifiedToLocalDateTime(p)
+            return DateTimeFormatter.ISO_DATE_TIME.format(ldt)
+        } else {
+            return "-"
+        }
+    }
+
+    static String lastModifiedComparison(Path fileA, Path fileB) {
+        if (Files.exists(fileA) && Files.exists(fileB)) {
+            LocalDateTime timestampA = convertLastModifiedToLocalDateTime(fileA)
+            LocalDateTime timestampB = convertLastModifiedToLocalDateTime(fileB)
+            int compareResult = timestampA.compareTo(timestampB)
+            if (compareResult < 0) {
+                return "<"
+            } else if (compareResult == 0) {
+                return "="
+            } else {
+                return ">"
+            }
+        } else {
+            return "-"
+        }
+    }
+
+    static String formatFileSize(Path file) {
+        if (Files.exists(file)) {
+            return "${file.toFile().size()}"
+        } else {
+            "-"
+        }
+    }
+
+    static String fileSizeComparison(Path fileA, Path fileB) {
+        if (Files.exists(fileA) && Files.exists(fileB)) {
+            long sizeA = fileA.size()
+            long sizeB = fileB.size()
+            if (sizeA < sizeB) {
+                return "<"
+            } else if (sizeA == sizeB) {
+                return "="
+            } else {
+                return ">"
+            }
+        } else {
+            return "-"
+        }
     }
 }
