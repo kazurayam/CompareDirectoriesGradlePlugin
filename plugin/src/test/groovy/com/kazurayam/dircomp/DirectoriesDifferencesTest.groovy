@@ -87,25 +87,25 @@ class DirectoriesDifferencesTest {
     @Test
     void test_compileNameStatus_filesOnlyInA() {
         String line = differences.compileNameStatus("sub/i.txt", dirA, dirB)
-        assertEquals("\tsub/i.txt\tD\t1\t-\t-\t2024-03-29T09:45:03\t-\t-", line)
+        assertEquals("\tsub/i.txt\tD\t1\t-\t-\t2024-03-29T09:45:03+09:00\t-\t-", line)
     }
 
     @Test
     void test_compileNameStatus_filesOnlyInB() {
         String line = differences.compileNameStatus("j.txt", dirA, dirB)
-        assertEquals("\tj.txt\tA\t-\t-\t1\t-\t-\t2024-03-29T09:45:03", line)
+        assertEquals("\tj.txt\tA\t-\t-\t1\t-\t-\t2024-03-29T09:45:03+09:00", line)
     }
 
     @Test
     void test_compileNameStatus_sameSize() {
         String line = differences.compileNameStatus("apple.png", dirA, dirB)
-        assertEquals("\tapple.png\tM\t3655\t<\t416396\t2024-03-29T09:45:03\t<\t2024-11-12T08:51:35", line)
+        assertEquals("\tapple.png\tM\t3655\t<\t416396\t2024-03-29T09:45:03+09:00\t<\t2024-11-12T08:51:35+09:00", line)
     }
 
     @Test
     void test_compileNameStatus_modified() {
         String line = differences.compileNameStatus("sub/g.txt", dirA, dirB)
-        assertEquals("\tsub/g.txt\tM\t1\t<\t12\t2024-03-29T09:45:03\t<\t2024-03-29T09:45:03", line)
+        assertEquals("\tsub/g.txt\tM\t1\t<\t12\t2024-03-29T09:45:03+09:00\t<\t2024-03-29T09:45:03+09:00", line)
     }
 
     @Test

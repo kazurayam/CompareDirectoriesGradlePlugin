@@ -20,6 +20,7 @@ import java.nio.file.attribute.FileTime
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.stream.Collectors
 
@@ -340,20 +341,20 @@ class DirectoriesDifferences {
         }
     }
 
-    static LocalDateTime convertLastModifiedToLocalDateTime(Path p) {
+    static ZonedDateTime convertLastModifiedToZonedDateTime(Path p) {
         if (Files.exists(p)) {
             FileTime fileTime = Files.getLastModifiedTime(p)
             Instant instant = fileTime.toInstant()
-            return LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
+            return ZonedDateTime.ofInstant(instant, ZoneId.systemDefault())
         } else {
-            return LocalDateTime.MIN
+            return ZonedDateTime.MIN
         }
     }
 
     static String formatLastModified(Path p) {
         if (Files.exists(p)) {
-            LocalDateTime ldt = convertLastModifiedToLocalDateTime(p).withNano(0)
-            return DateTimeFormatter.ISO_DATE_TIME.format(ldt)
+            ZonedDateTime ldt = convertLastModifiedToZonedDateTime(p).withNano(0)
+            return DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(ldt)
         } else {
             return "-"
         }
@@ -361,8 +362,8 @@ class DirectoriesDifferences {
 
     static String lastModifiedComparison(Path fileA, Path fileB) {
         if (Files.exists(fileA) && Files.exists(fileB)) {
-            LocalDateTime timestampA = convertLastModifiedToLocalDateTime(fileA)
-            LocalDateTime timestampB = convertLastModifiedToLocalDateTime(fileB)
+            ZonedDateTime timestampA = convertLastModifiedToZonedDateTime(fileA)
+            ZonedDateTime timestampB = convertLastModifiedToZonedDateTime(fileB)
             int compareResult = timestampA.compareTo(timestampB)
             if (compareResult < 0) {
                 return "<"
