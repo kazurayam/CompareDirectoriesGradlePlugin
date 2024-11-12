@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test
 
 import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.Paths
 
 import static org.junit.jupiter.api.Assertions.*
 
@@ -86,25 +87,25 @@ class DirectoriesDifferencesTest {
     @Test
     void test_compileNameStatus_filesOnlyInA() {
         String line = differences.compileNameStatus("sub/i.txt", dirA, dirB)
-        assertEquals("sub/i.txt\tD\t1\t-\t-\t2024-03-29T09:45:03.675413\t-\t-", line)
+        assertEquals("\tsub/i.txt\tD\t1\t-\t-\t2024-03-29T09:45:03.675413\t-\t-", line)
     }
 
     @Test
     void test_compileNameStatus_filesOnlyInB() {
         String line = differences.compileNameStatus("j.txt", dirA, dirB)
-        assertEquals("j.txt\tA\t-\t-\t1\t-\t-\t2024-03-29T09:45:03.676875", line)
+        assertEquals("\tj.txt\tA\t-\t-\t1\t-\t-\t2024-03-29T09:45:03.676875", line)
     }
 
     @Test
     void test_compileNameStatus_sameSize() {
         String line = differences.compileNameStatus("apple.png", dirA, dirB)
-        assertEquals("apple.png\tM\t3655\t<\t416396\t2024-03-29T09:45:03.672855\t<\t2024-11-12T08:51:35.700829", line)
+        assertEquals("\tapple.png\tM\t3655\t<\t416396\t2024-03-29T09:45:03.672855\t<\t2024-11-12T08:51:35.700829", line)
     }
 
     @Test
     void test_compileNameStatus_modified() {
         String line = differences.compileNameStatus("sub/g.txt", dirA, dirB)
-        assertEquals("sub/g.txt\tM\t1\t<\t12\t2024-03-29T09:45:03.675207\t<\t2024-03-29T09:45:03.677459", line)
+        assertEquals("\tsub/g.txt\tM\t1\t<\t12\t2024-03-29T09:45:03.675207\t<\t2024-03-29T09:45:03.677459", line)
     }
 
     @Test
@@ -113,5 +114,13 @@ class DirectoriesDifferencesTest {
         Path outputText = workDir.resolve("nameStatusList.tsv")
         differences.reportNameStatusList(outputText)
         assertTrue(Files.exists(outputText))
+    }
+
+    @Test
+    void test_ancestorDirectoryOf() {
+        Path dirA = Paths.get("/Users/foo/bar/buz")
+        Path dirB = Paths.get("/Users/foo/poo/woo")
+        Path ancestor = DirectoriesDifferences.ancestorDirectoryOf(dirA, dirB)
+        assertEquals(Paths.get("/Users/foo"), ancestor)
     }
 }

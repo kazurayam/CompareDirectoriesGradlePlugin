@@ -20,6 +20,7 @@ class CompareDirectoriesPluginFunctionalTest extends Specification {
     private static Path fixturesDir
     private Path outputFile
     private Path diffDir
+    private Path nameStatusList
 
     // fixture methods
     def setupSpec() {
@@ -33,7 +34,7 @@ class CompareDirectoriesPluginFunctionalTest extends Specification {
         settingsFile << ""
         buildFile << """
 plugins {
-    id("com.kazurayam.compare-directories") version "0.2.10"
+    id("com.kazurayam.compare-directories") version "0.2.11"
 }
 
 compareDirectories {
@@ -45,8 +46,8 @@ compareDirectories {
 }
 
 tasks.register("dircomp", com.kazurayam.dircomp.CompareDirectoriesTask) {
-    dirA = fileTree(layout.projectDirectory.dir("src/test/fixtures/A")) { exclude "**/*.png" }
-    dirB = fileTree(layout.projectDirectory.dir("src/test/fixtures/B")) { exclude "**/*.png" }
+    dirA = fileTree(layout.projectDirectory.dir("src/test/fixtures/A")) { include "**/*" }
+    dirB = fileTree(layout.projectDirectory.dir("src/test/fixtures/B")) { include "**/*" }
     outputFile = layout.buildDirectory.file("out/differences.json")
     nameStatusList = layout.buildDirectory.file("out/nameStatusList.tsv")
     diffDir = layout.buildDirectory.dir("out/diff")
@@ -61,6 +62,7 @@ tasks.register("dircomp", com.kazurayam.dircomp.CompareDirectoriesTask) {
 """
         outputFile = too.resolveClassOutputDirectory().resolve( "build/out/differences.json").toAbsolutePath()
         diffDir = too.resolveClassOutputDirectory().resolve("build/out/diff").toAbsolutePath()
+        nameStatusList = too.resolveClassOutputDirectory().resolve("build/out/nameStatusList.tsv").toAbsolutePath()
 
         println '=============================================================='
         Files.readAllLines(buildFile).eachWithIndex { line, index ->

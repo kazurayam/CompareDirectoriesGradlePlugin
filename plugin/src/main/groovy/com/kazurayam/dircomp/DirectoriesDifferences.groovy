@@ -291,7 +291,10 @@ class DirectoriesDifferences {
                 new BufferedWriter(
                         new OutputStreamWriter(os,
                                 StandardCharsets.UTF_8)))
-        pw.println("name\tstatus\ttimestampA\t<>\ttimestampB\tsizeA\t<>\tsizeB")
+        pw.println("\tname\tstatus\ttimestampA\t<>\ttimestampB\tsizeA\t<>\tsizeB")
+        Path ancestorDir = ancestorDirectoryOf(dirA, dirB)
+        pw.println("dirA\t${ancestorDir.getFileName().resolve(ancestorDir.relativize(dirA))}")
+        pw.println("dirB\t${ancestorDir.getFileName().resolve(ancestorDir.relativize(dirB))}")
         for (String name : allNames) {
             String line= compileNameStatus(name, this.dirA, this.dirB)
             pw.println(line);
@@ -304,6 +307,7 @@ class DirectoriesDifferences {
         Path fileA = dirA.resolve(name)
         Path fileB = dirB.resolve(name)
         StringBuilder sb = new StringBuilder()
+        sb.append("\t")
         sb.append(name)
         sb.append("\t")
         sb.append(formatFileStatus(fileA, fileB))
@@ -394,5 +398,27 @@ class DirectoriesDifferences {
         } else {
             return "-"
         }
+    }
+
+    /**
+     *
+     * @param dirA e.g, "/User/foo/bar/buz"
+     * @param dirB e.g, "/User/foo/poo/zoo"
+     * @return then return "/User/foo" as the common ancestor directory
+     */
+    static Path ancestorDirectoryOf(Path dirA, Path dirB) {
+        Path ancestor = dirA.getRoot()
+        for (int i = 0; i < dirA.getNameCount(); i++) {
+            if (i < dirB.getNameCount()) {
+                if (dirA.getName(i) == dirB.getName(i)) {
+                    ancestor = ancestor.resolve(dirA.getName(i))
+                } else {
+                    return ancestor
+                }
+            } else {
+                return ancestor
+            }
+        }
+        return ancestor
     }
 }
