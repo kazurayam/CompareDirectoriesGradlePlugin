@@ -352,7 +352,7 @@ class DirectoriesDifferences {
 
     static String formatLastModified(Path p) {
         if (Files.exists(p)) {
-            LocalDateTime ldt = convertLastModifiedToLocalDateTime(p)
+            LocalDateTime ldt = convertLastModifiedToLocalDateTime(p).withNano(0)
             return DateTimeFormatter.ISO_DATE_TIME.format(ldt)
         } else {
             return "-"
