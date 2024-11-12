@@ -11,6 +11,7 @@ abstract class CompareDirectoriesExtension {
     abstract Property<ConfigurableFileTree> getDirA()
     abstract Property<ConfigurableFileTree> getDirB()
     abstract RegularFileProperty getOutputFile()
+    abstract RegularFileProperty getNameStatusList()
     abstract DirectoryProperty getDiffDir()
     abstract ListProperty<String> getCharsetsToTry()
 

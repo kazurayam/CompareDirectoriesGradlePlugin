@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.kazurayam"
-version = "0.2.7"
+version = "0.2.11"
 
 base {
     archivesName = 'compare-directories-plugin'
@@ -26,6 +26,11 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(11)
     }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 }
 
 tasks.withType(Test) {
@@ -62,13 +67,13 @@ dependencies {
 
     testImplementation group: 'org.slf4j', name: 'slf4j-simple', version: "2.0.7"
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.9.0'
-    testImplementation("com.kazurayam:unittest-helper:0.3.3")
+    testImplementation libs.unittesthelper
     testImplementation 'org.assertj:assertj-core:3.25.3'
     testImplementation gradleTestKit()
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.9.0'
     functionalTestImplementation platform(group: 'org.spockframework', name: 'spock-bom', version: '2.3-groovy-3.0')
     functionalTestImplementation group: 'org.spockframework', name: 'spock-core', version: '2.3-groovy-3.0'
-    functionalTestImplementation("com.kazurayam:unittest-helper:0.3.1")
+    functionalTestImplementation libs.unittesthelper
 }
 
 gradlePlugin {

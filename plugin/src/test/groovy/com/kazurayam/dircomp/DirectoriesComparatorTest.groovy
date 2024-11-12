@@ -1,7 +1,6 @@
 package com.kazurayam.dircomp
 
 import com.kazurayam.unittest.TestOutputOrganizer
-import org.gradle.api.file.ConfigurableFileTree
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.slf4j.Logger
@@ -17,21 +16,22 @@ class DirectoriesComparatorTest {
 
     private static final TestOutputOrganizer too =
             new TestOutputOrganizer.Builder(DirectoriesComparatorTest.class)
-                    .subDirPath(DirectoriesComparatorTest.class).build()
+                    .outputDirectoryRelativeToProject("build/tmp/testOutput")
+                    .subOutputDirectory(DirectoriesComparatorTest.class).build()
 
     @BeforeAll
     static void beforeAll() {
         too.cleanClassOutputDirectory()
-        Path fixturesDir = too.projectDir.resolve("src/test/fixtures")
-        Path targetDir = too.getClassOutputDirectory()
+        Path fixturesDir = too.getProjectDirectory().resolve("src/test/fixtures")
+        Path targetDir = too.cleanClassOutputDirectory()
         too.copyDir(fixturesDir, targetDir)
     }
 
     @Test
     void test_constructor_FileTree() {
-        Path dirA = too.getClassOutputDirectory().resolve("A")
+        Path dirA = too.resolveClassOutputDirectory().resolve("A")
         Set<Path> filesA = new DirectoryScanner(dirA).scan().getFiles()
-        Path dirB = too.getClassOutputDirectory().resolve("B")
+        Path dirB = too.resolveClassOutputDirectory().resolve("B")
         Set<Path> filesB = new DirectoryScanner(dirB).scan().getFiles()
         DirectoriesComparator comparator =
                 new DirectoriesComparator(dirA, filesA, dirB, filesB)
@@ -46,7 +46,7 @@ class DirectoriesComparatorTest {
 
     @Test
     void test_toSubPaths() {
-        Path dir = too.getClassOutputDirectory().resolve("A")
+        Path dir = too.resolveClassOutputDirectory().resolve("A")
         logger.info("dir : " + dir.toString())
         Set<Path> files = new DirectoryScanner(dir).scan().getFiles()
         Set<String> subPaths = DirectoriesComparator.toSubPaths(dir, files)

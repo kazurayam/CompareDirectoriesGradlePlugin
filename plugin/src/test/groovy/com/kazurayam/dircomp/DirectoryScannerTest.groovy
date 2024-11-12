@@ -13,22 +13,23 @@ class DirectoryScannerTest {
 
     private static final TestOutputOrganizer too =
             new TestOutputOrganizer.Builder(DirectoryScannerTest.class)
-                    .subDirPath(DirectoryScannerTest.class).build()
+                    .outputDirectoryRelativeToProject("build/tmp/testOutput")
+                    .subOutputDirectory(DirectoryScannerTest.class).build()
 
     static Path fixturesDir
 
     @BeforeAll
     static void beforeAll() {
+        fixturesDir = too.getProjectDirectory().resolve("src/test/fixtures")
         too.cleanClassOutputDirectory()
-        fixturesDir = too.projectDir.resolve("src/test/fixtures")
-        Path targetDir = too.getClassOutputDirectory()
+        Path targetDir = too.resolveClassOutputDirectory()
         too.copyDir(fixturesDir, targetDir)
     }
 
     @Test
     void test_getFiles() {
         Set<Path> files =
-                new DirectoryScanner(too.getClassOutputDirectory())
+                new DirectoryScanner(too.resolveClassOutputDirectory())
                         .scan()
                         .getFiles()
         assertThat(files).hasSizeGreaterThan(0)
@@ -38,7 +39,7 @@ class DirectoryScannerTest {
     @Test
     void test_getSubPaths() {
         Set<String> subPaths =
-                new DirectoryScanner(too.getClassOutputDirectory())
+                new DirectoryScanner(too.resolveClassOutputDirectory())
                         .scan()
                         .getSubPaths()
         assertThat(subPaths).hasSizeGreaterThan(0)
