@@ -49,7 +49,7 @@ tasks.register("dircomp", com.kazurayam.dircomp.CompareDirectoriesTask) {
     dirA = fileTree(layout.projectDirectory.dir("src/test/fixtures/A")) { include "**/*" }
     dirB = fileTree(layout.projectDirectory.dir("src/test/fixtures/B")) { include "**/*" }
     outputFile = layout.buildDirectory.file("out/differences.json")
-    nameStatusList = layout.buildDirectory.file("out/nameStatusList.tsv")
+    nameStatusList = layout.buildDirectory.file("out/nameStatusList.txt")
     diffDir = layout.buildDirectory.dir("out/diff")
     charsetsToTry.add("Shift_JIS")
     doFirst {
@@ -62,7 +62,7 @@ tasks.register("dircomp", com.kazurayam.dircomp.CompareDirectoriesTask) {
 """
         outputFile = too.resolveClassOutputDirectory().resolve( "build/out/differences.json").toAbsolutePath()
         diffDir = too.resolveClassOutputDirectory().resolve("build/out/diff").toAbsolutePath()
-        nameStatusList = too.resolveClassOutputDirectory().resolve("build/out/nameStatusList.tsv").toAbsolutePath()
+        nameStatusList = too.resolveClassOutputDirectory().resolve("build/out/nameStatusList.txt").toAbsolutePath()
 
         println '=============================================================='
         Files.readAllLines(buildFile).eachWithIndex { line, index ->

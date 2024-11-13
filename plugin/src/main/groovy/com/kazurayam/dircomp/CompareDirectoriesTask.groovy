@@ -39,7 +39,7 @@ abstract class CompareDirectoriesTask extends DefaultTask {
         getDirA().convention(project.fileTree(project.layout.projectDirectory.dir("src")))
         getDirB().convention(project.fileTree(project.layout.projectDirectory.dir("src")))
         getOutputFile().convention(project.layout.buildDirectory.file("difference.json"))
-        getNameStatusList().convention(project.layout.buildDirectory.file("nameStatusList.tsv"))
+        getNameStatusList().convention(project.layout.buildDirectory.file("nameStatusList.txt"))
         getDiffDir().convention(project.layout.buildDirectory.dir("diffDir"))
         getCharsetsToTry().convention([])
     }
