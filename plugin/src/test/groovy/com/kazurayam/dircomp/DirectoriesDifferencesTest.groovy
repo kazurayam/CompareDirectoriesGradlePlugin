@@ -111,7 +111,7 @@ class DirectoriesDifferencesTest {
     @Test
     void test_reportNameStatusList() {
         Path workDir = too.resolveMethodOutputDirectory("test_reportNameStatusList")
-        Path outputText = workDir.resolve("nameStatusList.tsv")
+        Path outputText = workDir.resolve("nameStatusList.txt")
         differences.reportNameStatusList(outputText)
         assertTrue(Files.exists(outputText))
     }

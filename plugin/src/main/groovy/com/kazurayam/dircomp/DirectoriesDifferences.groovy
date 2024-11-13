@@ -18,7 +18,6 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.attribute.FileTime
 import java.time.Instant
-import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -292,7 +291,7 @@ class DirectoriesDifferences {
                 new BufferedWriter(
                         new OutputStreamWriter(os,
                                 StandardCharsets.UTF_8)))
-        pw.println("\tname\tstatus\ttimestampA\t<>\ttimestampB\tsizeA\t<>\tsizeB")
+        pw.println("\tname\tstatus\tsizeA\t<>\tsizeB\ttimestampA\t<>\ttimestampB")
         Path ancestorDir = ancestorDirectoryOf(dirA, dirB)
         pw.println("dirA\t${ancestorDir.getFileName().resolve(ancestorDir.relativize(dirA))}")
         pw.println("dirB\t${ancestorDir.getFileName().resolve(ancestorDir.relativize(dirB))}")
