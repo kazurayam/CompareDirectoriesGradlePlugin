@@ -208,8 +208,11 @@ class DirectoriesDifferences {
             try {
                 Path fileA = this.getDirA().resolve(relativePath).toAbsolutePath()
                 Path fileB = this.getDirB().resolve(relativePath).toAbsolutePath()
-                List<String> textA = readAllLines(fileA)
-                List<String> textB = readAllLines(fileB)
+                // will trim the trailing whitespaces of all lines
+                List<String> textA = readAllLines(fileA).stream().map(line ->
+                        line.replaceAll('\\s+$', '')).collect()
+                List<String> textB = readAllLines(fileB).stream().map(line ->
+                        line.replaceAll('\\s+$', '')).collect()
                 // generating diff information
                 Patch<String> diff = DiffUtils.diff(textA, textB)
 
