@@ -26,7 +26,7 @@ You want to write your build.gradle file as follows:
 
 ```
 plugins {
-    id("com.kazurayam.compare-directories") version "0.2.3"
+    id("com.kazurayam.compare-directories") version "0.2.13"
 }
 
 compareDirectories {
