@@ -12,7 +12,7 @@ class DirectoriesComparator {
 
     private static final Logger logger = LoggerFactory.getLogger(DirectoriesComparator.class)
 
-    private final MessageDigest digester = MessageDigest.getInstance('SHA')
+    private static final MessageDigest digester = MessageDigest.getInstance('SHA')
 
     private final Path dirA
     private final Set<Path> collectionA
@@ -104,12 +104,33 @@ class DirectoriesComparator {
     /**
      * calculate the message digest of fileA and fileB, return true
      * if the values differ. return false if the values are equal.
+     *
+     * At first, the method assumes that fileA and fileB are text.
+     * Will read fileA into a string and take the message digest.
+     * Will read fileB into another string and take the message digest.
+     * Reading a text file will drop all CR characters at the trail of lines.
+     * If the message digests differ, returns true. Otherwise return false.
+     *
+     * If reading the files as text raised an Exception, then the method
+     * will regard the file(s) are binary. So the method just compare them
+     * by message digest of files.
+     *
      * @param fileA
      * @param fileB
      * @return
      */
-    private boolean different(Path fileA, Path fileB) {
-        hashFile(fileA) != hashFile(fileB)
+    protected static boolean different(Path fileA, Path fileB) {
+        boolean result;
+        try {
+            String contentA = readAllLines(fileA)  // strip CR+LF -> LF
+            String contentB = readAllLines(fileB)
+            //println "hashString(contentA)=" + hashString(contentA)
+            //println "hashString(contentB)=" + hashString(contentB)
+            result = hashString(contentA) != hashString(contentB)
+        } catch (Exception ignored) {
+            result = hashFile(fileA) != hashFile(fileB)
+        }
+        return result;
     }
 
     /**
@@ -117,7 +138,23 @@ class DirectoriesComparator {
      * @param filePath
      * @return
      */
-    private byte[] hashFile(Path filePath) {
+    private static byte[] hashFile(Path filePath) {
         digester.digest(filePath.toFile().bytes)
+    }
+
+    private static byte[] hashString(String string) {
+        digester.digest(string.bytes);
+    }
+
+    private static String[] readAllLines(Path file) {
+        InputStream is = new FileInputStream(file.toFile())
+        BufferedReader br = new BufferedReader(new InputStreamReader(is))
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = br.readLine()) != null) {
+            sb.append(line);
+            sb.append("\n")   // change CR+LF to LF
+        }
+        return sb.toString()
     }
 }

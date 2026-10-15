@@ -53,4 +53,14 @@ class DirectoriesComparatorTest {
         assertThat(subPaths).hasSizeGreaterThan(0)
         subPaths.stream().sorted().each { println it}
     }
+
+    @Test
+    void test_different() {
+        Path dirA = too.resolveClassOutputDirectory().resolve("issue79/source")
+        Path dirB = too.resolveClassOutputDirectory().resolve("issue79/wgot")
+        boolean isDifferent = DirectoriesComparator.different(
+                dirA.resolve("index.html"),
+                dirB.resolve("index.html"))
+        assertThat(isDifferent).isFalse()
+    }
 }
