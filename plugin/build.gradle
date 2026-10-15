@@ -1,8 +1,7 @@
 plugins {
     id 'groovy'
     id 'java-gradle-plugin'
-    id 'maven-publish'
-    id "com.gradle.plugin-publish" version '1.2.1'
+    id "com.gradle.plugin-publish" version '2.2.1'
     id 'base'
 }
 
@@ -62,13 +61,13 @@ tasks.named('check') {
 
 dependencies {
     implementation "org.slf4j:slf4j-api:2.0.7"
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.2'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.22.3'
     implementation group: 'io.github.java-diff-utils', name: 'java-diff-utils', version: '4.12'
 
     testImplementation group: 'org.slf4j', name: 'slf4j-simple', version: "2.0.7"
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.9.0'
     testImplementation libs.unittesthelper
-    testImplementation 'org.assertj:assertj-core:3.25.3'
+    testImplementation 'org.assertj:assertj-core:3.27.7'
     testImplementation gradleTestKit()
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.9.0'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -87,21 +86,20 @@ gradlePlugin {
     website = 'https://kazurayam.github.io/CompareDirectoriesGradlePlugin/'
     vcsUrl = 'https://github.com/kazurayam/CompareDirectoriesGradlePlugin/'
     plugins {
-        compareDirectories {
+        register('compareDirectories') {
             id = 'com.kazurayam.compare-directories'
             displayName = 'Compare 2 directories'
             description = 'Compares 2 directories to find files as intersection and remainder'
-            tags.set(['file-tree'])
+            tags.set(['file-tree', 'directory-diff'])
             implementationClass = 'com.kazurayam.dircomp.CompareDirectoriesPlugin'
-        }
-    }
-}
 
-publishing {
-    publications {
-        maven(MavenPublication) {
-            artifactId = "compare-directories-plugin"
-            from components.java
+            // Groovy DSL requires passing `it` as the receiver
+            compatibility(it) {
+                features {
+                    configurationCache = false
+                    isolatedProjects = false
+                }
+            }
         }
     }
 }
