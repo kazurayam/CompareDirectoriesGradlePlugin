@@ -24,7 +24,7 @@ repositories {
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(11)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
@@ -71,6 +71,7 @@ dependencies {
     testImplementation 'org.assertj:assertj-core:3.25.3'
     testImplementation gradleTestKit()
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.9.0'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     functionalTestImplementation platform(group: 'org.spockframework', name: 'spock-bom', version: '2.3-groovy-3.0')
     functionalTestImplementation group: 'org.spockframework', name: 'spock-core', version: '2.3-groovy-3.0'
     functionalTestImplementation libs.unittesthelper
